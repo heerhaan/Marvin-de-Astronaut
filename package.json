@@ -1,0 +1,24 @@
+{
+  "name": "MarvinTheAstronaut",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gulp": "gulp"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browsersync": "0.0.1-security",
+    "discord.js": "^11.4.2",
+    "eslint": "^4.19.1",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "s": "^0.1.1",
+    "sequelize": "^4.38.0",
+    "sqlite3": "^4.0.1"
+  }
+}
