@@ -1,7 +1,7 @@
 {
   "name": "MarvinTheAstronaut",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a first attempt on creating a Discord bot. It's even my first personal project.\r So far i have no clear goal in mind of what the bot can do, or what makes the bot unique. \r The idea for the bot however is that it is set around my interests, so what it could do for example is:",
   "main": "index.js",
   "scripts": {
     "run": "node server.js",
@@ -20,5 +20,13 @@
     "s": "^0.1.1",
     "sequelize": "^4.38.0",
     "sqlite3": "^4.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heerhaan/Marvin-de-Astronaut.git"
+  },
+  "bugs": {
+    "url": "https://github.com/heerhaan/Marvin-de-Astronaut/issues"
+  },
+  "homepage": "https://github.com/heerhaan/Marvin-de-Astronaut#readme"
 }
