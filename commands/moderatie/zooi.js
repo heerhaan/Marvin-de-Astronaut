@@ -2,12 +2,16 @@ module.exports = {
 	name: 'zooi',
 	description: 'dit hoort niet te bestaan oet',
     args: true,
-    usage: '<user> <role>',
-	execute(message, args) {
-		if (args[0] === 'inshallah') {
-            return message.channel.send('amdullah niffo');
-        }
+	execute(message, args, client) {
+        // assuming you want the command to mention the target, for example: `!mute @user`
+        const target = message.mentions.members.first();
+        const role = message.guild.roles.cache.find(x => x.name === "Gaylords");
 
-        message.channel.send(`Je zei: ${args}\nEn das zo lang: ${args.length}`);
+        target.roles.add(role);
+
+
+        setTimeout(() => {
+            target.roles.remove(role); // remove the role
+          }, 30000);
 	},
 };

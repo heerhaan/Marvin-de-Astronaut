@@ -1,32 +1,22 @@
 {
-  "name": "MarvinTheAstronaut",
+  "name": "marvin-de-astronaut",
   "version": "1.0.0",
   "description": "This is a first attempt on creating a Discord bot. It's even my first personal project.\r So far i have no clear goal in mind of what the bot can do, or what makes the bot unique. \r The idea for the bot however is that it is set around my interests, so what it could do for example is:",
-  "main": "index.js",
+  "main": "marvin.js",
   "scripts": {
-    "run": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "gulp"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "browsersync": "0.0.1-security",
-    "discord.js": "^11.4.2",
-    "eslint": "^4.19.1",
-    "gulp": "^3.9.1",
-    "gulp-nodemon": "^2.2.1",
-    "s": "^0.1.1",
-    "sequelize": "^4.38.0",
-    "sqlite3": "^4.0.1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/heerhaan/Marvin-de-Astronaut.git"
   },
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/heerhaan/Marvin-de-Astronaut/issues"
   },
-  "homepage": "https://github.com/heerhaan/Marvin-de-Astronaut#readme"
+  "homepage": "https://github.com/heerhaan/Marvin-de-Astronaut#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  }
 }
