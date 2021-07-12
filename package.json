@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/heerhaan/Marvin-de-Astronaut#readme",
   "dependencies": {
-    "discord.js": "^12.5.3"
+    "discord.js": "^12.5.3",
+    "ms": "^2.1.3"
   }
 }

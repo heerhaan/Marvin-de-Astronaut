@@ -1,9 +1,10 @@
 const fs = require('fs');
 
 module.exports = {
-	name: 'za_warudo',
-	description: 'WRYYYYYYYYYYYYYYYYYYYYYYYYYYYYY',
+	name: 'dio',
+	description: 'De wereld herladen, het kan!',
 	args: true,
+	exclusive: true,
 	execute(message, args) {
 		const commandName = args[0].toLowerCase();
 		const command = message.client.commands.get(commandName)
@@ -21,7 +22,9 @@ module.exports = {
 		try {
 			const newCommand = require(`../${folderName}/${command.name}.js`);
 			message.client.commands.set(newCommand.name, newCommand);
-			message.channel.send(`DE WERELD!!! BRWAAAAAAAAAP`);
+			message.channel.send(`Ik verwerp mijn menselijkheid, HERLAAD DE WERELD!`);
+			
+			console.log(`Commando ${commandName} herladen, lekker bezig!`);
 		} catch (error) {
 			console.error(error);
 			message.channel.send(`ERR: \`${command.name}\`:\n\`${error.message}\``);

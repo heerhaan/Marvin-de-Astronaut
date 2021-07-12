@@ -1,14 +1,9 @@
 module.exports = {
 	name: 'message',
-	execute(message, prefix, ownerID, client) {
+	execute(message, prefix, ownerID, ms, Discord, client) {
 		if (message.author.bot) return;
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
-
-        // Wat Marvin zegt als je hem tekt
-        /*if (message.isMentioned(client.user)) {
-            message.channel.send("au");
-        }*/
 
         // Geen prefix? Stop.
         if (!message.content.startsWith(prefix)) return;
@@ -48,7 +43,7 @@ module.exports = {
 
         // Eindelijk voeren we de content van de command uit
         try {
-            command.execute(message, args, client);
+            command.execute(message, args, ms, Discord, client);
         } catch (error) {
             console.error(error);
             message.reply('oepsiedoepsie, er ging iets stukkiewukkie!');

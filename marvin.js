@@ -1,6 +1,7 @@
 // import { Sequelize } from "./db/database";
 
 const fs = require('fs');
+const ms = require("ms");
 const Discord = require("discord.js");
 const { prefix, token, ownerID } = require('./config.json');
 
@@ -13,7 +14,7 @@ for (const file of eventFiles) {
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args, client));
   } else {
-    client.on(event.name, (...args) => event.execute(...args, prefix, ownerID, client));
+    client.on(event.name, (...args) => event.execute(...args, prefix, ownerID, ms, Discord, client));
   }
 }
 

@@ -9,7 +9,6 @@ module.exports = {
 
         target.roles.add(role);
 
-
         setTimeout(() => {
             target.roles.remove(role); // remove the role
           }, 30000);

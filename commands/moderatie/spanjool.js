@@ -1,63 +1,72 @@
 module.exports = {
     name: "s",
     description: "Spanjoleren kun je leren.",
-    execute(message, args, client) {
+    execute(message, args, ms, Discord) {
         const muteRoleId = message.guild.roles.cache.get('641355896919818253');
-        let muteRole;
 
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!member) 
-        return message.channel.send('Please mention a user or provide a valid user ID');
-        if (member === message.member)
-        return message.channel.send('You cannot mute yourself');
-        if (member === message.guild.me) return message.channel.send(message, 0, 'You cannot mute me');
-        if (member.roles.highest.position >= message.member.roles.highest.position)
-        return message.channel.send('You cannot mute someone with an equal or higher role');
-        if (!args[1])
-        return message.channel.send('Please enter a length of time of 14 days or less (1s/m/h/d)');
+        if (!member) {
+            return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Miss moet je beter typen?');
+        }
+        if (member === message.guild.me) {
+            return message.channel.send('Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.');
+        }
+
+        console.log(args); // Vergeet deze test log niet weg te halen
+
+        if (!args[1]) {
+            return message.channel.send('Gelieve een tijd in te voeren van 14 dagen of minder in dit format: [1s/m/h/d]');
+        }
+
         let time = ms(args[1]);
-        if (!time || time > 1209600000) // Cap at 14 days, larger than 24.8 days causes integer overflow
-        return message.channel.send('Please enter a length of time of 14 days or less (1s/m/h/d)');
+        if (!time || time > 1209600000) { // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
+            return message.channel.send('Please enter a length of time of 14 days or less (1s/m/h/d)');
+        }
 
         let reason = args.slice(2).join(' ');
-        if (!reason) reason = '`None Provided`';
-        if (reason.length > 1024) reason = reason.slice(0, 1021) + '...';
+        if (!reason) {
+            reason = '`Geen reden gegeven`';
+        }
+        if (reason.length > 1024) {
+            reason = reason.slice(0, 1021) + '...';
+        }
 
-        if (member.roles.cache.has(muteRoleId))
-        return message.channel.send('Provided member is already muted');
+        if (member.roles.cache.has(muteRoleId)) {
+            return message.channel.send(`Ik snap dat ${member} kut is maar het is niet alsof die nu dubbelspanjool wordt ofzo`);
+        }
 
-        // Mute member
+        // God, eindelijk knnen we spanjool toevoegen aan diens rollen
         try {
             member.roles.add(muteRoleId);
         } catch (err) {
             console.log(err)
-            return message.channel.send('Please check the role hierarchy', err.message);
+            return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel?', err.message);
         }
-        const muteEmbed = new MessageEmbed()
-            .setTitle('Mute Member')
-            .setDescription(`${member} has now been muted for **${ms(time, { long: true })}**.`)
-            .addField('Moderator', message.member, true)
-            .addField('Member', member, true)
-            .addField('Time', `\`${ms(time)}\``, true)
-            .addField('Reason', reason)
+        const muteEmbed = new Discord.MessageEmbed()
+            .setTitle('Gespanjoleerd')
+            .setDescription(`${member} is spanjool voor **${ms(time, { long: true })}**.`)
+            .addField('Stadthouder', message.member, true)
+            .addField('Burger', member, true)
+            .addField('Duur', `\`${ms(time)}\``, true)
+            .addField('Reden', reason)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
         message.channel.send(muteEmbed);
 
-        // Unmute member
+        // Ontspanjool
         member.timeout = message.client.setTimeout(async () => {
         try {
-            member.roles.remove(muteRole);
-            const unmuteEmbed = new MessageEmbed()
-            .setTitle('Unmute Member')
-            .setDescription(`${member} has been unmuted.`)
-            .setTimestamp()
-            .setColor(message.guild.me.displayHexColor);
+            member.roles.remove(muteRoleId);
+            const unmuteEmbed = new Discord.MessageEmbed()
+                .setTitle("ge-ost't")
+                .setDescription(`${member} is weer genaturaliseerd tot Nederlander.`)
+                .setTimestamp()
+                .setColor(message.guild.me.displayHexColor);
             message.channel.send(unmuteEmbed);
         } catch (err) {
             console.log(err)
-            return message.channel.send('Please check the role hierarchy', err.message);
+            return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
         }
         }, time);
     }
