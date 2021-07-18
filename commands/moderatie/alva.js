@@ -1,19 +1,19 @@
 module.exports = {
-    name: "s",
-    description: "Spanjoleren kun je leren.",
+    name: "a",
+    description: "Alvist voor de echte kutjes.",
     execute(message, args) {
         require('ms');
         const Discord = require('discord.js');
 
-        const spanjoolId = '641355896919818253';
+        const alvaId = '641355896919818253';
         
-        const muteRoleId = message.guild.roles.cache.get(spanjoolId);
+        const alvaRoleId = message.guild.roles.cache.get(alvaId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
         }
         if (member === message.guild.me) {
-            return message.channel.send('Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.');
+            return message.channel.send('Als er iets niet lukt door je eigen incompetentie dan moet je het probleem bij jezelf zoeken, niet bij mij.');
         }
 
         if (!args[1]) {
@@ -33,19 +33,19 @@ module.exports = {
             reason = reason.slice(0, 1021) + '...';
         }
 
-        if (member.roles.cache.has(muteRoleId)) {
-            return message.channel.send(`Ik snap dat ${member} kut is maar het is niet alsof die nu dubbelspanjool wordt ofzo`);
+        if (member.roles.cache.has(alvaRoleId)) {
+            return message.channel.send(`${member} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`);
         }
 
         // God, eindelijk knnen we spanjool toevoegen aan diens rollen
         try {
-            member.roles.add(muteRoleId);
+            member.roles.add(alvaRoleId);
         } catch (err) {
             console.log(err)
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
         const muteEmbed = new Discord.MessageEmbed()
-            .setTitle(`${member} is spanjool voor **${ms(time, { long: true })}**.`)
+            .setTitle(`${member} is alvist voor **${ms(time, { long: true })}**.`)
             .addField('Stadthouder', message.member, true)
             .addField('Burger', member, true)
             .addField('Duur', `\`${ms(time)}\``, true)
@@ -58,9 +58,9 @@ module.exports = {
         // Ontspanjool
         member.timeout = message.client.setTimeout(() => {
         try {
-            member.roles.remove(muteRoleId);
+            member.roles.remove(alvaRoleId);
             const unmuteEmbed = new Discord.MessageEmbed()
-                .setTitle(`${member} is weer genaturaliseerd tot Nederlander.`)
+                .setTitle(`${member} is ontsnapt uit het AZC en weer Nederlander.`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
             message.channel.send(unmuteEmbed);

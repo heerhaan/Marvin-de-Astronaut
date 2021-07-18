@@ -1,19 +1,19 @@
 module.exports = {
-    name: "s",
-    description: "Spanjoleren kun je leren.",
+    name: "k",
+    description: "Met kop dicht wordt nooit gemeemd.",
     execute(message, args) {
         require('ms');
         const Discord = require('discord.js');
 
-        const spanjoolId = '641355896919818253';
+        const shutId = '641355896919818253';
         
-        const muteRoleId = message.guild.roles.cache.get(spanjoolId);
+        const shutRoleId = message.guild.roles.cache.get(shutId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
         }
         if (member === message.guild.me) {
-            return message.channel.send('Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.');
+            return message.channel.send('Het is niet de bedoeling dat je meemt met Kop Dicht, al helemaal niet door het aan mij te geven.');
         }
 
         if (!args[1]) {
@@ -27,25 +27,24 @@ module.exports = {
 
         let reason = args.slice(2).join(' ');
         if (!reason) {
-            reason = '`Geen reden gegeven`';
+            reason = '`dit is geen meem`';
         }
         if (reason.length > 1024) {
             reason = reason.slice(0, 1021) + '...';
         }
 
-        if (member.roles.cache.has(muteRoleId)) {
-            return message.channel.send(`Ik snap dat ${member} kut is maar het is niet alsof die nu dubbelspanjool wordt ofzo`);
+        if (member.roles.cache.has(shutRoleId)) {
+            return message.channel.send(`Wat de neuk heeft ${member} geflikt dat één Kop Dicht niet genoeg was, of heeft Paard weer schijt aan zijn strafrollen?`);
         }
 
-        // God, eindelijk knnen we spanjool toevoegen aan diens rollen
         try {
-            member.roles.add(muteRoleId);
+            member.roles.add(shutRoleId);
         } catch (err) {
             console.log(err)
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
         const muteEmbed = new Discord.MessageEmbed()
-            .setTitle(`${member} is spanjool voor **${ms(time, { long: true })}**.`)
+            .setTitle(`${member} heeft Kop Dicht voor **${ms(time, { long: true })}**.`)
             .addField('Stadthouder', message.member, true)
             .addField('Burger', member, true)
             .addField('Duur', `\`${ms(time)}\``, true)
@@ -58,9 +57,9 @@ module.exports = {
         // Ontspanjool
         member.timeout = message.client.setTimeout(() => {
         try {
-            member.roles.remove(muteRoleId);
+            member.roles.remove(shutRoleId);
             const unmuteEmbed = new Discord.MessageEmbed()
-                .setTitle(`${member} is weer genaturaliseerd tot Nederlander.`)
+                .setTitle(`${member} probeert het weer als gewoon lid.`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
             message.channel.send(unmuteEmbed);
