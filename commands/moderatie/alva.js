@@ -8,6 +8,8 @@ module.exports = {
         const Discord = require('discord.js');
         
         const alvaId = '430970986037510154';
+        const strafKanaalID = "321878884935008266";
+        const strafKanaal = message.client.channels.cache.get(strafKanaalID);
         
         const alvaRoleId = message.guild.roles.cache.get(alvaId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -52,7 +54,7 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-        message.channel.send(muteEmbed);
+        strafKanaal.send(muteEmbed);
 
         member.timeout = message.client.setTimeout(() => {
         try {
@@ -61,7 +63,7 @@ module.exports = {
                 .setTitle(`${member} is ontsnapt uit de TBS-kliniek en trekt weer verder.`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
-            message.channel.send(unmuteEmbed);
+            strafKanaal.send(unmuteEmbed);
         } catch (err) {
             console.log(err)
             return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);

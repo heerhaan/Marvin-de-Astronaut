@@ -7,6 +7,8 @@ module.exports = {
         require('ms');
         const Discord = require('discord.js');
 
+        const strafKanaalID = "321878884935008266";
+        const strafKanaal = message.client.channels.cache.get(strafKanaalID);
         const spanjoolId = '241653605134761985';
         
         const muteRoleId = message.guild.roles.cache.get(spanjoolId);
@@ -52,7 +54,7 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-        message.channel.send(muteEmbed);
+        strafKanaal.send(muteEmbed);
 
         // Ontspanjool
         member.timeout = message.client.setTimeout(() => {
@@ -62,7 +64,7 @@ module.exports = {
                     .setTitle(`${member} is weer genaturaliseerd tot Nederlander.`)
                     .setTimestamp()
                     .setColor(message.guild.me.displayHexColor);
-                message.channel.send(unmuteEmbed);
+                strafKanaal.send(unmuteEmbed);
             }
             catch (err) {
                 console.log(err)

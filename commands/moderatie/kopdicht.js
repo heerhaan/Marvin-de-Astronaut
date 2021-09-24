@@ -7,6 +7,8 @@ module.exports = {
         require('ms');
         const Discord = require('discord.js');
 
+        const strafKanaalID = "321878884935008266";
+        const strafKanaal = message.client.channels.cache.get(strafKanaalID);
         const shutId = '268472232265777163';
         
         const shutRoleId = message.guild.roles.cache.get(shutId);
@@ -51,7 +53,7 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-        message.channel.send(muteEmbed);
+        strafKanaal.send(muteEmbed);
 
         // Ontspanjool
         member.timeout = message.client.setTimeout(() => {
@@ -61,7 +63,7 @@ module.exports = {
                 .setTitle(`${member} probeert het weer als gewoon lid.`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
-            message.channel.send(unmuteEmbed);
+            strafKanaal.send(unmuteEmbed);
         } catch (err) {
             console.log(err)
             return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);

@@ -35,7 +35,7 @@ module.exports = {
 
         // Commando's exclusief voor Haan (lol haha)
         if (command.exclusive && message.author.id !== ownerID) {
-            return message.channel.send("Hoe durf je mij zo aan te spreken, alleen mij schepper mag dat!!")
+            return message.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
         }
 
         // Controleert of parameters gegeven moeten worden, indien van wel en ze zijn er niet dan geeft Marvin een melding

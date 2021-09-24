@@ -7,6 +7,8 @@ module.exports = {
         require('ms');
         const Discord = require('discord.js');
 
+        const strafKanaalID = "321878884935008266";
+        const strafKanaal = message.client.channels.cache.get(strafKanaalID);
         const ridderId = '367263059393249281';
         
         const knightRoleId = message.guild.roles.cache.get(ridderId);
@@ -52,7 +54,7 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-        message.channel.send(muteEmbed);
+        strafKanaal.send(muteEmbed);
 
         // Verwijderd de ridder rol weer
         member.timeout = message.client.setTimeout(() => {
@@ -62,7 +64,7 @@ module.exports = {
                 .setTitle(`${member} behoort weer tot het gewone voetvolk`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
-            message.channel.send(unmuteEmbed);
+            strafKanaal.send(unmuteEmbed);
         } catch (err) {
             console.log(err)
             return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
