@@ -5,6 +5,8 @@ module.exports = {
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
 
+        const burgerijRolID = "307236945980030976";
+
         // Geen prefix? Stop.
         if (!message.content.startsWith(prefix)) return;
         // Rookmelding? Netjes.
@@ -19,11 +21,16 @@ module.exports = {
         const command = client.commands.get(commandName);
 
         // Controle op de permissies indien nodig
-        if (command.permissions) {
+        /*if (command.permissions) {
             const authorPerms = message.channel.permissionsFor(message.author);
             if (!authorPerms || !authorPerms.has(command.permissions)) {
-            return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer.');
+                return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer.');
             }
+        }*/
+
+        // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
+        if (command.admin && !message.member.roles.cache.some(e => e.name === "Admins")) {
+            return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer.');
         }
 
         // Commando's exclusief voor Haan (lol haha)
@@ -36,7 +43,7 @@ module.exports = {
             let reply = `Hee klaplul, je moet wel goed specificeren wat je wilt, hé?!`;
 
             if (command.usage) {
-            reply += `\nZo moet je de commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
+                reply += `\nZo moet je de commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
             }
             return message.channel.send(reply);
         }
@@ -44,25 +51,10 @@ module.exports = {
         // Eindelijk voeren we de content van de command uit
         try {
             command.execute(message, args, ms, Discord, client);
-        } catch (error) {
+        }
+        catch (error) {
             console.error(error);
             message.reply('oepsiedoepsie, er ging iets stukkiewukkie!');
-        }
-
-        // commands for Haan#0420 only
-        if(message.author.id !== ownerID) return;
-
-        if (commandName === "zuighetlol"){
-            message.delete(1);
-            var interval = setInterval (function () {
-            message.channel.send("j")
-            .catch(console.error);
-            }, 1 * 3000);
-        }
-
-        if (commandName === "stopmaar"){
-        clearInterval();
-        message.channel.send("lol ik stop al");
         }
 	},
 };

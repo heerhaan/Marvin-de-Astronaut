@@ -2,7 +2,6 @@ const fs = require('fs');
 
 module.exports = {
 	name: 'dio',
-	description: 'De wereld herladen, het kan!',
 	args: true,
 	exclusive: true,
 	execute(message, args) {

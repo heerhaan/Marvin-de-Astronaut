@@ -1,11 +1,13 @@
 module.exports = {
     name: "s",
     description: "Spanjoleren kun je leren.",
+    usage: 's [getal][s/m/h/d]',
+    admin : true,
     execute(message, args) {
         require('ms');
         const Discord = require('discord.js');
 
-        const spanjoolId = '641355896919818253';
+        const spanjoolId = '241653605134761985';
         
         const muteRoleId = message.guild.roles.cache.get(spanjoolId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -46,9 +48,6 @@ module.exports = {
         }
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member} is spanjool voor **${ms(time, { long: true })}**.`)
-            .addField('Stadthouder', message.member, true)
-            .addField('Burger', member, true)
-            .addField('Duur', `\`${ms(time)}\``, true)
             .addField('Reden', reason)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
@@ -57,17 +56,18 @@ module.exports = {
 
         // Ontspanjool
         member.timeout = message.client.setTimeout(() => {
-        try {
-            member.roles.remove(muteRoleId);
-            const unmuteEmbed = new Discord.MessageEmbed()
-                .setTitle(`${member} is weer genaturaliseerd tot Nederlander.`)
-                .setTimestamp()
-                .setColor(message.guild.me.displayHexColor);
-            message.channel.send(unmuteEmbed);
-        } catch (err) {
-            console.log(err)
-            return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
-        }
+            try {
+                member.roles.remove(muteRoleId);
+                const unmuteEmbed = new Discord.MessageEmbed()
+                    .setTitle(`${member} is weer genaturaliseerd tot Nederlander.`)
+                    .setTimestamp()
+                    .setColor(message.guild.me.displayHexColor);
+                message.channel.send(unmuteEmbed);
+            }
+            catch (err) {
+                console.log(err)
+                return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
+            }
         }, time);
     }
 }

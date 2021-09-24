@@ -5,7 +5,7 @@ module.exports = {
 	execute(message, args) {
 		message.delete(1);
         var string = message.content;
-        string = string.replace('🚀 zeg', '');
+        string = string.replace('€ zeg', '');
         message.channel.send(string);
 	},
 };

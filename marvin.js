@@ -13,7 +13,8 @@ for (const file of eventFiles) {
   const event = require(`./events/${file}`);
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args, client));
-  } else {
+  }
+  else {
     client.on(event.name, (...args) => event.execute(...args, prefix, ownerID, ms, Discord, client));
   }
 }
@@ -21,7 +22,7 @@ for (const file of eventFiles) {
 client.commands = new Discord.Collection();
 const commandFolders = fs.readdirSync('./commands');
 
-// Loopt door de categoriefolders heen om ze allemaal als command toe te voegen
+// Loopt door de categoriefolders heen om alle commands toe te voegen
 for (const folder of commandFolders) {
   const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
   for (const file of commandFiles) {

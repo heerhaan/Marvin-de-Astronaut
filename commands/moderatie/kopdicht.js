@@ -1,11 +1,13 @@
 module.exports = {
     name: "k",
     description: "Met kop dicht wordt nooit gemeemd.",
+    usage: 'k [getal][s/m/h/d]',
+    admin : true,
     execute(message, args) {
         require('ms');
         const Discord = require('discord.js');
 
-        const shutId = '641355896919818253';
+        const shutId = '268472232265777163';
         
         const shutRoleId = message.guild.roles.cache.get(shutId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -45,9 +47,6 @@ module.exports = {
         }
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member} heeft Kop Dicht voor **${ms(time, { long: true })}**.`)
-            .addField('Stadthouder', message.member, true)
-            .addField('Burger', member, true)
-            .addField('Duur', `\`${ms(time)}\``, true)
             .addField('Reden', reason)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()

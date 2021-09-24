@@ -1,11 +1,13 @@
 module.exports = {
     name: "a",
     description: "Alvist voor de echte kutjes.",
+    usage: 'a [getal][s/m/h/d]',
+    admin : true,
     execute(message, args) {
         require('ms');
         const Discord = require('discord.js');
-
-        const alvaId = '641355896919818253';
+        
+        const alvaId = '430970986037510154';
         
         const alvaRoleId = message.guild.roles.cache.get(alvaId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -37,30 +39,26 @@ module.exports = {
             return message.channel.send(`${member} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`);
         }
 
-        // God, eindelijk knnen we spanjool toevoegen aan diens rollen
         try {
             member.roles.add(alvaRoleId);
-        } catch (err) {
+        }
+        catch (err) {
             console.log(err)
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member} is alvist voor **${ms(time, { long: true })}**.`)
-            .addField('Stadthouder', message.member, true)
-            .addField('Burger', member, true)
-            .addField('Duur', `\`${ms(time)}\``, true)
             .addField('Reden', reason)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
         message.channel.send(muteEmbed);
 
-        // Ontspanjool
         member.timeout = message.client.setTimeout(() => {
         try {
             member.roles.remove(alvaRoleId);
             const unmuteEmbed = new Discord.MessageEmbed()
-                .setTitle(`${member} is ontsnapt uit het AZC en weer Nederlander.`)
+                .setTitle(`${member} is ontsnapt uit de TBS-kliniek en trekt weer verder.`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
             message.channel.send(unmuteEmbed);
