@@ -1,17 +1,17 @@
+const Discord = require('discord.js');
+const ms = require('ms');
+const { ridderID, strafkanaalID, logkanaalID } = require('../../config.json');
+
 module.exports = {
     name: "r",
     description: "Ridderen voor de opperbaasjes.",
-    usage: 'r [getal][s/m/h/d]',
+    usage: '[getal][s/m/h/d]',
     admin : true,
     execute(message, args) {
-        require('ms');
-        const Discord = require('discord.js');
+        const logKanaal = message.client.channels.cache.get(logkanaalID);
+        const strafKanaal = message.client.channels.cache.get(strafkanaalID);
+        const ridderRol = message.guild.roles.cache.get(ridderID);
 
-        const strafKanaalID = "321878884935008266";
-        const strafKanaal = message.client.channels.cache.get(strafKanaalID);
-        const ridderId = '367263059393249281';
-        
-        const knightRoleId = message.guild.roles.cache.get(ridderId);
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
@@ -38,18 +38,18 @@ module.exports = {
         }
 
         if (member.roles.cache.has(knightRoleId)) {
-            return message.channel.send(`Leuk dat je zo hard aan het simpen bent voor ${member} maar meer ridder is onnodig.`);
+            return message.channel.send(`Leuk dat je zo hard aan het simpen bent voor ${member.displayName} maar meer ridder is onnodig.`);
         }
 
-        // God, eindelijk knnen we spanjool toevoegen aan diens rollen
+        // God, eindelijk knnen we ridder toevoegen aan diens rollen
         try {
-            member.roles.add(knightRoleId);
+            member.roles.add(ridderRol);
         } catch (err) {
-            console.log(err)
+            logKanaal.send(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
         const muteEmbed = new Discord.MessageEmbed()
-            .setTitle(`${member} is ridder voor **${ms(time, { long: true })}**.`)
+            .setTitle(`${member.displayName} is ridder voor **${ms(time, { long: true })}**.`)
             .addField('Reden', reason)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
@@ -59,14 +59,14 @@ module.exports = {
         // Verwijderd de ridder rol weer
         member.timeout = message.client.setTimeout(() => {
         try {
-            member.roles.remove(knightRoleId);
+            member.roles.remove(ridderRol);
             const unmuteEmbed = new Discord.MessageEmbed()
                 .setTitle(`${member} behoort weer tot het gewone voetvolk`)
                 .setTimestamp()
                 .setColor(message.guild.me.displayHexColor);
             strafKanaal.send(unmuteEmbed);
         } catch (err) {
-            console.log(err)
+            logKanaal.send(err);
             return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
         }
         }, time);

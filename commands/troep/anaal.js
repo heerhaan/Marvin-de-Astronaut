@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'anaal',
 	description: 'frontaal',
-	execute(message, args) {
-        message.reply("digitaal")
+	execute(message) {
+        message.reply("digitaal");
 	},
 };

@@ -1,9 +1,8 @@
 // import { Sequelize } from "./db/database";
 
 const fs = require('fs');
-const ms = require("ms");
 const Discord = require("discord.js");
-const { prefix, token, ownerID } = require('./config.json');
+const { token } = require('./config.json');
 
 const client = new Discord.Client({autoReconnect:true});
 
@@ -12,10 +11,10 @@ const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'
 for (const file of eventFiles) {
   const event = require(`./events/${file}`);
   if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args, client));
+    client.once(event.name, (...args) => event.execute(...args));
   }
   else {
-    client.on(event.name, (...args) => event.execute(...args, prefix, ownerID, ms, Discord, client));
+    client.on(event.name, (...args) => event.execute(...args));
   }
 }
 

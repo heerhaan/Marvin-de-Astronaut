@@ -1,11 +1,12 @@
+const { prefix, ownerID } = require("../config.json");
+
 module.exports = {
 	name: 'message',
-	execute(message, prefix, ownerID, ms, Discord, client) {
+	execute(message) {
 		if (message.author.bot) return;
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
-
-        const burgerijRolID = "307236945980030976";
+        var client = message.client;
 
         // Geen prefix? Stop.
         if (!message.content.startsWith(prefix)) return;
@@ -20,7 +21,6 @@ module.exports = {
         // Haalt de command en duwt hem in een variabel
         const command = client.commands.get(commandName);
 
-        // Controle op de permissies indien nodig
         /*if (command.permissions) {
             const authorPerms = message.channel.permissionsFor(message.author);
             if (!authorPerms || !authorPerms.has(command.permissions)) {
@@ -50,7 +50,7 @@ module.exports = {
 
         // Eindelijk voeren we de content van de command uit
         try {
-            command.execute(message, args, ms, Discord, client);
+            command.execute(message, args);
         }
         catch (error) {
             console.error(error);

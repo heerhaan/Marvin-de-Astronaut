@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'geefmuziek',
 	description: 'Keert een rits leuke nummers terug, fijn!',
-	execute(message, args) {
+	execute(message) {
 		var random = Math.floor((Math.random()*5)+1);
         switch (random){
         case 1:

@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'koelman',
-	execute(message, args) {
+	execute(message) {
 		let rng = Math.floor(Math.random() * 101);
 		if (rng === 69) {
 			message.channel.send(`haha seks <:huehuehuehuehuehue:438031814641057792>`);
