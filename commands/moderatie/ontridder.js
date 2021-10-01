@@ -1,4 +1,4 @@
-const { burgerijID, ridderID, logkanaalID } = require('../../config.json');
+const { adminID, stadthouderID, burgerijID, ridderID, logkanaalID } = require('../../config.json');
 
 module.exports = {
 	name: 'or',
@@ -6,7 +6,13 @@ module.exports = {
 	execute(message) {
 		const logKanaal = message.client.channels.cache.get(logkanaalID);
         const ridderRol = message.guild.roles.cache.get(ridderID);
-        const burgerijRol = message.guild.roles.cache.get(burgerijID);
+        var gebruikerRol;
+
+        if (message.member.roles.cache.has(adminID)) {
+            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
+        } else {
+            gebruikerRol = message.guild.roles.cache.get(burgerijID);
+        }
 
 		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
@@ -14,7 +20,7 @@ module.exports = {
         }
 
 		try {
-            member.roles.add(burgerijRol);
+            member.roles.add(gebruikerRol);
             member.roles.remove(ridderRol);
         }
         catch (err) {

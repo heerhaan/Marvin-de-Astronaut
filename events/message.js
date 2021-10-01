@@ -1,4 +1,4 @@
-const { prefix, ownerID } = require("../config.json");
+const { prefix, ownerID, adminID } = require("../config.json");
 
 module.exports = {
 	name: 'message',
@@ -29,8 +29,8 @@ module.exports = {
         }*/
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !message.member.roles.cache.some(e => e.name === "Admins")) {
-            return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer.');
+        if (command.admin && !message.member.roles.cache.has(adminID)) {
+            return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
         // Commando's exclusief voor Haan (lol haha)
@@ -54,7 +54,7 @@ module.exports = {
         }
         catch (error) {
             console.error(error);
-            message.reply('oepsiedoepsie, er ging iets stukkiewukkie!');
+            message.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
         }
 	},
 };
