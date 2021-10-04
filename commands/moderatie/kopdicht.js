@@ -13,12 +13,6 @@ module.exports = {
         const kopdichtRol = message.guild.roles.cache.get(kopdichtID);
         var gebruikerRol;
 
-        if (message.member.roles.cache.has(adminID)) {
-            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
-        } else {
-            gebruikerRol = message.guild.roles.cache.get(burgerijID);
-        }
-
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
@@ -26,12 +20,18 @@ module.exports = {
         if (member === message.guild.me) {
             return message.channel.send('Het is niet de bedoeling dat je meemt met Kop Dicht, al helemaal niet door het aan mij te geven.');
         }
+        if (member.roles.cache.has(adminID)) {
+            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
+        }
+        else {
+            gebruikerRol = message.guild.roles.cache.get(burgerijID);
+        }
 
         var time;
         var reden;
         if (!args[1]) {
             var ranMin = Math.floor(Math.random() * 30);
-            time = `${ranMin}m`;
+            time = ms(`${ranMin}m`);
         }
         else {
             time = ms(args[1]);
@@ -72,17 +72,13 @@ module.exports = {
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
         strafKanaal.send(muteEmbed);
+        message.react('👌');
 
         if(time) {
             member.timeout = message.client.setTimeout(() => {
                 try {
                     member.roles.add(gebruikerRol);
                     member.roles.remove(kopdichtRol);
-                    const unmuteEmbed = new Discord.MessageEmbed()
-                        .setTitle(`${member.displayName} probeert het weer als gewoon lid.`)
-                        .setTimestamp()
-                        .setColor(message.guild.me.displayHexColor);
-                    strafKanaal.send(unmuteEmbed);
                 } catch (err) {
                     logKanaal.send(err);
                     return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);

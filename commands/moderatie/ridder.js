@@ -13,12 +13,6 @@ module.exports = {
         const ridderRol = message.guild.roles.cache.get(ridderID);
         var gebruikerRol;
 
-        if (message.member.roles.cache.has(adminID)) {
-            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
-        } else {
-            gebruikerRol = message.guild.roles.cache.get(burgerijID);
-        }
-
         const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
@@ -26,12 +20,18 @@ module.exports = {
         if (member === message.guild.me) {
             return message.channel.send('Ik waardeer het gebaar enorm maar ik ben een robot dus die ridder hoeft echt niet.');
         }
+        if (member.roles.cache.has(adminID)) {
+            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
+        }
+        else {
+            gebruikerRol = message.guild.roles.cache.get(burgerijID);
+        }
 
         var time;
         var reden;
         if (!args[1]) {
             var ranMin = Math.floor(Math.random() * 30);
-            time = `${ranMin}m`;
+            time = ms(`${ranMin}m`);
         }
         else {
             time = ms(args[1]);
@@ -72,17 +72,13 @@ module.exports = {
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
         strafKanaal.send(muteEmbed);
+        message.react('👌');
 
         if(time) {
             member.timeout = message.client.setTimeout(() => {
                 try {
                     member.roles.add(gebruikerRol);
                     member.roles.remove(ridderRol);
-                    const unmuteEmbed = new Discord.MessageEmbed()
-                        .setTitle(`${member} behoort weer tot het gewone voetvolk`)
-                        .setTimestamp()
-                        .setColor(message.guild.me.displayHexColor);
-                    strafKanaal.send(unmuteEmbed);
                 } catch (err) {
                     logKanaal.send(err);
                     return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);

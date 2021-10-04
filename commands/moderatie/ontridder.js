@@ -6,26 +6,28 @@ module.exports = {
 	execute(message) {
 		const logKanaal = message.client.channels.cache.get(logkanaalID);
         const ridderRol = message.guild.roles.cache.get(ridderID);
-        var gebruikerRol;
+        
+        function removeRoleForMember(member) {
+            let gebruikerRol;
+            if (!member) {
+                logKanaal.send(`Kon lid ${member} niet vinden bij or'en, oei!`);
+            }
+            else {
+                if (member.roles.cache.has(adminID)) { gebruikerRol = message.guild.roles.cache.get(stadthouderID); }
+                else { gebruikerRol = message.guild.roles.cache.get(burgerijID); }
 
-        if (message.member.roles.cache.has(adminID)) {
-            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
-        } else {
-            gebruikerRol = message.guild.roles.cache.get(burgerijID);
+                try {
+                    member.roles.add(gebruikerRol);
+                    member.roles.remove(ridderRol);
+                }
+                catch (err) {
+                    logKanaal.send('Oei, het manipuleren van de rollen ging mis. Kan ik dat wel? ', err.message);
+                }
+            }
         }
 
-		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        if (!member) {
-            return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
-        }
-
-		try {
-            member.roles.add(gebruikerRol);
-            member.roles.remove(ridderRol);
-        }
-        catch (err) {
-            logKanaal.send(err);
-            return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
-        }
+        const members = message.mentions.members;
+        members.each(removeRoleForMember);
+        message.react('👌');
 	},
 };

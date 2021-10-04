@@ -13,12 +13,6 @@ module.exports = {
         const spanjoolRol = message.guild.roles.cache.get(spanjoolID);
         var gebruikerRol;
 
-        if (message.member.roles.cache.has(adminID)) {
-            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
-        } else {
-            gebruikerRol = message.guild.roles.cache.get(burgerijID);
-        }
-
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
@@ -26,12 +20,18 @@ module.exports = {
         if (member === message.guild.me) {
             return message.channel.send('Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.');
         }
+        if (member.roles.cache.has(adminID)) {
+            gebruikerRol = message.guild.roles.cache.get(stadthouderID);
+        }
+        else {
+            gebruikerRol = message.guild.roles.cache.get(burgerijID);
+        }
 
         var time;
         var reden;
         if (!args[1]) {
             var ranMin = Math.floor(Math.random() * 30);
-            time = `${ranMin}m`;
+            time = ms(`${ranMin}m`);
         }
         else {
             time = ms(args[1]);
@@ -72,6 +72,7 @@ module.exports = {
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
         strafKanaal.send(muteEmbed);
+        message.react('👌');
 
         // Als er een tijd is, wordt deze vanaf hier beheerd
         if(time) {
@@ -79,11 +80,6 @@ module.exports = {
                 try {
                     member.roles.add(gebruikerRol);
                     member.roles.remove(spanjoolRol);
-                    const unmuteEmbed = new Discord.MessageEmbed()
-                        .setTitle(`${member.displayName} is weer genaturaliseerd tot Nederlander.`)
-                        .setTimestamp()
-                        .setColor(message.guild.me.displayHexColor);
-                    strafKanaal.send(unmuteEmbed);
                 }
                 catch (err) {
                     logKanaal.send(err);
