@@ -38,10 +38,13 @@ module.exports = {
             if (time > 1209600000) { // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
-            else {
+            else if (!time) {
                 var ranMin = Math.floor(Math.random() * 30);
                 time = ms(`${ranMin}m`);
                 reden = args.slice(1).join(' ');
+            }
+            else {
+                reden = args.slice(2).join(' ');
             }
         }
         var duur = `**${ms(time, { long: true })}**`;
@@ -70,7 +73,12 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-        strafKanaal.send(muteEmbed);
+
+        strafKanaal.send(muteEmbed)
+            .then(msg => {
+                msg.delete({timeout: time})
+            })
+            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
         message.react('👌');
 
         // Als er een tijd is, wordt deze vanaf hier beheerd

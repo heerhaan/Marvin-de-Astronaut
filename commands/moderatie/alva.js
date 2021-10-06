@@ -38,10 +38,13 @@ module.exports = {
             if (time > 1209600000) { // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
-            else {
+            else if (!time) {
                 var ranMin = Math.floor(Math.random() * 30);
                 time = ms(`${ranMin}m`);
                 reden = args.slice(1).join(' ');
+            }
+            else {
+                reden = args.slice(2).join(' ');
             }
         }
         var duur = `**${ms(time, { long: true })}**`;
@@ -62,7 +65,7 @@ module.exports = {
             member.roles.remove(gebruikerRol);
         }
         catch (err) {
-            logKanaal.send(err);
+            console.log(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
         const muteEmbed = new Discord.MessageEmbed()
@@ -71,7 +74,12 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-        strafKanaal.send(muteEmbed);
+            
+        strafKanaal.send(muteEmbed)
+            .then(msg => {
+                msg.delete({timeout: time})
+            })
+            .catch(console.log("Strafembed kon niet verwijderd worden"));
         message.react('👌');
 
         member.timeout = message.client.setTimeout(() => {
@@ -79,7 +87,7 @@ module.exports = {
             member.roles.add(gebruikerRol);
             member.roles.remove(alvaRol);
         } catch (err) {
-            logKanaal.send(err);
+            console.log(err);
             return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
         }
         }, time);
