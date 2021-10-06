@@ -38,11 +38,10 @@ module.exports = {
             if (time > 1209600000) { // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
-            else if (!time) {
-                return message.channel.send("Op de een of andere manier heb ik geen idee wat voor tijd je invoerde, gek he! Format is [getal][s/m/u/d]")
-            }
             else {
-                reden = args.slice(2).join(' ');
+                var ranMin = Math.floor(Math.random() * 30);
+                time = ms(`${ranMin}m`);
+                reden = args.slice(1).join(' ');
             }
         }
         var duur = `**${ms(time, { long: true })}**`;

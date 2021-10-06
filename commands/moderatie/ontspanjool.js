@@ -8,27 +8,27 @@ module.exports = {
         const spanjoolRol = message.guild.roles.cache.get(spanjoolID);
 
         function removeRoleForMember(member) {
-            let gebruikerRol;
             if (!member) {
                 logKanaal.send(`Kon lid ${member} niet vinden, oei!`);
-                console.log(`Commando [os] faalde, reden: ${member} niet gevonden`);
             }
             else {
+                var gebruikerRol;
+                
                 if (member.roles.cache.has(adminID)) { gebruikerRol = message.guild.roles.cache.get(stadthouderID); }
                 else { gebruikerRol = message.guild.roles.cache.get(burgerijID); }
 
-                try {
-                    member.roles.add(gebruikerRol);
-                    member.roles.remove(spanjoolRol);
-                }
-                catch (err) {
-                    logKanaal.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
-                }
+                member.roles.add(gebruikerRol);
+                member.roles.remove(spanjoolRol);
             }
         }
 
-        const members = message.mentions.members;
-        members.each(removeRoleForMember);
-        message.react('👌');
+        try {
+            const members = message.mentions.members;
+            members.each(removeRoleForMember);
+            message.react('👌');
+        }
+        catch (err) {
+            logKanaal.send('Oei, het toevoegen van de rol(len) ging mis. Kan ik dat wel? ', err.message);
+        }
 	},
 };

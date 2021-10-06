@@ -1,5 +1,6 @@
 module.exports = {
 	name: 'kattijd',
+    description: 'Als er een hoop katten gepaald moeten worden',
     admin: true,
 	execute(message) {
         function randomIntFromInterval(min, max) { // min and max included 
