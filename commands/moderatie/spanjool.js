@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID } = require('../../config.json');
+const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('../../config.json');
+const kopdicht = require('./kopdicht');
 
 module.exports = {
     name: "s",
@@ -11,7 +12,7 @@ module.exports = {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
         const spanjoolRol = message.guild.roles.cache.get(spanjoolID);
-        var gebruikerRol;
+        let gebruikerRol;
 
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
         if (!member) {
@@ -27,10 +28,10 @@ module.exports = {
             gebruikerRol = message.guild.roles.cache.get(burgerijID);
         }
 
-        var time;
-        var reden;
+        let time;
+        let reden;
         if (!args[1]) {
-            var ranMin = Math.floor(Math.random() * 30);
+            let ranMin = Math.floor(Math.random() * 30);
             time = ms(`${ranMin}m`);
         }
         else {
@@ -39,7 +40,7 @@ module.exports = {
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
             else if (!time) {
-                var ranMin = Math.floor(Math.random() * 30);
+                let ranMin = Math.floor(Math.random() * 30);
                 time = ms(`${ranMin}m`);
                 reden = args.slice(1).join(' ');
             }
@@ -47,7 +48,7 @@ module.exports = {
                 reden = args.slice(2).join(' ');
             }
         }
-        var duur = `**${ms(time, { long: true })}**`;
+        let duur = `**${ms(time, { long: true })}**`;
 
         if (!reden) {
             reden = 'Geen reden gegeven';
@@ -56,9 +57,23 @@ module.exports = {
             reden = reden.slice(0, 1021) + '...';
         }
 
+        const otherPunishmentRoles = [alvaID, kopdichtID, ridderID];
+
+        otherPunishmentRoles.forEach((roleID) => {
+            if (member.roles.cache.has(roleID)) {
+                let role = message.guild.roles.cache.get(roleID);
+                try {
+                    member.roles.remove(role);
+                } catch (e) {
+                    console.log(`Kon ${role} niet verwijderen!`);
+                }
+            }
+        })
+
         if (member.roles.cache.has(spanjoolID)) {
             return message.channel.send(`Ik snap dat ${member.displayName} kut is maar het is niet alsof die nu dubbelspanjool wordt ofzo`);
         }
+
 
         try {
             member.roles.add(spanjoolRol);

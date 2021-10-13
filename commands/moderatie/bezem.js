@@ -16,10 +16,20 @@ module.exports = {
             return message.channel.send("Zou fijn zijn als je een normale hoeveelheid (niet meer dan 100) intikt.")
         }
         else {
-            message.channel.bulkDelete(amount, true).catch(err => {
-                console.error(err);
-                return message.channel.send('Nou, dat berichten verwijderen ging helemaal mis.');
-            });
+            let messageArray = [];
+            message.channel.messages.fetch(before=message.channel.lastMessageId, limit=amount).then((messages) => {
+                let limited = messages.first(amount);
+                limited.forEach((msg) => {
+                    if (!msg.pinned) {
+                        messageArray.push(msg.id);
+                    }
+                })
+                console.log(messageArray);
+                message.channel.bulkDelete(messageArray, true).catch(err => {
+                    console.error(err);
+                    return message.channel.send('Nou, dat berichten verwijderen ging helemaal mis.');
+                });
+            })     
         }
 	},
 };

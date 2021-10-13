@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, alvaID, strafkanaalID, logkanaalID } = require('../../config.json');
+const { adminID, stadthouderID, burgerijID, alvaID, strafkanaalID, logkanaalID, spanjoolID, ridderID, kopdichtID } = require('../../config.json');
 
 module.exports = {
     name: "a",
@@ -10,8 +10,8 @@ module.exports = {
     execute(message, args) {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
-        const alvaRol = message.guild.roles.cache.get(alvaID);
-        var gebruikerRol;
+        const alletol = message.guild.roles.cache.get(alvaID);
+        let gebruikerRol;
 
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(mem => mem.displayName === args[0]);
         if (!member) {
@@ -27,10 +27,10 @@ module.exports = {
             gebruikerRol = message.guild.roles.cache.get(burgerijID);
         }
 
-        var time;
-        var reden;
+        let time;
+        let reden;
         if (!args[1]) {
-            var ranMin = Math.floor(Math.random() * 30);
+            let ranMin = Math.floor(Math.random() * 30);
             time = ms(`${ranMin}m`);
         }
         else {
@@ -39,7 +39,7 @@ module.exports = {
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
             else if (!time) {
-                var ranMin = Math.floor(Math.random() * 30);
+                let ranMin = Math.floor(Math.random() * 30);
                 time = ms(`${ranMin}m`);
                 reden = args.slice(1).join(' ');
             }
@@ -47,7 +47,7 @@ module.exports = {
                 reden = args.slice(2).join(' ');
             }
         }
-        var duur = `**${ms(time, { long: true })}**`;
+        let duur = `**${ms(time, { long: true })}**`;
 
         if (!reden) {
             reden = 'Geen reden gegeven';
@@ -55,6 +55,19 @@ module.exports = {
         if (reden.length > 1024) {
             reden = reden.slice(0, 1021) + '...';
         }
+
+        const otherPunishmentRoles = [spanjoolID, kopdichtID, ridderID];
+
+        otherPunishmentRoles.forEach((roleID) => {
+            if (member.roles.cache.has(roleID)) {
+                let role = message.guild.roles.cache.get(roleID);
+                try {
+                    member.roles.remove(role);
+                } catch (e) {
+                    console.log(`Kon ${role} niet verwijderen!`);
+                }
+            }
+        })
 
         if (member.roles.cache.has(alvaID)) {
             return message.channel.send(`${member.displayName} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`);
