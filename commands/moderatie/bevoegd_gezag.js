@@ -18,7 +18,8 @@ module.exports = {
             .setTimestamp(Date.now())
             .setColor([30, 151, 39])
             .setFooter(message.guild.name, message.guild.iconURL());
-        message.delete()
+        
+        message.delete().catch(catchErr);
         return message.channel.send(bgEmbed);
     }
 }
