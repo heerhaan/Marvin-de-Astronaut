@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, alvaID, strafkanaalID, logkanaalID, spanjoolID, ridderID, kopdichtID } = require('../../config.json');
+const { adminID, stadthouderID, burgerijID, alvaID, strafkanaalID, spanjoolID, ridderID, kopdichtID } = require('../../config.json');
 
 module.exports = {
     name: "a",
@@ -8,9 +8,9 @@ module.exports = {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin: true,
     execute(message, args) {
-        const logKanaal = message.client.channels.cache.get(logkanaalID);
+        const catchErr = err => {console.log(err)}
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
-        const alletol = message.guild.roles.cache.get(alvaID);
+        const alvaRol = message.guild.roles.cache.get(alvaID);
         let gebruikerRol;
 
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(mem => mem.displayName === args[0]);
@@ -63,8 +63,8 @@ module.exports = {
                 let role = message.guild.roles.cache.get(roleID);
                 try {
                     member.roles.remove(role);
-                } catch (e) {
-                    console.log(`Kon ${role} niet verwijderen!`);
+                } catch (err) {
+                    catchErr(err);
                 }
             }
         })
@@ -78,8 +78,7 @@ module.exports = {
             member.roles.remove(gebruikerRol);
         }
         catch (err) {
-            console.log(err);
-            return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
+            catchErr(err);
         }
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member.displayName} is alvist voor ${duur}`)
@@ -88,12 +87,16 @@ module.exports = {
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
             
-        strafKanaal.send(muteEmbed)
+        try {
+            strafKanaal.send(muteEmbed)
             .then(msg => {
-                msg.delete({timeout: time})
+                msg.delete({timeout: time}).catch(catchErr)
             })
-            .catch(console.log("Strafembed kon niet verwijderd worden"));
-        message.react('👌');
+            message.react('👌');
+        } catch (err) {
+            catchErr(err);
+        }
+        
 
         member.timeout = message.client.setTimeout(() => {
         try {

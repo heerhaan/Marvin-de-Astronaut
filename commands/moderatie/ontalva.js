@@ -4,6 +4,7 @@ module.exports = {
 	name: 'oa',
 	admin : true,
 	execute(message) {
+        const catchErr = err => {console.log(err)}
 		const logKanaal = message.client.channels.cache.get(logkanaalID);
         const alvaRol = message.guild.roles.cache.get(alvaID);
 
@@ -28,7 +29,7 @@ module.exports = {
             message.react('👌');
         }
         catch (err) {
-            logKanaal.send('Oei, het bewerken van de rol(len) ging mis. Kan ik dat wel? ', err.message);
+            catchErr(err);
         }
 	},
 };

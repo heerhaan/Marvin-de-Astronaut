@@ -8,6 +8,7 @@ module.exports = {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin : true,
     execute(message, args) {
+        const catchErr = err => {console.log(err)}
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
         const ridderRol = message.guild.roles.cache.get(ridderID);
@@ -77,8 +78,7 @@ module.exports = {
             member.roles.add(ridderRol);
             member.roles.remove(gebruikerRol);
         } catch (err) {
-            logKanaal.send(err);
-            return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
+            catchErr(err);
         }
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member.displayName} is ridder voor ${duur}`)
@@ -89,9 +89,9 @@ module.exports = {
             
         strafKanaal.send(muteEmbed)
             .then(msg => {
-                msg.delete({timeout: time})
+                msg.delete({timeout: time}).catch(catchErr)
             })
-            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
+            .catch(catchErr);
         message.react('👌');
 
         if(time) {
@@ -100,8 +100,7 @@ module.exports = {
                     member.roles.add(gebruikerRol);
                     member.roles.remove(ridderRol);
                 } catch (err) {
-                    logKanaal.send(err);
-                    return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
+                    catchErr(err);
                 }
             }, time);
         }

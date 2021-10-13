@@ -3,6 +3,7 @@ module.exports = {
     description: 'Als er een hoop katten gepaald moeten worden',
     admin: true,
 	execute(message) {
+        const catchErr = err => {console.log(err)}
         function randomIntFromInterval(min, max) { // min and max included 
             return Math.floor(Math.random() * (max - min + 1) + min)
         }
@@ -60,7 +61,7 @@ module.exports = {
 
         const videoAmount = 5;
         for (let i = 0; i < videoAmount; i++) {
-            let rndInt = randomIntFromInterval(0, katalogus.length);
+            let rndInt = randomIntFromInterval(0, katalogus.length - 1);
             message.channel.send(katalogus[rndInt]);
         }
 	},

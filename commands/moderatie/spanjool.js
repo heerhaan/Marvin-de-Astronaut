@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('../../config.json');
-const kopdicht = require('./kopdicht');
 
 module.exports = {
     name: "s",
@@ -9,6 +8,7 @@ module.exports = {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin : true,
     execute(message, args) {
+        const catchErr = err => {console.log(err)}
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
         const spanjoolRol = message.guild.roles.cache.get(spanjoolID);
@@ -79,7 +79,7 @@ module.exports = {
             member.roles.add(spanjoolRol);
             member.roles.remove(gebruikerRol);
         } catch (err) {
-            logKanaal.send(err);
+            console.log(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
         const muteEmbed = new Discord.MessageEmbed()
@@ -91,7 +91,7 @@ module.exports = {
 
         strafKanaal.send(muteEmbed)
             .then(msg => {
-                msg.delete({timeout: time})
+                msg.delete({timeout: time}).catch(catchErr)
             })
             .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
         message.react('👌');
@@ -104,7 +104,7 @@ module.exports = {
                     member.roles.remove(spanjoolRol);
                 }
                 catch (err) {
-                    logKanaal.send(err);
+                    console.log(err);
                     return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
                 }
             }, time);

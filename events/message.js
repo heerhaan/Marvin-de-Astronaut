@@ -53,7 +53,7 @@ module.exports = {
             command.execute(message, args);
         }
         catch (error) {
-            console.error(error);
+            console.log(error);
             message.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
         }
 	},

@@ -6,6 +6,7 @@ module.exports = {
     usage: '[bericht]',
     admin : true,
     execute(message, args) {
+        const catchErr = err => {console.log(err)}
         if (!args[0]) {
             return message.channel.send('Voer een bericht in kut!');
         }

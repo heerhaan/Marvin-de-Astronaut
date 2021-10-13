@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, kopdichtID, strafkanaalID, logkanaalID, spanjoolID, alvaID, ri } = require('../../config.json');
+const { adminID, stadthouderID, burgerijID, kopdichtID, strafkanaalID, logkanaalID, spanjoolID, alvaID, ridderID } = require('../../config.json');
 
 module.exports = {
     name: "k",
@@ -8,6 +8,7 @@ module.exports = {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin : true,
     execute(message, args) {
+        const catchErr = err => {console.log(err)}
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
         const kopdichtRol = message.guild.roles.cache.get(kopdichtID);
@@ -63,8 +64,9 @@ module.exports = {
                 let role = message.guild.roles.cache.get(roleID);
                 try {
                     member.roles.remove(role);
-                } catch (e) {
-                    console.log(`Kon ${role} niet verwijderen!`);
+                }
+                catch (err) {
+                    catchErr(err);
                 }
             }
         })
@@ -76,9 +78,9 @@ module.exports = {
         try {
             member.roles.add(kopdichtRol);
             member.roles.remove(gebruikerRol);
-        } catch (err) {
-            logKanaal.send(err);
-            return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
+        }
+        catch (err) {
+            catchErr(err);
         }
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member.displayName} heeft Kop Dicht voor **${duur}**.`)
@@ -89,9 +91,9 @@ module.exports = {
 
         strafKanaal.send(muteEmbed)
             .then(msg => {
-                msg.delete({timeout: time})
+                msg.delete({timeout: time}).catch(catchErr)
             })
-            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
+            .catch(catchErr);
         message.react('👌');
 
         if(time) {
@@ -100,8 +102,7 @@ module.exports = {
                     member.roles.add(gebruikerRol);
                     member.roles.remove(kopdichtRol);
                 } catch (err) {
-                    logKanaal.send(err);
-                    return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
+                    catchErr(err);
                 }
             }, time);
         }
