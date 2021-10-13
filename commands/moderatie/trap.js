@@ -4,7 +4,7 @@ module.exports = {
     args: true,
     usage: '<gebruiker>',
     //permissions: 'KICK_MEMBERS',
-    //admin : true,
+    admin : true,
     execute(message, args) {
         const catchErr = err => {console.log(err)}
 
