@@ -13,12 +13,19 @@ module.exports = {
                 logKanaal.send(`Kon lid ${member} niet vinden bij or'en, oei!`);
             }
             else {
-                var gebruikerRol;
-                
-                if (member.roles.cache.has(adminID)) { gebruikerRol = message.guild.roles.cache.get(stadthouderID); }
-                else { gebruikerRol = message.guild.roles.cache.get(burgerijID); }
+                if (member.roles.cache.has(adminID)) { 
+                    if (!member.roles.cache.has(stadthouderID)) {
+                        let gebruikerRol = message.guild.roles.cache.get(stadthouderID);
+                        member.roles.add(gebruikerRol);
+                    }
+                }
+                else {
+                    if (!member.roles.cache.has(burgerijID)) {
+                        let gebruikerRol = message.guild.roles.cache.get(burgerijID);
+                        member.roles.add(gebruikerRol);
+                    }
+                }
 
-                member.roles.add(gebruikerRol);
                 member.roles.remove(ridderRol);
             }
         }

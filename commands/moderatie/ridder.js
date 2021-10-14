@@ -76,7 +76,6 @@ module.exports = {
 
         try {
             member.roles.add(ridderRol);
-            member.roles.remove(gebruikerRol);
         } catch (err) {
             catchErr(err);
         }
@@ -97,7 +96,6 @@ module.exports = {
         if(time) {
             member.timeout = message.client.setTimeout(() => {
                 try {
-                    member.roles.add(gebruikerRol);
                     member.roles.remove(ridderRol);
                 } catch (err) {
                     catchErr(err);
