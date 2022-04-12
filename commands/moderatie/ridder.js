@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, ridderID, strafkanaalID, logkanaalID, alvaID, kopdichtID, spanjoolID } = require('../../config.json');
+const { adminID, stadthouderID, burgerijID, ridderID, strafkanaalID, alvaID, kopdichtID, spanjoolID } = require('../../config.json');
 
 module.exports = {
     name: "r",
@@ -8,8 +8,7 @@ module.exports = {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin : true,
     execute(message, args) {
-        const catchErr = err => {console.log(err)}
-        const logKanaal = message.client.channels.cache.get(logkanaalID);
+        const catchErr = err => { console.log(err); }
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
         const ridderRol = message.guild.roles.cache.get(ridderID);
         let gebruikerRol;
@@ -53,7 +52,7 @@ module.exports = {
         if (!reden) {
             reden = 'Geen reden gegeven';
         }
-        if (reden.length > 1024) {
+        else if (reden.length > 1024) {
             reden = reden.slice(0, 1021) + '...';
         }
 
@@ -68,7 +67,7 @@ module.exports = {
                     console.log(`Kon ${role} niet verwijderen!`);
                 }
             }
-        })
+        });
 
         if (member.roles.cache.has(ridderID)) {
             return message.channel.send(`Leuk dat je zo hard aan het simpen bent voor ${member.displayName} maar meer ridder is onnodig.`);

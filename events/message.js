@@ -8,7 +8,11 @@ module.exports = {
         const commandName = args.shift().toLowerCase();
         var client = message.client;
 
-        // Geen prefix? Stop.
+        if (message.content.toLowerCase().includes("ruimte")) {
+            message.react('🌌');
+        }
+
+        // Stopt als het geen prefix kon vinden
         if (!message.content.startsWith(prefix)) return;
         // Rookmelding? Netjes.
         if (!isNaN(commandName) && !args.length) {
@@ -60,9 +64,9 @@ module.exports = {
 };
 
 function rookMelding(niveau, author) {
+    var random = Math.floor((Math.random()*2)+1);
     switch (niveau) {
         case "0":
-        random = Math.floor((Math.random()*2)+1);
         if (random === 1){
             return `${author} is nog op planneet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
         }
@@ -70,7 +74,7 @@ function rookMelding(niveau, author) {
             return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`)
         }
         case "1":
-            return 'lol heeft haan nou 1 verwijderd, sukkel.';
+            return `Nou, ${author} is van de grond gekomen maar de ruimte lijkt nog erg ver te zijn!`;
         case "2":
             return (`${author} is net uit de atmosfeer betreed nu het heelal, de reis gaat van start maar we zijn er nog lang niet!`);
         case "3":

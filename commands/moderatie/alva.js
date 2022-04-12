@@ -20,37 +20,36 @@ module.exports = {
         if (member === message.guild.me) {
             return message.channel.send('Als er iets niet lukt door je eigen incompetentie dan moet je het probleem bij jezelf zoeken, niet bij mij.');
         }
-        if (member.roles.cache.has(adminID)) {
+        if (userHasRole(member, alvaID)) {
+            return message.channel.send(`${member.displayName} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`);
+        }
+
+        if (userHasRole(member, adminID)) {
             gebruikerRol = message.guild.roles.cache.get(stadthouderID);
         }
-        else {
-            gebruikerRol = message.guild.roles.cache.get(burgerijID);
-        }
+        else { gebruikerRol = message.guild.roles.cache.get(burgerijID); }
 
         let time;
         let reden;
         if (!args[1]) {
-            let ranMin = Math.floor(Math.random() * 30);
-            time = ms(`${ranMin}m`);
+            time = getRandomPunishment();
         }
         else {
             time = ms(args[1]);
-            if (time > 1209600000) { // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
+            // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
+            if (time > 1209600000) {
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
             else if (!time) {
-                let ranMin = Math.floor(Math.random() * 30);
-                time = ms(`${ranMin}m`);
+                time = getRandomPunishment();
                 reden = args.slice(1).join(' ');
             }
-            else {
-                reden = args.slice(2).join(' ');
-            }
+            else { reden = args.slice(2).join(' '); }
         }
         let duur = `**${ms(time, { long: true })}**`;
 
         if (!reden) {
-            reden = 'Geen reden gegeven';
+            reden = 'waarom weet ik niet maar waarschijnlijk terminaal autistisch gedrag.';
         }
         if (reden.length > 1024) {
             reden = reden.slice(0, 1021) + '...';
@@ -59,7 +58,7 @@ module.exports = {
         const otherPunishmentRoles = [spanjoolID, kopdichtID, ridderID];
 
         otherPunishmentRoles.forEach((roleID) => {
-            if (member.roles.cache.has(roleID)) {
+            if (userHasRole(member, roleID)) {
                 let role = message.guild.roles.cache.get(roleID);
                 try {
                     member.roles.remove(role);
@@ -67,11 +66,7 @@ module.exports = {
                     catchErr(err);
                 }
             }
-        })
-
-        if (member.roles.cache.has(alvaID)) {
-            return message.channel.send(`${member.displayName} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`);
-        }
+        });
 
         try {
             member.roles.add(alvaRol);
@@ -108,4 +103,13 @@ module.exports = {
         }
         }, time);
     }
+}
+
+function userHasRole(member, roleId) {
+    return member.roles.cache.has(roleId);
+}
+
+function getRandomPunishment() {
+    let ranMin = Math.floor(Math.random() * 60);
+    return ms(`${ranMin}m`);
 }

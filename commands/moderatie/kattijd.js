@@ -1,11 +1,11 @@
 module.exports = {
 	name: 'kattijd',
-    description: 'Als er een hoop katten gepaald moeten worden',
+    description: 'Als er een hoop katten (figuurlijk) gepaald moeten worden',
     admin: true,
 	execute(message) {
-        const catchErr = err => {console.log(err)}
-        function randomIntFromInterval(min, max) { // min and max included 
-            return Math.floor(Math.random() * (max - min + 1) + min)
+        const catchErr = err => { console.log(err); }
+        function randomIntFromInterval(min, max) { // min and max inclusive 
+            return Math.floor(Math.random() * (max - min + 1) + min);
         }
         const katalogus = [
             "https://cdn.discordapp.com/attachments/498824337755996170/894640896161763399/breinvries.mp4",
@@ -59,7 +59,7 @@ module.exports = {
             "https://cdn.discordapp.com/attachments/498824337755996170/894640531001462814/DierenKruispunt.mp4",
         ];
 
-        const videoAmount = 5;
+        const videoAmount = 4;
         for (let i = 0; i < videoAmount; i++) {
             let rndInt = randomIntFromInterval(0, katalogus.length - 1);
             message.channel.send(katalogus[rndInt]);

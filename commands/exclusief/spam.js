@@ -9,17 +9,17 @@ module.exports = {
             message.delete();
         }
         catch {
-            console.log("Kon bericht niet verwijderen, wellicht mist Marvin permissies");
+            console.log("Oei verrek, ik kon het bericht niet verwijderen. Mag ik dat wel?");
         }
 
         var spammedMsg = args[0];
         if (!args[1]) {
-            message.channel.send("Je moet wel tijd meegeven, saff");
+            return message.channel.send("Je moet wel een tijd meegeven, natnek");
         }
         else {
             var time = ms(args[1]);
             if (time > 1209600000) {
-                return message.channel.send('Meer dan twee weken spammen, christus man');
+                return message.channel.send('Meer dan twee weken spammen, jezus christus man');
             }
             else if (!time) {
                 return message.channel.send("Geen idee voor hoe lang je dat wou doen, dus ik doe het niet")
