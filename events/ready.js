@@ -1,3 +1,5 @@
+const cron = require('cron');
+
 module.exports = {
 	name: 'ready',
 	once: true,

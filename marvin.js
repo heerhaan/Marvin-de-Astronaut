@@ -1,6 +1,7 @@
 // import { Sequelize } from "./db/database";
 
 const fs = require('fs');
+const cron = require('cron');
 const Discord = require("discord.js");
 const { token } = require('./config.json');
 
@@ -27,6 +28,26 @@ for (const folder of commandFolders) {
   for (const file of commandFiles) {
     const command = require(`./commands/${folder}/${file}`);
     client.commands.set(command.name, command);
+  }
+}
+
+client.once('ready', () => {
+  let scheduledAd = new cron.CronJob('00 30 03,09,18 * * 1-5', () => {
+    const guild = client.guilds.cache.get('241646621283057665');
+    const channel = guild.channels.cache.get('241646621283057665');
+    channel.send(advertentie());
+  });
+
+  scheduledAd.start();
+});
+
+function advertentie() {
+  var random = Math.floor((Math.random()*2)+1);
+  switch (random) {
+      case 1:
+          return "DRINK VERFRISSENDE KOEKA COLA";
+      case 2:
+          return "DEZE OBER WORDT GESPONSORD DOOR REET SCHADUW LEGENDEN, DE GROOTSTE ROLLENSPEL OVER RETEN, SCHADUWEN EN LEGENDES!";
   }
 }
 
