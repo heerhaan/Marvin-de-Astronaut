@@ -2,10 +2,15 @@
 
 const fs = require('fs');
 const cron = require('cron');
-const Discord = require("discord.js");
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
-const client = new Discord.Client({autoReconnect:true});
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages
+  ]
+});
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
@@ -19,7 +24,7 @@ for (const file of eventFiles) {
   }
 }
 
-client.commands = new Discord.Collection();
+client.commands = new Collection();
 const commandFolders = fs.readdirSync('./commands');
 
 // Loopt door de categoriefolders heen om alle commands toe te voegen
