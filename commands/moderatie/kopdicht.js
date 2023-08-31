@@ -31,8 +31,7 @@ module.exports = {
         let time;
         let reden;
         if (!args[1]) {
-            let ranMin = Math.floor(Math.random() * 30);
-            time = ms(`${ranMin}m`);
+            time = getRandomPunishment();
         }
         else {
             time = ms(args[1]);
@@ -40,8 +39,7 @@ module.exports = {
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             }
             else if (!time) {
-                let ranMin = Math.floor(Math.random() * 30);
-                time = ms(`${ranMin}m`);
+                time = getRandomPunishment();
                 reden = args.slice(1).join(' ');
             }
             else {
@@ -107,4 +105,9 @@ module.exports = {
             }, time);
         }
     }
+}
+
+function getRandomPunishment() {
+    let ranMin = Math.random() * (210 - 30) + 30;
+    return ms(`${ranMin}m`);
 }

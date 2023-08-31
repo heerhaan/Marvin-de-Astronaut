@@ -110,6 +110,6 @@ function userHasRole(member, roleId) {
 }
 
 function getRandomPunishment() {
-    let ranMin = Math.floor(Math.random() * 60);
+    let ranMin = Math.random() * (210 - 30) + 30;
     return ms(`${ranMin}m`);
 }
