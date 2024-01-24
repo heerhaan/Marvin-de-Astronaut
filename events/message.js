@@ -1,7 +1,7 @@
 const { prefix, ownerID, adminID } = require("../config.json");
 
 module.exports = {
-	name: 'message',
+	name: 'messageCreate',
 	execute(message) {
 		if (message.author.bot) return;
         const args = message.content.slice(prefix.length).trim().split(/ +/g);

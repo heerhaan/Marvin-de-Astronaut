@@ -15,12 +15,15 @@ module.exports = {
         let gebruikerRol;
 
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
+        
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
         }
+
         if (member === message.guild.me) {
             return message.channel.send('Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.');
         }
+        
         if (member.roles.cache.has(adminID)) {
             gebruikerRol = message.guild.roles.cache.get(stadthouderID);
         }
@@ -86,11 +89,13 @@ module.exports = {
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
 
-        strafKanaal.send(muteEmbed)
+        strafKanaal
+            .send({ embeds: [muteEmbed] })
             .then(msg => {
                 msg.delete({timeout: time}).catch(catchErr)
             })
             .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
+
         message.react('👌');
 
         // Als er een tijd is, wordt deze vanaf hier beheerd

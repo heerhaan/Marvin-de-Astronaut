@@ -2,14 +2,15 @@
 
 const fs = require('fs');
 //const cron = require('cron');
-const Discord = require("discord.js");
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages
-  ]
+  ],
+  partials: [Partials.Channel]
 });
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -51,9 +52,9 @@ function advertentie() {
   switch (random) {
       case 1: return "DRINK VERFRISSENDE KOEKA COLA ANDERS DRINKT HET JOU";
       case 2: return "IS UW LEVEN COMPLEET ZONDER WENSEN, DAN IS SPECIAAL VOOR U 'SOJA VOOR WITTE MENSEN'!";
-      case 3: return "WEER EEN FAMILIETRAGEDIE? KOOP DAN NU RIJPE BRIE";
+      case 3: return "KOOP NU TWEE PAKKEN BRIE VOOR DE PRIJS VAN π PAKKEN. WEES ER SNEL BIJ WANT CIRKEL = TREK.";
       case 4: return "ALARM, ALARM! ER ZIJN 31 HETE, ALLEENSTAANDE MDIWN'S GEVONDEN 13KM IN DE BUURT VAN {woonplaats}. BEL SNEL NAAR 0900-MDIWN!";
-      case 5: return "DOET UW JONGEHEER HET NIET MEER? DONEER HEM DAN HET GROTE TRANS(PORT)FONDS, ZIJ VERVOEREN UW LUL NAAR EEN VOORMALIGE KNUL.";
+      case 5: return "DOET UW JONGEHEER HET NIET MEER? DONEER HEM DAN HET GROTE TRANS(PORT)FONDS, ZIJ VERVOEREN UW LUL NAAR EEN TOEKOMSTIGE KNUL.";
   }
 }
 
