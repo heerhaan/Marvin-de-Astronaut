@@ -58,7 +58,7 @@ module.exports = {
 
         // Eindelijk voeren we de content van de command uit
         try {
-            command.execute(message, args);
+            command.execute(interaction, args);
         }
         catch (error) {
             console.log(error);
