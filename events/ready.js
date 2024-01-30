@@ -1,9 +1,10 @@
-const cron = require('cron');
+const { Events } = require('discord.js');
+//const cron = require('cron');
 
 module.exports = {
-	name: 'ready',
+	name: Events.ClientReady,
 	once: true,
-	execute() {
-        console.log(`Marvin de Astronaut gaat er weer voor!`);
+	execute(client) {
+        console.log(`${client.user.tag} gaat er weer voor!`);
 	},
 };

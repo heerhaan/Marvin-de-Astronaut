@@ -1,24 +1,53 @@
-const { prefix, ownerID, adminID } = require("../config.json");
+const { Events } = require('discord.js');
+const { prefix, ownerId, adminId } = require("../config.json");
 
 module.exports = {
-	name: 'messageCreate',
-	execute(message) {
-		if (message.author.bot) return;
-        const args = message.content.slice(prefix.length).trim().split(/ +/g);
-        const commandName = args.shift().toLowerCase();
-        var client = message.client;
+	name: Events.InteractionCreate,
+	async execute(interaction) {
+		// Underneath prevents execution for any non-slash command thing
+        //if (!interaction.isChatInputCommand()) return;
 
-        if (message.content.toLowerCase().includes("ruimte")) {
-            message.react('🌌');
+        const slashCommand = interaction.client.commands.get(interaction.commandName);
+
+        if (slashCommand) {
+            try {
+                await slashCommand.execute(interaction);
+            }
+            catch (error) {
+                console.error(error);
+    
+                if (interaction.replied || interaction.deferred) {
+                    await interaction.followUp({ content: 'Oef auwie uitvoering mislukt', ephemeral: true });
+                }
+                else {
+                    await interaction.reply({ content: 'Oef auwie uitvoering mislukt', ephemeral: true });
+                }
+            }
+        }
+        else {
+            //console.error(`No matching command for ${interaction.commandName}`);
+            //return;
+        }
+
+        // underneath is older
+        
+        const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
+        const commandName = args.shift().toLowerCase();
+        const client = interaction.client;
+
+        if (interaction.content.toLowerCase().includes("ruimte")) {
+            interaction.react('🌌');
         }
 
         // Stopt als het geen prefix kon vinden
-        if (!message.content.startsWith(prefix)) return;
+        if (!interaction.content.startsWith(prefix)) return;
+
         // Rookmelding? Netjes.
         if (!isNaN(commandName) && !args.length) {
-            var rookBericht = rookMelding(commandName, message.author);
-            return message.channel.send(rookBericht);
+            var rookBericht = rookMelding(commandName, interaction.author);
+            return interaction.channel.send(rookBericht);
         }
+
         // Command niet aanwezig na de prefix? Stop.
         if (!client.commands.has(commandName)) return;
 
@@ -33,13 +62,13 @@ module.exports = {
         }*/
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !message.member.roles.cache.has(adminID)) {
-            return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
+        if (command.admin && !interaction.member.roles.cache.has(adminId)) {
+            return interaction.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
         // Commando's exclusief voor Haan (lol haha)
-        if (command.exclusive && message.author.id !== ownerID) {
-            return message.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
+        if (command.exclusive && interaction.author.id !== ownerId) {
+            return interaction.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
         }
 
         // Controleert of parameters gegeven moeten worden, indien van wel en ze zijn er niet dan geeft Marvin een melding
@@ -49,7 +78,7 @@ module.exports = {
             if (command.usage) {
                 reply += `\nZo moet je de commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
             }
-            return message.channel.send(reply);
+            return interaction.channel.send(reply);
         }
 
         // Eindelijk voeren we de content van de command uit
@@ -58,7 +87,7 @@ module.exports = {
         }
         catch (error) {
             console.log(error);
-            message.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
+            interaction.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
         }
 	},
 };
@@ -67,7 +96,7 @@ function rookMelding(niveau, author) {
     var random = Math.floor((Math.random()*2)+1);
     switch (niveau) {
         case "0":
-        if (random === 1){
+        if (random === 1) {
             return `${author} is nog op planneet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
         }
         else {

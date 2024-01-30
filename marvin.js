@@ -1,8 +1,9 @@
 // import { Sequelize } from "./db/database";
 
-const fs = require('fs');
+const fs = require('node:fs');
+const path = require('node:path');
 //const cron = require('cron');
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({
@@ -13,6 +14,19 @@ const client = new Client({
   partials: [Partials.Channel]
 });
 
+client.commands = new Collection();
+
+const commandFolders = fs.readdirSync('./commands');
+
+// Loopt door de categoriefolders heen om alle commands toe te voegen
+for (const folder of commandFolders) {
+  const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+  for (const file of commandFiles) {
+    const command = require(`./commands/${folder}/${file}`);
+    client.commands.set(command.name, command);
+  }
+}
+
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -22,18 +36,6 @@ for (const file of eventFiles) {
   }
   else {
     client.on(event.name, (...args) => event.execute(...args));
-  }
-}
-
-client.commands = new Collection();
-const commandFolders = fs.readdirSync('./commands');
-
-// Loopt door de categoriefolders heen om alle commands toe te voegen
-for (const folder of commandFolders) {
-  const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
-  for (const file of commandFiles) {
-    const command = require(`./commands/${folder}/${file}`);
-    client.commands.set(command.name, command);
   }
 }
 
