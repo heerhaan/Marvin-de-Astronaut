@@ -1,26 +1,30 @@
 const { prefix, ownerID, adminID } = require("../config.json");
 
 module.exports = {
-	name: 'message',
-	execute(message) {
-		if (message.author.bot) return;
-        const args = message.content.slice(prefix.length).trim().split(/ +/g);
+	name: 'messageCreate',
+	async execute(interaction) {
+        const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
-        var client = message.client;
+        const client = interaction.client;
 
-        if (message.content.toLowerCase().includes("ruimte")) {
-            message.react('🌌');
+        if (interaction.content.toLowerCase().includes("ruimte")) {
+            interaction.react('🌌');
         }
 
         // Stopt als het geen prefix kon vinden
-        if (!message.content.startsWith(prefix)) return;
+        if (!interaction.content.startsWith(prefix)) return;
+
         // Rookmelding? Netjes.
         if (!isNaN(commandName) && !args.length) {
-            var rookBericht = rookMelding(commandName, message.author);
-            return message.channel.send(rookBericht);
+            var rookBericht = rookMelding(commandName, interaction.author);
+            return interaction.channel.send(rookBericht);
         }
+
         // Command niet aanwezig na de prefix? Stop.
-        if (!client.commands.has(commandName)) return;
+        if (!client.commands.has(commandName)) {
+            console.log(`welke commando dan???!!!`);
+            return;
+        }
 
         // Haalt de command en duwt hem in een variabel
         const command = client.commands.get(commandName);
@@ -33,13 +37,13 @@ module.exports = {
         }*/
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !message.member.roles.cache.has(adminID)) {
-            return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
+        if (command.admin && !interaction.member.roles.cache.has(adminID)) {
+            return interaction.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
         // Commando's exclusief voor Haan (lol haha)
-        if (command.exclusive && message.author.id !== ownerID) {
-            return message.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
+        if (command.exclusive && interaction.author.id !== ownerID) {
+            return interaction.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
         }
 
         // Controleert of parameters gegeven moeten worden, indien van wel en ze zijn er niet dan geeft Marvin een melding
@@ -49,16 +53,16 @@ module.exports = {
             if (command.usage) {
                 reply += `\nZo moet je de commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
             }
-            return message.channel.send(reply);
+            return interaction.channel.send(reply);
         }
 
         // Eindelijk voeren we de content van de command uit
         try {
-            command.execute(message, args);
+            command.execute(interaction, args);
         }
         catch (error) {
             console.log(error);
-            message.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
+            interaction.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
         }
 	},
 };
@@ -67,7 +71,7 @@ function rookMelding(niveau, author) {
     var random = Math.floor((Math.random()*2)+1);
     switch (niveau) {
         case "0":
-        if (random === 1){
+        if (random === 1) {
             return `${author} is nog op planneet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
         }
         else {

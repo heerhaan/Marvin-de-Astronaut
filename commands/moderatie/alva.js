@@ -81,17 +81,17 @@ module.exports = {
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor);
-            
-        try {
-            strafKanaal.send(muteEmbed)
+
+        strafKanaal
+            .send({ embeds: [muteEmbed] })
             .then(msg => {
                 msg.delete({timeout: time}).catch(catchErr)
             })
-            message.react('👌');
-        } catch (err) {
-            catchErr(err);
-        }
+            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
+
+        message.react('👌');
         
+        message.channel.send(`${voorzetsel()}, ${member.displayName} heeft nu alva voor ${duur}`);
 
         member.timeout = message.client.setTimeout(() => {
         try {
