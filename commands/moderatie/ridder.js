@@ -88,7 +88,10 @@ module.exports = {
                 msg.delete({timeout: time}).catch(catchErr)
             })
             .catch(catchErr);
+
         message.react('👌');
+
+        message.channel.send(`${voorzetsel()}, ${member.displayName} heeft nu ridder voor ${duur}`);
 
         if(time) {
             member.timeout = message.client.setTimeout(() => {

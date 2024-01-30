@@ -82,6 +82,7 @@ module.exports = {
             console.log(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
+
         const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member.displayName} is spanjool voor ${duur}`)
             .addField('Reden', reden)
@@ -98,8 +99,10 @@ module.exports = {
 
         message.react('👌');
 
+        message.channel.send(`${voorzetsel()}, ${member.displayName} heeft nu spanjool voor ${duur}`);
+
         // Als er een tijd is, wordt deze vanaf hier beheerd
-        if(time) {
+        if (time) {
             member.timeout = message.client.setTimeout(() => {
                 try {
                     member.roles.add(gebruikerRol);
@@ -118,3 +121,20 @@ function getRandomPunishment() {
     let ranMin = Math.random() * (210 - 30) + 30;
     return ms(`${ranMin}m`);
 }
+
+function voorzetsel() {
+    var random = Math.floor((Math.random() * 11) + 1);
+    switch (random) {
+        case 1: return "Hatseflats";
+        case 2: return "Hoppakee";
+        case 3: return "Huts";
+        case 4: return "Ayooo";
+        case 5: return "Wajo";
+        case 6: return "Wejo";
+        case 7: return "Bam";
+        case 8: return "Hoppa";
+        case 9: return "Yoooo";
+        case 10: return "Mwoah";
+        case 11: return "Bwoah";
+    }
+  }

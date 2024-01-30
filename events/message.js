@@ -1,36 +1,8 @@
-const { Events } = require('discord.js');
-const { prefix, ownerId, adminId } = require("../config.json");
+const { prefix, ownerID, adminID } = require("../config.json");
 
 module.exports = {
-	name: Events.InteractionCreate,
+	name: 'messageCreate',
 	async execute(interaction) {
-		// Underneath prevents execution for any non-slash command thing
-        //if (!interaction.isChatInputCommand()) return;
-
-        const slashCommand = interaction.client.commands.get(interaction.commandName);
-
-        if (slashCommand) {
-            try {
-                await slashCommand.execute(interaction);
-            }
-            catch (error) {
-                console.error(error);
-    
-                if (interaction.replied || interaction.deferred) {
-                    await interaction.followUp({ content: 'Oef auwie uitvoering mislukt', ephemeral: true });
-                }
-                else {
-                    await interaction.reply({ content: 'Oef auwie uitvoering mislukt', ephemeral: true });
-                }
-            }
-        }
-        else {
-            //console.error(`No matching command for ${interaction.commandName}`);
-            //return;
-        }
-
-        // underneath is older
-        
         const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
         const client = interaction.client;
@@ -49,7 +21,10 @@ module.exports = {
         }
 
         // Command niet aanwezig na de prefix? Stop.
-        if (!client.commands.has(commandName)) return;
+        if (!client.commands.has(commandName)) {
+            console.log(`welke commando dan???!!!`);
+            return;
+        }
 
         // Haalt de command en duwt hem in een variabel
         const command = client.commands.get(commandName);
@@ -62,12 +37,12 @@ module.exports = {
         }*/
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !interaction.member.roles.cache.has(adminId)) {
+        if (command.admin && !interaction.member.roles.cache.has(adminID)) {
             return interaction.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
         // Commando's exclusief voor Haan (lol haha)
-        if (command.exclusive && interaction.author.id !== ownerId) {
+        if (command.exclusive && interaction.author.id !== ownerID) {
             return interaction.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
         }
 

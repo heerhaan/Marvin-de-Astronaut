@@ -2,14 +2,7 @@ const { prefix } = require('../../config.json');
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('')
-		.setDescription(''),
-	async execute(interaction) {
-		
-	},
-    
-    name: 'zeg',
+	name: 'zeg',
     args: true,
     exclusive: true,
 	execute(message, args) {
