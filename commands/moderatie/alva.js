@@ -75,7 +75,8 @@ module.exports = {
         catch (err) {
             catchErr(err);
         }
-        const muteEmbed = new Discord.MessageEmbed()
+        
+        /*const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member.displayName} is alvist voor ${duur}`)
             .addField('Reden', reden)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
@@ -87,20 +88,15 @@ module.exports = {
             .then(msg => {
                 msg.delete({timeout: time}).catch(catchErr)
             })
-            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
+            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));*/
 
         message.react('👌');
         
         message.channel.send(`${voorzetsel()}, ${member.displayName} heeft nu alva voor ${duur}`);
 
-        member.timeout = message.client.setTimeout(() => {
-        try {
+        setTimeout(() => {
             member.roles.add(gebruikerRol);
             member.roles.remove(alvaRol);
-        } catch (err) {
-            console.log(err);
-            return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
-        }
         }, time);
     }
 }
@@ -112,4 +108,21 @@ function userHasRole(member, roleId) {
 function getRandomPunishment() {
     let ranMin = Math.random() * (210 - 30) + 30;
     return ms(`${ranMin}m`);
+}
+
+function voorzetsel() {
+    var random = Math.floor((Math.random() * 11) + 1);
+    switch (random) {
+        case 1: return "Hatseflats";
+        case 2: return "Hoppakee";
+        case 3: return "Huts";
+        case 4: return "Ayooo";
+        case 5: return "Wajo";
+        case 6: return "Wejo";
+        case 7: return "Bam";
+        case 8: return "Hoppa";
+        case 9: return "Yoooo";
+        case 10: return "Mwoah";
+        case 11: return "Bwoah";
+    }
 }

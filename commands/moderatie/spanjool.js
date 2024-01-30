@@ -83,7 +83,7 @@ module.exports = {
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
 
-        const muteEmbed = new Discord.MessageEmbed()
+        /*const muteEmbed = new Discord.MessageEmbed()
             .setTitle(`${member.displayName} is spanjool voor ${duur}`)
             .addField('Reden', reden)
             .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
@@ -96,24 +96,18 @@ module.exports = {
                 msg.delete({timeout: time}).catch(catchErr)
             })
             .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
+        */
 
         message.react('👌');
 
-        message.channel.send(`${voorzetsel()}, ${member.displayName} heeft nu spanjool voor ${duur}`);
+        var meldingTekst = `${voorzetsel()}, ${member.displayName} heeft nu spanjool voor ${duur}`;
 
-        // Als er een tijd is, wordt deze vanaf hier beheerd
-        if (time) {
-            member.timeout = message.client.setTimeout(() => {
-                try {
-                    member.roles.add(gebruikerRol);
-                    member.roles.remove(spanjoolRol);
-                }
-                catch (err) {
-                    console.log(err);
-                    return message.channel.send('Oei, het verwijderen van de rol ging mis. Kan ik dat wel?', err.message);
-                }
-            }, time);
-        }
+        message.channel.send(meldingTekst);
+
+        setTimeout(() => {
+            member.roles.add(gebruikerRol);
+            member.roles.remove(spanjoolRol);
+        }, time);
     }
 }
 

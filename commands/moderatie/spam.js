@@ -3,7 +3,7 @@ const ms = require('ms');
 module.exports = {
 	name: 'spam',
     args: true,
-    exclusive: true,
+    admin: true,
 	execute(message, args) {
 		try {
             message.delete();

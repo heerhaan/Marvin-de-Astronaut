@@ -6,6 +6,8 @@ module.exports = {
     usage: '[bericht]',
     admin : true,
     execute(message, args) {
+        return message.channel.send('Grr, goed luisteren naar meneer de admin hoor!!');
+        
         const catchErr = err => { console.log(err) }
 
         if (!args[0]) {
