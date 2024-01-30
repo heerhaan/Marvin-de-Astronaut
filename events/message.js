@@ -37,7 +37,7 @@ module.exports = {
         }*/
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !interaction.member.roles.cache.has(adminID)) {
+        if (command.admin && !interaction.member.roles.cache.has(adminID) && interaction.member.id != ownerID) {
             return interaction.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
