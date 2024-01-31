@@ -26,15 +26,7 @@ function geefVoorzetsel() {
     return voorzetsels[ranNum];
 }
 
-function examplePlaceholderRoleChar(roleChar) {
-    //var random = Math.floor(Math.random() * 2);
-    switch (roleChar) {
-        case "s": return "";
-        case "a": return "";
-        case "k": return "";
-        case "r": return "";
-    }
-}
+//let randomNumber = Math.floor(Math.random() * 2);
 
 function getTimedRoleId(roleChar) {
     switch (roleChar) {

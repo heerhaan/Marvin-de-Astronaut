@@ -98,6 +98,8 @@ function rookMelding(niveau, author) {
             return (`Tering. Op dit punt reist ${author} niet meer door het universum maar is ${author} nu het universum. Alles ligt nu binnen handbereik, alles is mogelijk. We komen nu tot de diepste hoeken, de verste planeten en mooiste nebula's. Dit is een met het universum zijn op zijn piek, lekker!`);
         case "11":
             return (`Oef. ${author} ging zo hard dat deze recht in een zwart gat gevlogen is. Het was leuk je gekend te hebben.`);
+        case "42":
+            return ('Dit is het ultieme antwoord maar joost mag weten wat de exacte vraag zou zijn.');
         case "69":
             return ('haha, 69 is het seksgetal, ik snap hem. Heel grappig, hoor.');
         case "420":

@@ -1,5 +1,4 @@
 const { prefix } = require('../../config.json');
-const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'zeg',

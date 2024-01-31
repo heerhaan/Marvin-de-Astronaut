@@ -6,7 +6,6 @@ module.exports = {
     permissions: 'MANAGE_MESSAGES',
     admin: true,
 	execute(message, args) {
-        const catchErr = err => {console.log(err)}
         // onderstaande waarde representeert het aantal berichten dat verwijderd moet worden
         let amount = parseInt(args[0]);
 
