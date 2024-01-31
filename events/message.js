@@ -68,13 +68,12 @@ module.exports = {
 };
 
 function rookMelding(niveau, author) {
-    var random = Math.floor((Math.random()*2)+1);
+    var random = Math.floor((Math.random() * 2) + 1);
     switch (niveau) {
         case "0":
         if (random === 1) {
             return `${author} is nog op planneet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
-        }
-        else {
+        } else {
             return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`)
         }
         case "1":
