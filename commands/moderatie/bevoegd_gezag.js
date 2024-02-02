@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "bg",
@@ -6,23 +6,21 @@ module.exports = {
     usage: '[bericht]',
     admin : true,
     execute(message, args) {
-        return message.channel.send('Grr, goed luisteren naar meneer de admin hoor!!');
-        
         const catchErr = err => { console.log(err) }
 
         if (!args[0]) {
-            return message.channel.send('Voer een bericht in kut!');
+            return message.channel.send('Gelieve een geldig bericht in te voeren voordat de situatie uit de hand loopt.');
         }
 
-        const bgEmbed = new Discord.MessageEmbed()
+        const ordahEmbed = new EmbedBuilder()
+            .setColor([30, 151, 39])
             .setTitle("Bevoegd Gezag")
             .setDescription(args.join(' ') + '\n\n**Bevoegd Gezag is een officieel en serieus Stadthouder bericht!\n' + 'Naar de opdracht in dit bericht moet worden geluisterd!**')
-            .setAuthor(message.author.username + "#" + message.author.discriminator, iconURL=message.author.avatarURL())
+            .setAuthor({ name: `${message.author.username} #${message.author.discriminator}`, iconURL: message.author.avatarURL()})
             .setTimestamp(Date.now())
-            .setColor([30, 151, 39])
-            .setFooter(message.guild.name, message.guild.iconURL());
+            .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() });
         
         message.delete().catch(catchErr);
-        return message.channel.send(bgEmbed);
+        return message.channel.send({ embeds: [ordahEmbed] });
     }
 }

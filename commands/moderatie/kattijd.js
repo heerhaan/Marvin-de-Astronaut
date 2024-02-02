@@ -4,9 +4,11 @@ module.exports = {
     admin: true,
 	execute(message) {
         const catchErr = err => { console.log(err); }
+        
         function randomIntFromInterval(min, max) { // min and max inclusive 
             return Math.floor(Math.random() * (max - min + 1) + min);
         }
+
         const katalogus = [
             "https://cdn.discordapp.com/attachments/498824337755996170/894640896161763399/breinvries.mp4",
             "https://cdn.discordapp.com/attachments/498824337755996170/894640889706729572/boulangerie.webm",

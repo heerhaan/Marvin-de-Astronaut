@@ -2,6 +2,8 @@ const ms = require('ms');
 
 module.exports = {
 	name: 'spam',
+    description: 'Voor als je zin hebt om moeilijk irritant te doen',
+    usage: '[woordje] [getal][s/m]',
     args: true,
     admin: true,
 	execute(message, args) {
@@ -18,18 +20,18 @@ module.exports = {
         }
         else {
             var time = ms(args[1]);
-            if (time > 1209600000) {
-                return message.channel.send('Meer dan twee weken spammen, jezus christus man');
+            if (time > 181) {
+                return message.channel.send('Weet je, ik ga niet meer dan 3 minuten lang hetzelfde roepen. Je kan te ver gaan, flauwerik.');
             }
             else if (!time) {
-                return message.channel.send("Geen idee voor hoe lang je dat wou doen, dus ik doe het niet")
+                return message.channel.send("Geen idee voor hoe lang je dat wou doen dus ik doe het gewoon niet")
             }
             else {
                 var interval = setInterval (function () {
                     message.channel.send(spammedMsg);
                 }, 1 * 2500);
 
-                setTimeout(() => {clearInterval(interval)}, time);
+                setTimeout(() => { clearInterval(interval) }, time);
             }
         }
 	},

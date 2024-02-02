@@ -3,12 +3,17 @@ const { prefix, ownerID, adminID } = require("../config.json");
 module.exports = {
 	name: 'messageCreate',
 	async execute(interaction) {
+        const fullContent = interaction.content.toLowerCase();
         const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
         const client = interaction.client;
 
-        if (interaction.content.toLowerCase().includes("ruimte")) {
+        if (fullContent.includes("ruimte")) {
             interaction.react('🌌');
+        }
+
+        if (fullContent === "kutmarvin") {
+            return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
         }
 
         // Stopt als het geen prefix kon vinden
@@ -22,19 +27,11 @@ module.exports = {
 
         // Command niet aanwezig na de prefix? Stop.
         if (!client.commands.has(commandName)) {
-            console.log(`welke commando dan???!!!`);
-            return;
+            return interaction.channel.send(`En wat wil je precies dat ik ga doen? Want wat je net voorstelde ben ik niet bekend mee, flapdrol.`);
         }
 
         // Haalt de command en duwt hem in een variabel
         const command = client.commands.get(commandName);
-
-        /*if (command.permissions) {
-            const authorPerms = message.channel.permissionsFor(message.author);
-            if (!authorPerms || !authorPerms.has(command.permissions)) {
-                return message.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer.');
-            }
-        }*/
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
         if (command.admin && !interaction.member.roles.cache.has(adminID) && interaction.member.id != ownerID) {
@@ -43,7 +40,7 @@ module.exports = {
 
         // Commando's exclusief voor Haan (lol haha)
         if (command.exclusive && interaction.author.id !== ownerID) {
-            return interaction.channel.send("Hoe durf je mij zo aan te spreken, alleen mijn schepper mag dat!!")
+            return interaction.channel.send("Hoe durf je mij hierop aan te spreken, alleen mijn schepper en verwekker mag dat!!")
         }
 
         // Controleert of parameters gegeven moeten worden, indien van wel en ze zijn er niet dan geeft Marvin een melding
@@ -59,9 +56,8 @@ module.exports = {
         // Eindelijk voeren we de content van de command uit
         try {
             command.execute(interaction, args);
-        }
-        catch (error) {
-            console.log(error);
+        } catch (err) {
+            console.log(err);
             interaction.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
         }
 	},
@@ -71,11 +67,11 @@ function rookMelding(niveau, author) {
     var random = Math.floor((Math.random() * 2) + 1);
     switch (niveau) {
         case "0":
-        if (random === 1) {
-            return `${author} is nog op planneet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
-        } else {
-            return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`)
-        }
+            if (random === 1) {
+                return `${author} is nog op planeet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
+            } else {
+                return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`)
+            }
         case "1":
             return `Nou, ${author} is van de grond gekomen maar de ruimte lijkt nog erg ver te zijn!`;
         case "2":

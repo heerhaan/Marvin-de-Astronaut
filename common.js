@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
 
@@ -19,6 +20,11 @@ function geefVoorzetsel() {
         "Yoooo",
         "Mwoah",
         "Bwoah",
+        "Zo",
+        "Nou dan",
+        "Sodeknetter",
+        "Potverjandriedubbeltjes",
+        "Ten eerste, hier is ",
     ];
 
     let ranNum = Math.floor(Math.random() * voorzetsels.length);
@@ -73,10 +79,19 @@ function getFullRoleName(roleChar) {
     }
 }
 
+function getRoleColour(roleChar) {
+    switch (roleChar) {
+        case "s": return "Red";
+        case "a": return "NotQuiteBlack";
+        case "k": return "DarkOrange";
+        case "r": return "Gold";
+    }
+}
+
 function translateTimeIndicator(text) {
     if (text.includes("seconds")) {
         return text.replace("seconds", "seconden");
-    } else if (text.includes("second")) {
+    } else if (text.includes("second") && !text.includes("seconde")) {
         return text.replace("second", "seconde");
     } else if (text.includes("minutes")) {
         return text.replace("minutes", "minuten");
@@ -106,8 +121,6 @@ module.exports = {
         let userRole;
 
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
-        
-        //return message.channel.send(`Zo, je probeerde dus ${member.displayName} ${getFullRoleName(roleChar)} te geven, curieus`);
 
         if (!member) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
@@ -176,32 +189,37 @@ module.exports = {
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
 
-        /*const muteEmbed = new Discord.MessageEmbed()
-            .setTitle(`${member.displayName} is spanjool voor ${duur}`)
-            .addField('Reden', reden)
-            .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+        const timedInfoEmbed = new EmbedBuilder()
+            .setColor(getRoleColour(roleChar))
+            .setTitle(`${member.displayName} is ${getFullRoleName(roleChar)} voor ${duur}`)
+            .addFields(
+                { name: 'Reden', value: reden },
+            )
             .setTimestamp()
-            .setColor(message.guild.me.displayHexColor);
-
-        strafKanaal
-            .send({ embeds: [muteEmbed] })
-            .then(msg => {
-                msg.delete({timeout: time}).catch(catchErr)
-            })
-            .catch(logKanaal.send("Strafbericht kon niet verwijderd worden"));
-        */
+            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
 
         message.react('👌');
 
-        var meldingTekst = `${geefVoorzetsel()}, ${member.displayName} heeft nu ${getFullRoleName(roleChar)} voor ${duur}`;
-
-        message.channel.send(meldingTekst);
+        message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${getFullRoleName(roleChar)} voor ${duur}`);
 
         try {
-            strafKanaal.send(meldingTekst);
-            logKanaal.send(`${member.displayName} ${getFullRoleName(roleChar)} voor ${duur}`);
+            strafKanaal
+                .send({ embeds: [timedInfoEmbed] })
+                .then(msg => {
+                    setTimeout(() => {
+                        msg.delete();
+                    }, time);
+                })
+                .catch(err => {
+                    logKanaal.send("Strafbericht kon niet verwijderd worden");
+                    console.error(err);
+                });
+
+            logKanaal.send({ embeds: [timedInfoEmbed] });
+            
         } catch (err) {
             message.channel.send("Dat je het weet, het ging niet zo lekker met meldinkje toevoegen in een logkanaal.");
+            console.error(err);
         }
 
         setTimeout(() => {
