@@ -20,6 +20,7 @@ module.exports = {
 
 		try {
 			const newCommand = require(`../${folderName}/${command.name}.js`);
+			
 			message.client.commands.set(newCommand.name, newCommand);
 			message.channel.send(`Ik verwerp mijn menselijkheid, HERLAAD DE WERELD!`);
 			

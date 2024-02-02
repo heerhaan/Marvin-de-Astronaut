@@ -98,7 +98,7 @@ function translateTimeIndicator(text) {
     } else if (text.includes("minute")) {
         return text.replace("minute", "minuut");
     } else if (text.includes("hours")) {
-        return text.replace("hours", "uren");
+        return text.replace("hours", "uur");
     } else if (text.includes("hour")) {
         return text.replace("hour", "uur");
     } else if (text.includes("days")) {
@@ -142,11 +142,17 @@ module.exports = {
 
         let time;
         let reden;
+        let givenTime = args[1];
 
-        if (!args[1]) {
+        if (!givenTime) {
             time = randomRoleTime();
         } else {
-            time = ms(args[1]);
+            // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
+            //if (givenTime.includes('u')) {
+            //    givenTime = givenTime.replace('u', 'h');
+            //}
+            
+            time = ms(givenTime);
 
             if (time > 1209600000) {
                 // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
