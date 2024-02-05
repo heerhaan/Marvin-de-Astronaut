@@ -1,8 +1,12 @@
 const { prefix, ownerID, adminID } = require("../config.json");
+var valuePairs = {};
 
 module.exports = {
 	name: 'messageCreate',
 	async execute(interaction) {
+        // Immediatly return if the message came from another bot
+        if (interaction.author.bot) return;
+        
         const fullContent = interaction.content.toLowerCase();
         const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
@@ -16,6 +20,10 @@ module.exports = {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
         }
 
+        if (valuePairs['roulette'] && fullContent.includes(valuePairs['roulette'])) {
+            interaction.channel.send(`Woa-hoah! ${interaction.member.displayName} zei het roulettewoord! Tek de stadthouders om deze persoon te geven wat die verdiend.`);
+        }
+
         // Stopt als het geen prefix kon vinden
         if (!interaction.content.startsWith(prefix)) return;
 
@@ -23,6 +31,18 @@ module.exports = {
         if (!isNaN(commandName) && !args.length) {
             var rookBericht = rookMelding(commandName, interaction.author);
             return interaction.channel.send(rookBericht);
+        }
+
+        if (commandName === 'roulette' && interaction.member.roles.cache.has(adminID)) {
+            var rouletteWord = args[0];
+
+            if (!rouletteWord) {
+                valuePairs['roulette'] = null;
+                return interaction.channel.send("Huidig roulette-woord verwijderd, geen nieuwe toegevoegd!");
+            } else {
+                valuePairs['roulette'] = rouletteWord;
+                return interaction.channel.send(`Groot succes! Huidig roulette-woord is nu ${valuePairs['roulette']}`);
+            }
         }
 
         // Command niet aanwezig na de prefix? Stop.
@@ -48,7 +68,7 @@ module.exports = {
             let reply = `Hee klaplul, je moet wel goed specificeren wat je wilt, hé?!`;
 
             if (command.usage) {
-                reply += `\nZo moet je de commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
+                reply += `\nZo hoor je het commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
             }
             return interaction.channel.send(reply);
         }

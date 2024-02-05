@@ -3,9 +3,8 @@ module.exports = {
     description: 'Als er een hoop katten (figuurlijk) gepaald moeten worden',
     admin: true,
 	execute(message) {
-        const catchErr = err => { console.log(err); }
-        
-        function randomIntFromInterval(min, max) { // min and max inclusive 
+        // min and max inclusive 
+        function randomIntFromInterval(min, max) {
             return Math.floor(Math.random() * (max - min + 1) + min);
         }
 

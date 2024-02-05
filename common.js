@@ -148,9 +148,9 @@ module.exports = {
             time = randomRoleTime();
         } else {
             // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
-            //if (givenTime.includes('u')) {
-            //    givenTime = givenTime.replace('u', 'h');
-            //}
+            if (givenTime.includes('u')) {
+                givenTime = givenTime.replace('u', 'h');
+            }
             
             time = ms(givenTime);
 
