@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
+var data = loadData();
 
 function randomRoleTime() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
@@ -110,6 +111,64 @@ function translateTimeIndicator(text) {
     return text;
 }
 
+function saveData(data)
+{
+    console.log("Opslaan...");
+    try
+    {
+        if (data != null)
+        {
+            fs.writeFile("./spanjoleringData.json", JSON.stringify(data), function (err)
+            {
+                if (err)
+                {
+                    console.log(err);
+                }
+
+                console.log("Opgeslagen.");
+            });
+        }
+		else
+		{
+			console.log("Opslaan niet gelukt: data is null");
+		}
+    }
+    catch (ex)
+    {
+        console.log("Opslaan niet gelukt door onverwachte fout!");
+        console.log(ex);
+    }
+}
+
+function loadData()
+{
+	let data = null;
+	
+	fs.readFile('./spanjoleringData.json', function read (err, data) 
+    {
+        if (err) 
+        {
+            data = "{}";
+        }
+		
+        try
+        {
+            data = JSON.parse(data);
+        }
+        catch (e)
+        {
+            if (data == null)
+            {
+                console.log("Geheugen stuk, :alleskwijt:");
+				data = {};
+            }
+        }
+	}
+	
+	return data;
+}
+
+
 module.exports = {
     timedRole: function(message, args, roleChar) {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
@@ -207,6 +266,27 @@ module.exports = {
         message.react('👌');
 
         message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${getFullRoleName(roleChar)} voor ${duur}`);
+
+		let maand = 2592000000; //30 dagen = 2592000000 ms
+		
+		spanjoleringData[member.Id] = spanjoleringData[member.Id].filter((spanjolering) =>
+			spanjolering.datum > Date.now() - maand
+		) || [];
+		
+		//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
+		//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
+		//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
+		
+		spanjoleringData[member.Id].push(
+		{
+			datum: Date.now(),
+			ontjoolDatum: Date.now() + time,
+			reden: reden,
+			gebruikerId: member.Id,
+			gebruikerNaam: member.displayName
+		});
+		
+		saveData(spanjoleringData);
 
         try {
             strafKanaal
