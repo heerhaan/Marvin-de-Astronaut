@@ -217,23 +217,54 @@ module.exports = {
                 // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             } else if (!time) {
-                time = randomRoleTime();
+                time = roleChar == 's'? -1 : randomRoleTime();
                 reden = args.slice(1).join(' ');
             } else {
                 reden = args.slice(2).join(' ');
             }
         }
-
-        let duurEnglish = `**${ms(time, { long: true })}**`;
-        let duur = translateTimeIndicator(duurEnglish);
-
-        if (!reden) {
+		
+		if (!reden) {
             reden = getNoReasonGivenPlaceholder(roleChar);
         }
 
         if (reden.length > 1024) {
             reden = reden.slice(0, 1021) + '...';
         }
+
+		if(roleChar == 's')
+		{
+			let maand = 2592000000; //30 dagen = 2592000000 ms
+			
+			spanjoleringData[member.Id] = spanjoleringData[member.Id].filter((spanjolering) =>
+				spanjolering.datum > Date.now() - maand
+			) || [];
+			
+			let aantalSpanjoleringen = spanjoleringen.length;
+			
+			if(time < 0)
+			{
+				time = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
+			}
+			
+			//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
+			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
+			//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
+			
+			spanjoleringData[member.Id].push(
+			{
+				datum: Date.now(),
+				ontjoolDatum: Date.now() + time,
+				reden: reden,
+				gebruikerId: member.Id,
+				gebruikerNaam: member.displayName
+			});
+			
+			saveData(spanjoleringData);
+		}
+
+        let duurEnglish = `**${ms(time, { long: true })}**`;
+        let duur = translateTimeIndicator(duurEnglish);
 
         timeableRoles.forEach((roleID) => {
             if (member.roles.cache.has(roleID)) {
@@ -266,27 +297,6 @@ module.exports = {
         message.react('👌');
 
         message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${getFullRoleName(roleChar)} voor ${duur}`);
-
-		let maand = 2592000000; //30 dagen = 2592000000 ms
-		
-		spanjoleringData[member.Id] = spanjoleringData[member.Id].filter((spanjolering) =>
-			spanjolering.datum > Date.now() - maand
-		) || [];
-		
-		//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
-		//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
-		//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
-		
-		spanjoleringData[member.Id].push(
-		{
-			datum: Date.now(),
-			ontjoolDatum: Date.now() + time,
-			reden: reden,
-			gebruikerId: member.Id,
-			gebruikerNaam: member.displayName
-		});
-		
-		saveData(spanjoleringData);
 
         try {
             strafKanaal
