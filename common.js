@@ -159,11 +159,11 @@ function loadData()
         {
             if (data == null)
             {
-                console.log("Geheugen stuk, :alleskwijt:");
+                console.error("Geheugen stuk, :alleskwijt:");
 				data = {};
             }
         }
-	}
+	});
 	
 	return data;
 }
@@ -232,7 +232,7 @@ module.exports = {
             reden = reden.slice(0, 1021) + '...';
         }
 
-		if(roleChar == 's')
+		if (roleChar == 's')
 		{
 			let maand = 2592000000; //30 dagen = 2592000000 ms
 			
@@ -242,7 +242,7 @@ module.exports = {
 			
 			let aantalSpanjoleringen = spanjoleringen.length;
 			
-			if(time < 0)
+			if (time < 0)
 			{
 				time = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
 			}
