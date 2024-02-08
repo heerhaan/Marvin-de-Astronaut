@@ -42,6 +42,7 @@ function geefVoorzetsel() {
         "Dubieus",
         "Frappant",
         "Vandaag is het een metaforische maandag",
+        "Ik trek het niet meer",
     ];
 
     let ranNum = Math.floor(Math.random() * voorzetsels.length);
@@ -122,6 +123,16 @@ function vertaalTijdIndicatie(text) {
         return text.replace("days", "dagen");
     } else if (text.includes("day")) {
         return text.replace("day", "dag");
+    } else if (text.includes("weeks")) {
+        return text.replace("weeks", "weken");
+    } else if (text.includes("months")) {
+        return text.replace("months", "maanden");
+    } else if (text.includes("month")) {
+        return text.replace("month", "maand");
+    } else if (text.includes("years")) {
+        return text.replace("years", "jaren");
+    } else if (text.includes("year")) {
+        return text.replace("year", "jaar");
     }
 
     return text;
@@ -229,12 +240,11 @@ module.exports = {
             
             tijd = ms(gegevenTijd);
 
-            if (tijd > 1209600000) {
-                // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
-                return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
-            } else if (!tijd) {
+            if (!tijd) {
                 tijd = roleChar == 's'? -1 : willekeurigeRolTijd();
                 reden = args.slice(1).join(' ');
+            } else if (tijd > 31557590000) {
+                return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
             } else {
                 reden = args.slice(2).join(' ');
             }
@@ -275,16 +285,21 @@ module.exports = {
 			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
 			//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
 			
-			spanjoleringData[member.id].push(
-			{
-				datum: Date.now(),
-				ontjoolDatum: Date.now() + tijd,
-				reden: reden,
-				gebruikerId: member.id,
-				gebruikerNaam: member.displayName
-			});
-			
-			slaGegevensOp(spanjoleringData);
+            try {
+                spanjoleringData[member.id].push(
+                    {
+                        datum: Date.now(),
+                        ontjoolDatum: Date.now() + tijd,
+                        reden: reden,
+                        gebruikerId: member.id,
+                        gebruikerNaam: member.displayName
+                    });
+                    
+                    slaGegevensOp(spanjoleringData);
+            } catch (err) {
+                console.error(err);
+                return message.channel.send('jezus, welke mislukte anjer heeft mij geschreven. Er ging iets mis.');
+            }
 		}
 
         let duurEnglish = `**${ms(tijd, { long: true })}**`;
@@ -322,7 +337,7 @@ module.exports = {
             .setTitle(`${member.displayName} is ${geefVolledigeRolNaam(roleChar)} voor ${duur}`)
             .addFields(
                 { name: 'Reden', value: reden },
-                { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD/MM/MM") },
+                { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD/MM/YYYY") },
                 { name: 'Vrijheidstijd', value: verlossingsMoment.format("HH:mm") }
             )
             .setTimestamp()
