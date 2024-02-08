@@ -1,7 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
+const fs = require('node:fs');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
-var data = loadData();
+var spanjoleringData = require('./spanjoleringData.json');
 
 function randomRoleTime() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
@@ -62,7 +63,7 @@ function getResponseBlokeAlreadyHasRole(roleChar, memberName) {
     }
 }
 
-function getNoReasonGivenPlaceholder(roleChar) {
+function geefGeenRedenGegevenTekst(roleChar) {
     switch (roleChar) {
         case "s": return "Geen idee waarom precies maar het zal vast terecht zijn.";
         case "a": return "Waarom weet ik niet maar allicht terminaal autistisch gedrag.";
@@ -144,7 +145,7 @@ function loadData()
 {
 	let data = null;
 	
-	fs.readFile('./spanjoleringData.json', function read (err, data) 
+	fs.readFileSync('./spanjoleringData.json', function read (err, data) 
     {
         if (err) 
         {
@@ -174,10 +175,10 @@ module.exports = {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
 
-        const timeableRoles = [spanjoolID, alvaID, kopdichtID, ridderID];
-        const timedRole = getTimedRoleId(roleChar);
+        const tijdelijkeRollen = [spanjoolID, alvaID, kopdichtID, ridderID];
+        const tijdelijkeRol = getTimedRoleId(roleChar);
 
-        let userRole;
+        let gebruikersRol;
 
         const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
 
@@ -189,35 +190,35 @@ module.exports = {
             return message.channel.send(getResponseNotMarvin(roleChar));
         }
 
-        if (member.roles.cache.has(timedRole)) {
+        if (member.roles.cache.has(tijdelijkeRol)) {
             return message.channel.send(getResponseBlokeAlreadyHasRole(roleChar, member.displayName));
         }
         
         if (member.roles.cache.has(adminID)) {
-            userRole = message.guild.roles.cache.get(stadthouderID);
+            gebruikersRol = message.guild.roles.cache.get(stadthouderID);
         } else {
-            userRole = message.guild.roles.cache.get(burgerijID);
+            gebruikersRol = message.guild.roles.cache.get(burgerijID);
         }
 
-        let time;
+        let tijd;
         let reden;
-        let givenTime = args[1];
+        let gegevenTijd = args[1];
 
-        if (!givenTime) {
-            time = randomRoleTime();
+        if (!gegevenTijd) {
+            tijd = randomRoleTime();
         } else {
             // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
-            if (givenTime.includes('u')) {
-                givenTime = givenTime.replace('u', 'h');
+            if (gegevenTijd.includes('u')) {
+                gegevenTijd = gegevenTijd.replace('u', 'h');
             }
             
-            time = ms(givenTime);
+            tijd = ms(gegevenTijd);
 
-            if (time > 1209600000) {
+            if (tijd > 1209600000) {
                 // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
-            } else if (!time) {
-                time = roleChar == 's'? -1 : randomRoleTime();
+            } else if (!tijd) {
+                tijd = roleChar == 's'? -1 : randomRoleTime();
                 reden = args.slice(1).join(' ');
             } else {
                 reden = args.slice(2).join(' ');
@@ -225,7 +226,7 @@ module.exports = {
         }
 		
 		if (!reden) {
-            reden = getNoReasonGivenPlaceholder(roleChar);
+            reden = geefGeenRedenGegevenTekst(roleChar);
         }
 
         if (reden.length > 1024) {
@@ -235,38 +236,44 @@ module.exports = {
 		if (roleChar == 's')
 		{
 			let maand = 2592000000; //30 dagen = 2592000000 ms
-			
-			spanjoleringData[member.Id] = spanjoleringData[member.Id].filter((spanjolering) =>
-				spanjolering.datum > Date.now() - maand
-			) || [];
+
+            let spanjoleringen = [];
+
+            if (spanjoleringData[member.id]) {
+                spanjoleringen = spanjoleringData[member.id].filter((spanjolering) =>
+                    spanjolering.datum > Date.now() - maand
+                ) || [];
+            } else {
+                spanjoleringData[member.id] = [];
+            }
 			
 			let aantalSpanjoleringen = spanjoleringen.length;
 			
-			if (time < 0)
+			if (tijd < 0)
 			{
-				time = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
+				tijd = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
 			}
 			
 			//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
 			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
 			//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
 			
-			spanjoleringData[member.Id].push(
+			spanjoleringData[member.id].push(
 			{
 				datum: Date.now(),
-				ontjoolDatum: Date.now() + time,
+				ontjoolDatum: Date.now() + tijd,
 				reden: reden,
-				gebruikerId: member.Id,
+				gebruikerId: member.id,
 				gebruikerNaam: member.displayName
 			});
 			
 			saveData(spanjoleringData);
 		}
 
-        let duurEnglish = `**${ms(time, { long: true })}**`;
+        let duurEnglish = `**${ms(tijd, { long: true })}**`;
         let duur = translateTimeIndicator(duurEnglish);
 
-        timeableRoles.forEach((roleID) => {
+        tijdelijkeRollen.forEach((roleID) => {
             if (member.roles.cache.has(roleID)) {
                 let role = message.guild.roles.cache.get(roleID);
                 try {
@@ -278,8 +285,8 @@ module.exports = {
         });
 
         try {
-            member.roles.add(timedRole);
-            member.roles.remove(userRole);
+            member.roles.add(tijdelijkeRol);
+            member.roles.remove(gebruikersRol);
         } catch (err) {
             console.error(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
@@ -290,6 +297,7 @@ module.exports = {
             .setTitle(`${member.displayName} is ${getFullRoleName(roleChar)} voor ${duur}`)
             .addFields(
                 { name: 'Reden', value: reden },
+                { name: 'Verlossing', value: `${Date.now() + tijd}`}
             )
             .setTimestamp()
             .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
@@ -304,7 +312,7 @@ module.exports = {
                 .then(msg => {
                     setTimeout(() => {
                         msg.delete();
-                    }, time);
+                    }, tijd);
                 })
                 .catch(err => {
                     logKanaal.send("Strafbericht kon niet verwijderd worden");
@@ -319,9 +327,9 @@ module.exports = {
         }
 
         setTimeout(() => {
-            member.roles.add(userRole);
-            member.roles.remove(timedRole);
-        }, time);
+            member.roles.add(gebruikersRol);
+            member.roles.remove(tijdelijkeRol);
+        }, tijd);
     },
     yoinkTimedRole: function(message, roleChar) {
 		const logKanaal = message.client.channels.cache.get(logkanaalID);

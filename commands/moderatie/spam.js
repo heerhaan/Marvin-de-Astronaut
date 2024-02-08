@@ -20,7 +20,7 @@ module.exports = {
         }
         else {
             var time = ms(args[1]);
-            if (time > 181) {
+            if (time > 181000) {
                 return message.channel.send('Weet je, ik ga niet meer dan 3 minuten lang hetzelfde roepen. Je kan te ver gaan, flauwerik.');
             }
             else if (!time) {
