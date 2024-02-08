@@ -1,15 +1,20 @@
 const { EmbedBuilder } = require('discord.js');
+const dayjs = require('dayjs');
 const fs = require('node:fs');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
 var spanjoleringData = require('./spanjoleringData.json');
 
-function randomRoleTime() {
+function willekeurigeRolTijd() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
     return ms(`${ranMin}m`);
 }
 
 function geefVoorzetsel() {
+    if ((Math.floor(Math.random() * 1000)) == 0) {
+        return "Tevens denk je dat yoshi zich schaamt als hij voor mario eieren poept? sorry als ik iemand hiermee beledig maar ik dacht dat het wel grappig was haha. en ik vroeg me af of iemand hier foto's heeft van yoshi die een ei uit poept waarop hij nerveus of verlegen is ik wil het gewoon zien om een beetje te lachen haha.. nog iets dat ik me afvroeg is hoe denk je dat de eieren ruiken haha ik ben gewoon benieuwd wil gewoon een beetje lachen haha ik zou er wel aan willen ruiken";
+    }
+    
     var voorzetsels = [
         "Hatseflats",
         "Hoppakee",
@@ -26,7 +31,17 @@ function geefVoorzetsel() {
         "Nou dan",
         "Sodeknetter",
         "Potverjandriedubbeltjes",
-        "Ten eerste, hier is ",
+        "Appelsap",
+        "Inshallah",
+        "Wahed",
+        "Eeeee kaulostrijder",
+        "Wat een uitzonderlijk tragedie",
+        "O",
+        "Ik! Marvin! Maar bovenal",
+        "Curieus",
+        "Dubieus",
+        "Frappant",
+        "Vandaag is het een metaforische maandag",
     ];
 
     let ranNum = Math.floor(Math.random() * voorzetsels.length);
@@ -45,7 +60,7 @@ function getTimedRoleId(roleChar) {
     }
 }
 
-function getResponseNotMarvin(roleChar) {
+function geefReactieNietMarvin(roleChar) {
     switch (roleChar) {
         case "s": return "Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.";
         case "a": return "Als er iets niet lukt door je eigen incompetentie dan moet je het probleem bij jezelf zoeken, niet bij mij.";
@@ -54,7 +69,7 @@ function getResponseNotMarvin(roleChar) {
     }
 }
 
-function getResponseBlokeAlreadyHasRole(roleChar, memberName) {
+function geefReactieKnaapHeeftAlRol(roleChar, memberName) {
     switch (roleChar) {
         case "s": return `Ik snap dat ${memberName} kut is maar het is niet alsof die nu dubbelspanjool wordt ofzo`;
         case "a": return `${memberName} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`;
@@ -72,7 +87,7 @@ function geefGeenRedenGegevenTekst(roleChar) {
     }
 }
 
-function getFullRoleName(roleChar) {
+function geefVolledigeRolNaam(roleChar) {
     switch (roleChar) {
         case "s": return "spanjool";
         case "a": return "alvist";
@@ -81,7 +96,7 @@ function getFullRoleName(roleChar) {
     }
 }
 
-function getRoleColour(roleChar) {
+function geefRolKleur(roleChar) {
     switch (roleChar) {
         case "s": return "Red";
         case "a": return "NotQuiteBlack";
@@ -90,7 +105,7 @@ function getRoleColour(roleChar) {
     }
 }
 
-function translateTimeIndicator(text) {
+function vertaalTijdIndicatie(text) {
     if (text.includes("seconds")) {
         return text.replace("seconds", "seconden");
     } else if (text.includes("second") && !text.includes("seconde")) {
@@ -112,7 +127,7 @@ function translateTimeIndicator(text) {
     return text;
 }
 
-function saveData(data)
+function slaGegevensOp(data)
 {
     console.log("Opslaan...");
     try
@@ -141,7 +156,7 @@ function saveData(data)
     }
 }
 
-function loadData()
+function laadGegevens()
 {
 	let data = null;
 	
@@ -187,11 +202,11 @@ module.exports = {
         }
 
         if (member === message.guild.me) {
-            return message.channel.send(getResponseNotMarvin(roleChar));
+            return message.channel.send(geefReactieNietMarvin(roleChar));
         }
 
         if (member.roles.cache.has(tijdelijkeRol)) {
-            return message.channel.send(getResponseBlokeAlreadyHasRole(roleChar, member.displayName));
+            return message.channel.send(geefReactieKnaapHeeftAlRol(roleChar, member.displayName));
         }
         
         if (member.roles.cache.has(adminID)) {
@@ -205,7 +220,7 @@ module.exports = {
         let gegevenTijd = args[1];
 
         if (!gegevenTijd) {
-            tijd = randomRoleTime();
+            tijd = willekeurigeRolTijd();
         } else {
             // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
             if (gegevenTijd.includes('u')) {
@@ -218,7 +233,7 @@ module.exports = {
                 // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
                 return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
             } else if (!tijd) {
-                tijd = roleChar == 's'? -1 : randomRoleTime();
+                tijd = roleChar == 's'? -1 : willekeurigeRolTijd();
                 reden = args.slice(1).join(' ');
             } else {
                 reden = args.slice(2).join(' ');
@@ -232,6 +247,8 @@ module.exports = {
         if (reden.length > 1024) {
             reden = reden.slice(0, 1021) + '...';
         }
+
+        let aantalSpanjoleringen = 0;
 
 		if (roleChar == 's')
 		{
@@ -247,7 +264,7 @@ module.exports = {
                 spanjoleringData[member.id] = [];
             }
 			
-			let aantalSpanjoleringen = spanjoleringen.length;
+			aantalSpanjoleringen = spanjoleringen.length;
 			
 			if (tijd < 0)
 			{
@@ -267,11 +284,11 @@ module.exports = {
 				gebruikerNaam: member.displayName
 			});
 			
-			saveData(spanjoleringData);
+			slaGegevensOp(spanjoleringData);
 		}
 
         let duurEnglish = `**${ms(tijd, { long: true })}**`;
-        let duur = translateTimeIndicator(duurEnglish);
+        let duur = vertaalTijdIndicatie(duurEnglish);
 
         tijdelijkeRollen.forEach((roleID) => {
             if (member.roles.cache.has(roleID)) {
@@ -292,19 +309,28 @@ module.exports = {
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
 
+        let voetTekst = message.member.displayName;
+
+        if (aantalSpanjoleringen > 0) {
+            voetTekst = voetTekst + ` ${aantalSpanjoleringen}`;
+        }
+
+        let verlossingsMoment = dayjs(Date.now() + tijd);
+
         const timedInfoEmbed = new EmbedBuilder()
-            .setColor(getRoleColour(roleChar))
-            .setTitle(`${member.displayName} is ${getFullRoleName(roleChar)} voor ${duur}`)
+            .setColor(geefRolKleur(roleChar))
+            .setTitle(`${member.displayName} is ${geefVolledigeRolNaam(roleChar)} voor ${duur}`)
             .addFields(
                 { name: 'Reden', value: reden },
-                { name: 'Verlossing', value: `${Date.now() + tijd}`}
+                { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD/MM/MM") },
+                { name: 'Vrijheidstijd', value: verlossingsMoment.format("HH:mm") }
             )
             .setTimestamp()
-            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
+            .setFooter({ text: voetTekst, iconURL: message.author.displayAvatarURL() });
 
         message.react('👌');
 
-        message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${getFullRoleName(roleChar)} voor ${duur}`);
+        message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${geefVolledigeRolNaam(roleChar)} voor ${duur}`);
 
         try {
             strafKanaal
