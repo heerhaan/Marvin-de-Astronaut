@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const dayjs = require('dayjs');
 const fs = require('node:fs');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
+const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID, clientId } = require('./config.json');
 const spanjoleringData = require('./spanjoleringData.json');
 const tijdLimiet = 2147483646;
 const opmerkingen = [
@@ -215,21 +215,22 @@ module.exports = {
 
         let gebruikersRol;
 
-        const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
+        const ikMarvin = message.guild.members.cache.find(c => c.id === clientId);
+        const persoon = message.mentions.members.first() ?? message.guild.members.cache.find(m => m.username === args[0]);
 
-        if (!member) {
+        if (persoon === undefined) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
         }
 
-        if (member === message.guild.me) {
+        if (persoon === ikMarvin) {
             return message.channel.send(geefReactieNietMarvin(roleChar));
         }
 
-        if (member.roles.cache.has(tijdelijkeRol)) {
-            return message.channel.send(geefReactieKnaapHeeftAlRol(roleChar, member.displayName));
+        if (persoon.roles.cache.has(tijdelijkeRol)) {
+            return message.channel.send(geefReactieKnaapHeeftAlRol(roleChar, persoon.displayName));
         }
         
-        if (member.roles.cache.has(adminID)) {
+        if (persoon.roles.cache.has(adminID)) {
             gebruikersRol = message.guild.roles.cache.get(stadthouderID);
         } else {
             gebruikersRol = message.guild.roles.cache.get(burgerijID);
@@ -263,7 +264,7 @@ module.exports = {
             }
         }
 		
-		if (!reden) {
+		if (reden === undefined) {
             reden = geefGeenRedenGegevenTekst(roleChar);
         }
 
@@ -279,12 +280,12 @@ module.exports = {
 
             let spanjoleringen = [];
 
-            if (spanjoleringData[member.id]) {
-                spanjoleringen = spanjoleringData[member.id].filter((spanjolering) =>
+            if (spanjoleringData[persoon.id]) {
+                spanjoleringen = spanjoleringData[persoon.id].filter((spanjolering) =>
                     spanjolering.datum > Date.now() - maand
                 ) || [];
             } else {
-                spanjoleringData[member.id] = [];
+                spanjoleringData[persoon.id] = [];
             }
 			
 			aantalSpanjoleringen = spanjoleringen.length;
@@ -294,13 +295,13 @@ module.exports = {
 			}
 			
             try {
-                spanjoleringData[member.id].push(
+                spanjoleringData[persoon.id].push(
                     {
                         datum: Date.now(),
                         ontjoolDatum: Date.now() + tijd,
                         reden: reden,
-                        gebruikerId: member.id,
-                        gebruikerNaam: member.displayName
+                        gebruikerId: persoon.id,
+                        gebruikerNaam: persoon.displayName
                     });
                     
                 slaGegevensOp(spanjoleringData);
@@ -314,10 +315,10 @@ module.exports = {
         let duur = vertaalTijdIndicatie(duurEnglish);
 
         tijdelijkeRollen.forEach((roleID) => {
-            if (member.roles.cache.has(roleID)) {
+            if (persoon.roles.cache.has(roleID)) {
                 let role = message.guild.roles.cache.get(roleID);
                 try {
-                    member.roles.remove(role);
+                    persoon.roles.remove(role);
                 } catch (err) {
                     console.error(`Kon ${role} niet verwijderen! ${err}`);
                 }
@@ -325,8 +326,8 @@ module.exports = {
         });
 
         try {
-            member.roles.add(tijdelijkeRol);
-            member.roles.remove(gebruikersRol);
+            persoon.roles.add(tijdelijkeRol);
+            persoon.roles.remove(gebruikersRol);
         } catch (err) {
             console.error(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
@@ -342,7 +343,7 @@ module.exports = {
 
         const klokInformatieEmbed = new EmbedBuilder()
             .setColor(geefRolKleur(roleChar))
-            .setTitle(`${member.displayName} is ${geefVolledigeRolNaam(roleChar)} voor ${duur}`)
+            .setTitle(`${persoon.displayName} is ${geefVolledigeRolNaam(roleChar)} voor ${duur}`)
             .addFields(
                 { name: 'Reden', value: reden },
                 { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD-MM-YYYY") },
@@ -353,7 +354,7 @@ module.exports = {
 
         message.react('👌');
 
-        message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${geefVolledigeRolNaam(roleChar)} voor ${duur}`);
+        message.channel.send(`${geefVoorzetsel()}, ${persoon.displayName} heeft nu ${geefVolledigeRolNaam(roleChar)} voor ${duur}`);
 
         try {
             logKanaal.send({ embeds: [klokInformatieEmbed] });
@@ -378,8 +379,8 @@ module.exports = {
 
         if (tijd < tijdLimiet) {
             setTimeout(() => {
-                member.roles.add(gebruikersRol);
-                member.roles.remove(tijdelijkeRol);
+                persoon.roles.add(gebruikersRol);
+                persoon.roles.remove(tijdelijkeRol);
             }, tijd);
         }
     },
@@ -387,20 +388,20 @@ module.exports = {
 		const logKanaal = message.client.channels.cache.get(logkanaalID);
         const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
 
-        function verwijderRolVoorLid(member) {
-            if (!member) {
-                logKanaal.send(`Kon lid ${member} niet vinden, oei!`);
+        function verwijderRolVoorLid(lid) {
+            if (!lid) {
+                logKanaal.send(`Kon lid ${lid} niet vinden, oei!`);
             } else {
                 let gebruikersRol;
                 
-                if (member.roles.cache.has(adminID)) {
+                if (lid.roles.cache.has(adminID)) {
                     gebruikersRol = message.guild.roles.cache.get(stadthouderID);
                 } else {
                     gebruikersRol = message.guild.roles.cache.get(burgerijID);
                 }
 
-                member.roles.add(gebruikersRol);
-                member.roles.remove(tijdelijkeRol);
+                lid.roles.add(gebruikersRol);
+                lid.roles.remove(tijdelijkeRol);
             }
         }
 
