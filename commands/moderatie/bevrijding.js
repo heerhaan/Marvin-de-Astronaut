@@ -1,13 +1,14 @@
+const common = require("../../common.js");
 const { adminID, stadthouderID, burgerijID, spanjoolID, logkanaalID } = require('../../config.json');
 
 module.exports = {
 	name: 'bevrijding',
-    description: 'Om na te gaan of er knapen zijn die onterecht straf hebben',
+    description: '(WERKT NIET) Om na te gaan of er knapen zijn die onterecht straf hebben',
     admin: true,
 	execute(message) {
         //const logKanaal = message.client.channels.cache.get(logkanaalID);
-
-        return;
+        var opmerking = common.bijdehanteOpmerking();
+        return message.channel.send(opmerking);
 
         let oberSpanjolen = message.guild.members.cache.filter(m => m.roles.includes(spanjoolID));
         let oberSpanjolen2 = message.guild.members.cache.filter(m => m.roles.cache.get(spanjoolID));

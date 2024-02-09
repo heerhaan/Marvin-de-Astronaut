@@ -5,6 +5,15 @@ const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
 const spanjoleringData = require('./spanjoleringData.json');
 const tijdLimiet = 2147483646;
+const opmerkingen = [
+    "nee tyf op, ik heb hier geen zin in",
+    "Ik heb hier geen zin in, jij hebt hier eigenlijk geen zin in. Weet je, we doen het gewoon niet.",
+    "Nouh nee",
+    "Zoek het effe lekker uit",
+    "Gaan we niet doen",
+    "Ik dacht het dus even niet, jij wandelend gezwel",
+    "ikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemuren",
+];
 
 function willekeurigeRolTijd() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
@@ -412,5 +421,9 @@ module.exports = {
             console.error(err);
             return message.channel.send("Oef autsj, wegschrijven van de nieuwe gegevens ging dus niet goed.");
         }
+    },
+    bijdehanteOpmerking: function() {
+        let nummertje = Math.floor(Math.random() * opmerkingen.length);
+        return voorzetsels[nummertje];
     }
 };

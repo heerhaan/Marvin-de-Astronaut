@@ -1,5 +1,3 @@
-// import { Sequelize } from "./db/database";
-
 const fs = require('node:fs');
 const path = require('node:path');
 //const cron = require('cron');
