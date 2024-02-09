@@ -3,7 +3,8 @@ const dayjs = require('dayjs');
 const fs = require('node:fs');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
-var spanjoleringData = require('./spanjoleringData.json');
+const spanjoleringData = require('./spanjoleringData.json');
+const tijdLimiet = 2147483646;
 
 function willekeurigeRolTijd() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
@@ -52,7 +53,7 @@ function geefVoorzetsel() {
 
 //let randomNumber = Math.floor(Math.random() * 2);
 
-function getTimedRoleId(roleChar) {
+function verkrijgTijdelijkeRolId(roleChar) {
     switch (roleChar) {
         case "s": return spanjoolID;
         case "a": return alvaID;
@@ -167,9 +168,9 @@ function slaGegevensOp(data)
     }
 }
 
-function laadGegevens()
+function herlaadGegevens()
 {
-	let data = null;
+    let data = null;
 	
 	fs.readFileSync('./spanjoleringData.json', function read (err, data) 
     {
@@ -195,14 +196,13 @@ function laadGegevens()
 	return data;
 }
 
-
 module.exports = {
-    timedRole: function(message, args, roleChar) {
+    klokRol: function(message, args, roleChar) {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
 
         const tijdelijkeRollen = [spanjoolID, alvaID, kopdichtID, ridderID];
-        const tijdelijkeRol = getTimedRoleId(roleChar);
+        const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
 
         let gebruikersRol;
 
@@ -243,8 +243,12 @@ module.exports = {
             if (!tijd) {
                 tijd = roleChar == 's'? -1 : willekeurigeRolTijd();
                 reden = args.slice(1).join(' ');
-            } else if (tijd > 31557590000) {
-                return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
+            } else if (tijd > tijdLimiet) {
+                if (roleChar == 's') {
+                    message.channel.send("Dat je het weet, automatisch rol wegnemen gaat hier niet gebeuren want de duur is te lang. Succes ermee!");
+                } else {
+                    return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
+                }
             } else {
                 reden = args.slice(2).join(' ');
             }
@@ -276,14 +280,9 @@ module.exports = {
 			
 			aantalSpanjoleringen = spanjoleringen.length;
 			
-			if (tijd < 0)
-			{
+			if (tijd < 0) {
 				tijd = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
 			}
-			
-			//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
-			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
-			//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
 			
             try {
                 spanjoleringData[member.id].push(
@@ -295,7 +294,7 @@ module.exports = {
                         gebruikerNaam: member.displayName
                     });
                     
-                    slaGegevensOp(spanjoleringData);
+                slaGegevensOp(spanjoleringData);
             } catch (err) {
                 console.error(err);
                 return message.channel.send('jezus, welke mislukte anjer heeft mij geschreven. Er ging iets mis.');
@@ -332,12 +331,12 @@ module.exports = {
 
         let verlossingsMoment = dayjs(Date.now() + tijd);
 
-        const timedInfoEmbed = new EmbedBuilder()
+        const klokInformatieEmbed = new EmbedBuilder()
             .setColor(geefRolKleur(roleChar))
             .setTitle(`${member.displayName} is ${geefVolledigeRolNaam(roleChar)} voor ${duur}`)
             .addFields(
                 { name: 'Reden', value: reden },
-                { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD/MM/YYYY") },
+                { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD-MM-YYYY") },
                 { name: 'Vrijheidstijd', value: verlossingsMoment.format("HH:mm") }
             )
             .setTimestamp()
@@ -348,59 +347,70 @@ module.exports = {
         message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${geefVolledigeRolNaam(roleChar)} voor ${duur}`);
 
         try {
+            logKanaal.send({ embeds: [klokInformatieEmbed] });
+            
             strafKanaal
-                .send({ embeds: [timedInfoEmbed] })
+                .send({ embeds: [klokInformatieEmbed] })
                 .then(msg => {
-                    setTimeout(() => {
-                        msg.delete();
-                    }, tijd);
+                    if (tijd < tijdLimiet) {
+                        setTimeout(() => {
+                            msg.delete();
+                        }, tijd);
+                    }
                 })
                 .catch(err => {
                     logKanaal.send("Strafbericht kon niet verwijderd worden");
                     console.error(err);
                 });
-
-            logKanaal.send({ embeds: [timedInfoEmbed] });
-            
         } catch (err) {
             message.channel.send("Dat je het weet, het ging niet zo lekker met meldinkje toevoegen in een logkanaal.");
             console.error(err);
         }
 
-        setTimeout(() => {
-            member.roles.add(gebruikersRol);
-            member.roles.remove(tijdelijkeRol);
-        }, tijd);
+        if (tijd < tijdLimiet) {
+            setTimeout(() => {
+                member.roles.add(gebruikersRol);
+                member.roles.remove(tijdelijkeRol);
+            }, tijd);
+        }
     },
-    yoinkTimedRole: function(message, roleChar) {
+    ontKlokRol: function(message, roleChar) {
 		const logKanaal = message.client.channels.cache.get(logkanaalID);
-        const timedRole = getTimedRoleId(roleChar);
+        const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
 
-        function removeRoleForMember(member) {
+        function verwijderRolVoorLid(member) {
             if (!member) {
                 logKanaal.send(`Kon lid ${member} niet vinden, oei!`);
-            }
-            else {
-                let userRole;
+            } else {
+                let gebruikersRol;
                 
                 if (member.roles.cache.has(adminID)) {
-                    userRole = message.guild.roles.cache.get(stadthouderID);
+                    gebruikersRol = message.guild.roles.cache.get(stadthouderID);
                 } else {
-                    userRole = message.guild.roles.cache.get(burgerijID);
+                    gebruikersRol = message.guild.roles.cache.get(burgerijID);
                 }
 
-                member.roles.add(userRole);
-                member.roles.remove(timedRole);
+                member.roles.add(gebruikersRol);
+                member.roles.remove(tijdelijkeRol);
             }
         }
 
         try {
             const members = message.mentions.members;
-            members.each(removeRoleForMember);
+            members.each(verwijderRolVoorLid);
             message.react('👌');
         } catch (err) {
-            message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
             console.error(err);
+            return message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
+        }
+    },
+    schrijfData: function(message, nieuweData) {
+        try {
+            slaGegevensOp(nieuweData);
+            herlaadGegevens();
+        } catch (err) {
+            console.error(err);
+            return message.channel.send("Oef autsj, wegschrijven van de nieuwe gegevens ging dus niet goed.");
         }
     }
 };

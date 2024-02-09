@@ -6,6 +6,6 @@ module.exports = {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin : true,
     execute(message, args) {
-        common.timedRole(message, args, "r");
+        common.klokRol(message, args, "r");
     }
 }

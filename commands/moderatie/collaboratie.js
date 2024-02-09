@@ -1,5 +1,6 @@
 const dayjs = require('dayjs');
 const { adminID, stadthouderID, burgerijID, spanjoolID, logkanaalID } = require('../../config.json');
+const tijdLimiet = 2147483646;
 
 module.exports = {
 	name: 'collaboratie',
@@ -50,12 +51,16 @@ module.exports = {
                     member.roles.add(spanjoolID);
                     member.roles.remove(trekkerRol);
     
-                    setTimeout(() => {
-                        member.roles.add(trekkerRol);
-                        member.roles.remove(spanjoolID);
-                    }, tijdOver);
-
-                    var leesbareTijd = dayjs(spanjaard.ontjoolDatum).format("DD/MM/YYYY HH:mm");
+                    if (tijdOver < tijdLimiet) {
+                        setTimeout(() => {
+                            member.roles.add(trekkerRol);
+                            member.roles.remove(spanjoolID);
+                        }, tijdOver);
+                    } else {
+                        message.channel.send("hee natte anjer die je bent, ontspanjool duurt nog zo lang dat ik het niet ga doen, joe joe!");
+                    }
+                    
+                    var leesbareTijd = dayjs(spanjaard.ontjoolDatum).format("DD-MM-YYYY HH:mm");
 
                     logKanaal.send(`Welnu! ${member.displayName} heeft wederom weer spanjool tot ${leesbareTijd}`);
     
