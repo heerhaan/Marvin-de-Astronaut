@@ -291,7 +291,7 @@ module.exports = {
 			aantalSpanjoleringen = spanjoleringen.length;
 			
 			if (tijd < 0) {
-				tijd = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
+				tijd = 600000 * (aantalSpanjoleringen + 1); //600000ms = 10 minuten
 			}
 			
             try {
