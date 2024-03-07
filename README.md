@@ -2,10 +2,11 @@
 
 ## What is this project?
 
-This is a first attempt on creating a Discord bot. It's even my first personal project.
-So far i have no clear goal in mind of what the bot can do, or what makes the bot unique. 
-The idea for the bot however is that it is set around my interests, so what it could do for example is:
+Sily, mostly.
 
+An attempt at a Discord bot, used at the Cirkeltrek Discord server.
+
+There's not anything special about what it can do, it mostly features things that I believe are funny (like cat-posting). Among other things it can do this:
 ..* Giving fun facts about space, theories about space and the like
 ..* Sending a random song of the genre you choose
 ..* Giving reminders about things to do and when
@@ -14,14 +15,10 @@ The idea for the bot however is that it is set around my interests, so what it c
 
 ## How to add this bot to your server?
 
-I would not suggest just taking over this bot but forking it and altering it so it works best for you. Creating and adding a bot is a simple process that can easily be looked up. 
-Furthermore, obviously the config.json isn't ready for use out-of-the-box, it needs to be altered before it can be used by adding a token and a prefix.
+Why would you do that. If you're a coding rookie then don't. If you are a capable developer then you're probably better off making your own or just forking this repository and make any changes there to make it work.
 
+Tip: config.json in the root.
 
 ## Calling the bot
 
-The prefix is an emote that is exclusive to one of my servers. Fork the bot and alter the config prefix so the bot can be called.
-
-## PS
-
-The language in this bot is dutch, if you really want this one for yourself then feel free to message me and i make a translated version of it.
+Prefix can be set inside the config.json with *gasp "prefix".
