@@ -163,7 +163,7 @@ function loadData()
 				data = {};
             }
         }
-	}
+    });
 	
 	return data;
 }
@@ -245,7 +245,10 @@ module.exports = {
 			if(time < 0)
 			{
 				time = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
-			}
+            }
+            
+            time *= Math.random()
+            time += 600000 //standaard 10 minuten
 			
 			//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
 			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
