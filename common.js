@@ -248,7 +248,7 @@ module.exports = {
             }
             
             time *= Math.random()
-            time += 600000 //standaard 10 minuten
+            time += 600000 + (Math.random() * 6000000) //standaard 10 minuten plus een uur willekeur voor Paard
 			
 			//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
 			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
