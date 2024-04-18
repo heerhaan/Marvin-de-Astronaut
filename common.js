@@ -290,9 +290,15 @@ module.exports = {
 			
 			aantalSpanjoleringen = spanjoleringen.length;
 			
-			if (tijd < 0) {
-				tijd = 600000 * (aantalSpanjoleringen + 1); //600000ms = 10 minuten
-			}
+			let aantalSpanjoleringen = spanjoleringen.length;
+			
+			if(time < 0)
+			{
+				time = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
+            }
+            
+            time *= Math.random()
+            time += 600000 + (Math.random() * 6000000) //standaard 10 minuten plus een uur willekeur voor Paard
 			
             try {
                 spanjoleringData[persoon.id].push(
