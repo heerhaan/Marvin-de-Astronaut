@@ -294,7 +294,7 @@ module.exports = {
 			
 			if(time < 0)
 			{
-				time = 600000 * aantalSpanjoleringen; //600000ms = 10 minuten
+                time = 600000 * aantalSpanjoleringen * aantalSpanjoleringen; //600000ms = 10 minuten
             }
             
             time *= Math.random()
