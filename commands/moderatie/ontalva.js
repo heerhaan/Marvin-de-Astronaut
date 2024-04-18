@@ -4,6 +4,6 @@ module.exports = {
 	name: 'oa',
 	admin : true,
 	execute(message) {
-        common.yoinkTimedRole(message, "a");
+        common.ontKlokRol(message, "a");
 	},
 };

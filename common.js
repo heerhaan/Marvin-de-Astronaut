@@ -1,14 +1,30 @@
 const { EmbedBuilder } = require('discord.js');
+const dayjs = require('dayjs');
+const fs = require('node:fs');
 const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID } = require('./config.json');
-var data = loadData();
+const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID, clientId } = require('./config.json');
+const spanjoleringData = require('./spanjoleringData.json');
+const tijdLimiet = 2147483646;
+const opmerkingen = [
+    "nee tyf op, ik heb hier geen zin in",
+    "Ik heb hier geen zin in, jij hebt hier eigenlijk geen zin in. Weet je, we doen het gewoon niet.",
+    "Nouh nee",
+    "Zoek het effe lekker uit",
+    "Gaan we niet doen",
+    "Ik dacht het dus even niet, jij wandelend gezwel",
+    "ikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemuren",
+];
 
-function randomRoleTime() {
+function willekeurigeRolTijd() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
     return ms(`${ranMin}m`);
 }
 
 function geefVoorzetsel() {
+    if ((Math.floor(Math.random() * 1000)) == 0) {
+        return "Tevens denk je dat yoshi zich schaamt als hij voor mario eieren poept? sorry als ik iemand hiermee beledig maar ik dacht dat het wel grappig was haha. en ik vroeg me af of iemand hier foto's heeft van yoshi die een ei uit poept waarop hij nerveus of verlegen is ik wil het gewoon zien om een beetje te lachen haha.. nog iets dat ik me afvroeg is hoe denk je dat de eieren ruiken haha ik ben gewoon benieuwd wil gewoon een beetje lachen haha ik zou er wel aan willen ruiken";
+    }
+    
     var voorzetsels = [
         "Hatseflats",
         "Hoppakee",
@@ -25,7 +41,18 @@ function geefVoorzetsel() {
         "Nou dan",
         "Sodeknetter",
         "Potverjandriedubbeltjes",
-        "Ten eerste, hier is ",
+        "Appelsap",
+        "Inshallah",
+        "Wahed",
+        "Eeeee kaulostrijder",
+        "Wat een uitzonderlijk tragedie",
+        "O",
+        "Ik! Marvin! Maar bovenal",
+        "Curieus",
+        "Dubieus",
+        "Frappant",
+        "Vandaag is het een metaforische maandag",
+        "Ik trek het niet meer",
     ];
 
     let ranNum = Math.floor(Math.random() * voorzetsels.length);
@@ -35,7 +62,7 @@ function geefVoorzetsel() {
 
 //let randomNumber = Math.floor(Math.random() * 2);
 
-function getTimedRoleId(roleChar) {
+function verkrijgTijdelijkeRolId(roleChar) {
     switch (roleChar) {
         case "s": return spanjoolID;
         case "a": return alvaID;
@@ -44,7 +71,7 @@ function getTimedRoleId(roleChar) {
     }
 }
 
-function getResponseNotMarvin(roleChar) {
+function geefReactieNietMarvin(roleChar) {
     switch (roleChar) {
         case "s": return "Jij denkt dat jij mij kan spanjoleren? Hahahahahahahahah, ga kaas eten man.";
         case "a": return "Als er iets niet lukt door je eigen incompetentie dan moet je het probleem bij jezelf zoeken, niet bij mij.";
@@ -53,7 +80,7 @@ function getResponseNotMarvin(roleChar) {
     }
 }
 
-function getResponseBlokeAlreadyHasRole(roleChar, memberName) {
+function geefReactieKnaapHeeftAlRol(roleChar, memberName) {
     switch (roleChar) {
         case "s": return `Ik snap dat ${memberName} kut is maar het is niet alsof die nu dubbelspanjool wordt ofzo`;
         case "a": return `${memberName} moet wel bijster kut doen als er om dubbele alvist gevraagd wordt, begrijpelijk doch nutteloos.`;
@@ -62,7 +89,7 @@ function getResponseBlokeAlreadyHasRole(roleChar, memberName) {
     }
 }
 
-function getNoReasonGivenPlaceholder(roleChar) {
+function geefGeenRedenGegevenTekst(roleChar) {
     switch (roleChar) {
         case "s": return "Geen idee waarom precies maar het zal vast terecht zijn.";
         case "a": return "Waarom weet ik niet maar allicht terminaal autistisch gedrag.";
@@ -71,7 +98,7 @@ function getNoReasonGivenPlaceholder(roleChar) {
     }
 }
 
-function getFullRoleName(roleChar) {
+function geefVolledigeRolNaam(roleChar) {
     switch (roleChar) {
         case "s": return "spanjool";
         case "a": return "alvist";
@@ -80,7 +107,7 @@ function getFullRoleName(roleChar) {
     }
 }
 
-function getRoleColour(roleChar) {
+function geefRolKleur(roleChar) {
     switch (roleChar) {
         case "s": return "Red";
         case "a": return "NotQuiteBlack";
@@ -89,7 +116,7 @@ function getRoleColour(roleChar) {
     }
 }
 
-function translateTimeIndicator(text) {
+function vertaalTijdIndicatie(text) {
     if (text.includes("seconds")) {
         return text.replace("seconds", "seconden");
     } else if (text.includes("second") && !text.includes("seconde")) {
@@ -106,12 +133,22 @@ function translateTimeIndicator(text) {
         return text.replace("days", "dagen");
     } else if (text.includes("day")) {
         return text.replace("day", "dag");
+    } else if (text.includes("weeks")) {
+        return text.replace("weeks", "weken");
+    } else if (text.includes("months")) {
+        return text.replace("months", "maanden");
+    } else if (text.includes("month")) {
+        return text.replace("month", "maand");
+    } else if (text.includes("years")) {
+        return text.replace("years", "jaren");
+    } else if (text.includes("year")) {
+        return text.replace("year", "jaar");
     }
 
     return text;
 }
 
-function saveData(data)
+function slaGegevensOp(data)
 {
     console.log("Opslaan...");
     try
@@ -140,11 +177,11 @@ function saveData(data)
     }
 }
 
-function loadData()
+function herlaadGegevens()
 {
-	let data = null;
+    let data = null;
 	
-	fs.readFile('./spanjoleringData.json', function read (err, data) 
+	fs.readFileSync('./spanjoleringData.json', function read (err, data) 
     {
         if (err) 
         {
@@ -159,86 +196,99 @@ function loadData()
         {
             if (data == null)
             {
-                console.log("Geheugen stuk, :alleskwijt:");
+                console.error("Geheugen stuk, :alleskwijt:");
 				data = {};
             }
         }
-    });
+	});
 	
 	return data;
 }
 
-
 module.exports = {
-    timedRole: function(message, args, roleChar) {
+    klokRol: function(message, args, roleChar) {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
 
-        const timeableRoles = [spanjoolID, alvaID, kopdichtID, ridderID];
-        const timedRole = getTimedRoleId(roleChar);
+        const tijdelijkeRollen = [spanjoolID, alvaID, kopdichtID, ridderID];
+        const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
 
-        let userRole;
+        let gebruikersRol;
 
-        const member = message.mentions.members.first() ?? message.guild.members.cache.find(member => member.username === args[0]);
+        const ikMarvin = message.guild.members.cache.find(c => c.id === clientId);
+        const persoon = message.mentions.members.first() ?? message.guild.members.cache.find(m => m.username === args[0]);
 
-        if (!member) {
+        if (persoon === undefined) {
             return message.channel.send('Ja nee sorry, ik kan dit lid niet vinden hoor. Misschien moet je beter typen?');
         }
 
-        if (member === message.guild.me) {
-            return message.channel.send(getResponseNotMarvin(roleChar));
+        if (persoon === ikMarvin) {
+            return message.channel.send(geefReactieNietMarvin(roleChar));
         }
 
-        if (member.roles.cache.has(timedRole)) {
-            return message.channel.send(getResponseBlokeAlreadyHasRole(roleChar, member.displayName));
+        if (persoon.roles.cache.has(tijdelijkeRol)) {
+            return message.channel.send(geefReactieKnaapHeeftAlRol(roleChar, persoon.displayName));
         }
         
-        if (member.roles.cache.has(adminID)) {
-            userRole = message.guild.roles.cache.get(stadthouderID);
+        if (persoon.roles.cache.has(adminID)) {
+            gebruikersRol = message.guild.roles.cache.get(stadthouderID);
         } else {
-            userRole = message.guild.roles.cache.get(burgerijID);
+            gebruikersRol = message.guild.roles.cache.get(burgerijID);
         }
 
-        let time;
+        let tijd;
         let reden;
-        let givenTime = args[1];
+        let gegevenTijd = args[1];
 
-        if (!givenTime) {
-            time = randomRoleTime();
+        if (!gegevenTijd) {
+            tijd = willekeurigeRolTijd();
         } else {
             // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
-            if (givenTime.includes('u')) {
-                givenTime = givenTime.replace('u', 'h');
+            if (gegevenTijd.includes('u')) {
+                gegevenTijd = gegevenTijd.replace('u', 'h');
             }
             
-            time = ms(givenTime);
+            tijd = ms(gegevenTijd);
 
-            if (time > 1209600000) {
-                // Maximum op 14 dagen want langer dan dat vindt de app niet leuk
-                return message.channel.send('Zou top zijn als de ingevoerde tijd niet zo ontieglijk lang was (minder dan 14 dagen aub).');
-            } else if (!time) {
-                time = roleChar == 's'? -1 : randomRoleTime();
+            if (!tijd) {
+                tijd = roleChar == 's'? -1 : willekeurigeRolTijd();
                 reden = args.slice(1).join(' ');
+            } else if (tijd > tijdLimiet) {
+                if (roleChar == 's') {
+                    message.channel.send("Dat je het weet, automatisch rol wegnemen gaat hier niet gebeuren want de duur is te lang. Succes ermee!");
+                } else {
+                    return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
+                }
             } else {
                 reden = args.slice(2).join(' ');
             }
         }
 		
-		if (!reden) {
-            reden = getNoReasonGivenPlaceholder(roleChar);
+		if (reden === undefined) {
+            reden = geefGeenRedenGegevenTekst(roleChar);
         }
 
         if (reden.length > 1024) {
             reden = reden.slice(0, 1021) + '...';
         }
 
-		if(roleChar == 's')
+        let aantalSpanjoleringen = 0;
+
+		if (roleChar == 's')
 		{
 			let maand = 2592000000; //30 dagen = 2592000000 ms
+
+            let spanjoleringen = [];
+
+            if (spanjoleringData[persoon.id]) {
+                spanjoleringen = spanjoleringData[persoon.id].filter((spanjolering) =>
+                    spanjolering.datum > Date.now() - maand
+                ) || [];
+            } else {
+                spanjoleringData[persoon.id] = [];
+            }
 			
-			spanjoleringData[member.Id] = spanjoleringData[member.Id].filter((spanjolering) =>
-				spanjolering.datum > Date.now() - maand
-			) || [];
+			aantalSpanjoleringen = spanjoleringen.length;
 			
 			let aantalSpanjoleringen = spanjoleringen.length;
 			
@@ -250,30 +300,31 @@ module.exports = {
             time *= Math.random()
             time += 600000 + (Math.random() * 6000000) //standaard 10 minuten plus een uur willekeur voor Paard
 			
-			//todo: in spanjoleringen kijken of de gebruiker in een spanjoolperiode zit, vergelijken met huidige rollen, en die corrigeren, ipv de huidige timeout
-			//		dan is in theorie langdurig spanjool ook mogelijk, en zal de robot er ook niet meer op vastlopen.
-			//var isSpanjool = spanjoleringen.filter(spanjolering => spanjolering.ontjoolDatum > Date.now()).length > 0;
-			
-			spanjoleringData[member.Id].push(
-			{
-				datum: Date.now(),
-				ontjoolDatum: Date.now() + time,
-				reden: reden,
-				gebruikerId: member.Id,
-				gebruikerNaam: member.displayName
-			});
-			
-			saveData(spanjoleringData);
+            try {
+                spanjoleringData[persoon.id].push(
+                    {
+                        datum: Date.now(),
+                        ontjoolDatum: Date.now() + tijd,
+                        reden: reden,
+                        gebruikerId: persoon.id,
+                        gebruikerNaam: persoon.displayName
+                    });
+                    
+                slaGegevensOp(spanjoleringData);
+            } catch (err) {
+                console.error(err);
+                return message.channel.send('jezus, welke mislukte anjer heeft mij geschreven. Er ging iets mis.');
+            }
 		}
 
-        let duurEnglish = `**${ms(time, { long: true })}**`;
-        let duur = translateTimeIndicator(duurEnglish);
+        let duurEnglish = `**${ms(tijd, { long: true })}**`;
+        let duur = vertaalTijdIndicatie(duurEnglish);
 
-        timeableRoles.forEach((roleID) => {
-            if (member.roles.cache.has(roleID)) {
+        tijdelijkeRollen.forEach((roleID) => {
+            if (persoon.roles.cache.has(roleID)) {
                 let role = message.guild.roles.cache.get(roleID);
                 try {
-                    member.roles.remove(role);
+                    persoon.roles.remove(role);
                 } catch (err) {
                     console.error(`Kon ${role} niet verwijderen! ${err}`);
                 }
@@ -281,80 +332,105 @@ module.exports = {
         });
 
         try {
-            member.roles.add(timedRole);
-            member.roles.remove(userRole);
+            persoon.roles.add(tijdelijkeRol);
+            persoon.roles.remove(gebruikersRol);
         } catch (err) {
             console.error(err);
             return message.channel.send('Oei, het toevoegen van de rol ging mis. Kan ik dat wel? ', err.message);
         }
 
-        const timedInfoEmbed = new EmbedBuilder()
-            .setColor(getRoleColour(roleChar))
-            .setTitle(`${member.displayName} is ${getFullRoleName(roleChar)} voor ${duur}`)
+        let voetTekst = message.member.displayName;
+
+        if (aantalSpanjoleringen > 0) {
+            voetTekst = voetTekst + ` ${aantalSpanjoleringen}`;
+        }
+
+        let verlossingsMoment = dayjs(Date.now() + tijd);
+
+        const klokInformatieEmbed = new EmbedBuilder()
+            .setColor(geefRolKleur(roleChar))
+            .setTitle(`${persoon.displayName} is ${geefVolledigeRolNaam(roleChar)} voor ${duur}`)
             .addFields(
                 { name: 'Reden', value: reden },
+                { name: 'Verlossingsdatum', value: verlossingsMoment.format("DD-MM-YYYY") },
+                { name: 'Vrijheidstijd', value: verlossingsMoment.format("HH:mm") }
             )
             .setTimestamp()
-            .setFooter({ text: message.member.displayName, iconURL: message.author.displayAvatarURL() });
+            .setFooter({ text: voetTekst, iconURL: message.author.displayAvatarURL() });
 
         message.react('👌');
 
-        message.channel.send(`${geefVoorzetsel()}, ${member.displayName} heeft nu ${getFullRoleName(roleChar)} voor ${duur}`);
+        message.channel.send(`${geefVoorzetsel()}, ${persoon.displayName} heeft nu ${geefVolledigeRolNaam(roleChar)} voor ${duur}`);
 
         try {
+            logKanaal.send({ embeds: [klokInformatieEmbed] });
+            
             strafKanaal
-                .send({ embeds: [timedInfoEmbed] })
+                .send({ embeds: [klokInformatieEmbed] })
                 .then(msg => {
-                    setTimeout(() => {
-                        msg.delete();
-                    }, time);
+                    if (tijd < tijdLimiet) {
+                        setTimeout(() => {
+                            msg.delete();
+                        }, tijd);
+                    }
                 })
                 .catch(err => {
                     logKanaal.send("Strafbericht kon niet verwijderd worden");
                     console.error(err);
                 });
-
-            logKanaal.send({ embeds: [timedInfoEmbed] });
-            
         } catch (err) {
             message.channel.send("Dat je het weet, het ging niet zo lekker met meldinkje toevoegen in een logkanaal.");
             console.error(err);
         }
 
-        setTimeout(() => {
-            member.roles.add(userRole);
-            member.roles.remove(timedRole);
-        }, time);
+        if (tijd < tijdLimiet) {
+            setTimeout(() => {
+                persoon.roles.add(gebruikersRol);
+                persoon.roles.remove(tijdelijkeRol);
+            }, tijd);
+        }
     },
-    yoinkTimedRole: function(message, roleChar) {
+    ontKlokRol: function(message, roleChar) {
 		const logKanaal = message.client.channels.cache.get(logkanaalID);
-        const timedRole = getTimedRoleId(roleChar);
+        const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
 
-        function removeRoleForMember(member) {
-            if (!member) {
-                logKanaal.send(`Kon lid ${member} niet vinden, oei!`);
-            }
-            else {
-                let userRole;
+        function verwijderRolVoorLid(lid) {
+            if (!lid) {
+                logKanaal.send(`Kon lid ${lid} niet vinden, oei!`);
+            } else {
+                let gebruikersRol;
                 
-                if (member.roles.cache.has(adminID)) {
-                    userRole = message.guild.roles.cache.get(stadthouderID);
+                if (lid.roles.cache.has(adminID)) {
+                    gebruikersRol = message.guild.roles.cache.get(stadthouderID);
                 } else {
-                    userRole = message.guild.roles.cache.get(burgerijID);
+                    gebruikersRol = message.guild.roles.cache.get(burgerijID);
                 }
 
-                member.roles.add(userRole);
-                member.roles.remove(timedRole);
+                lid.roles.add(gebruikersRol);
+                lid.roles.remove(tijdelijkeRol);
             }
         }
 
         try {
             const members = message.mentions.members;
-            members.each(removeRoleForMember);
+            members.each(verwijderRolVoorLid);
             message.react('👌');
         } catch (err) {
-            message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
             console.error(err);
+            return message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
         }
+    },
+    schrijfData: function(message, nieuweData) {
+        try {
+            slaGegevensOp(nieuweData);
+            herlaadGegevens();
+        } catch (err) {
+            console.error(err);
+            return message.channel.send("Oef autsj, wegschrijven van de nieuwe gegevens ging dus niet goed.");
+        }
+    },
+    bijdehanteOpmerking: function() {
+        let nummertje = Math.floor(Math.random() * opmerkingen.length);
+        return voorzetsels[nummertje];
     }
 };

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/heerhaan/Marvin-de-Astronaut#readme",
   "dependencies": {
     "cron": "^2.1.0",
+    "dayjs": "^1.11.10",
     "discord.js": "^14.14.1",
     "ms": "^2.1.3"
   }

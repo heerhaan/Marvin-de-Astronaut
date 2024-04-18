@@ -1,5 +1,3 @@
-// import { Sequelize } from "./db/database";
-
 const fs = require('node:fs');
 const path = require('node:path');
 //const cron = require('cron');
@@ -10,6 +8,7 @@ const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent
   ],
   partials: [Partials.Channel]
