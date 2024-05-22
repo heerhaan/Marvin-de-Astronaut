@@ -251,7 +251,7 @@ module.exports = {
             tijd = ms(gegevenTijd);
 
             if (!tijd) {
-                tijd = roleChar == 's'? -1 : willekeurigeRolTijd();
+                tijd = roleChar == 's' ? -1 : willekeurigeRolTijd();
                 reden = args.slice(1).join(' ');
             } else if (tijd > tijdLimiet) {
                 if (roleChar == 's') {
@@ -292,7 +292,7 @@ module.exports = {
 			
 			let aantalSpanjoleringen = spanjoleringen.length;
 			
-			if(time < 0)
+			if (time < 0)
 			{
                 time = 600000 * aantalSpanjoleringen * aantalSpanjoleringen; //600000ms = 10 minuten
             }
