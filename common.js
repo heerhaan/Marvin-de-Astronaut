@@ -14,6 +14,7 @@ const opmerkingen = [
     "Ik dacht het dus even niet, jij wandelend gezwel",
     "ikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemuren",
 ];
+const valideTijdLetters = ["s", "m", "h", "u", "d", "w"];
 
 function willekeurigeRolTijd() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
@@ -236,13 +237,34 @@ module.exports = {
             gebruikersRol = message.guild.roles.cache.get(burgerijID);
         }
 
-        let tijd;
+        let tijd = 0;
         let reden;
         let gegevenTijd = args[1];
 
-        if (!gegevenTijd) {
-            tijd = willekeurigeRolTijd();
-        } else {
+        // if (!gegevenTijd) {
+        //     tijd = willekeurigeRolTijd();
+        // } else {
+        //     // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
+        //     if (gegevenTijd.includes('u')) {
+        //         gegevenTijd = gegevenTijd.replace('u', 'h');
+        //     }
+            
+        //     tijd = ms(gegevenTijd);
+
+        //     if (!tijd) {
+        //         tijd = roleChar == 's' ? -1 : willekeurigeRolTijd();
+        //         reden = args.slice(1).join(' ');
+        //     } else if (tijd > tijdLimiet) {
+        //         if (roleChar == 's') {
+        //             message.channel.send("Dat je het weet, automatisch rol wegnemen gaat hier niet gebeuren want de duur is te lang. Succes ermee!");
+        //         } else {
+        //             return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
+        //         }
+        //     } else {
+        //         reden = args.slice(2).join(' ');
+        //     }
+        // }
+        if (gegevenTijd) {
             // TODO: Deze moederneukende instelling. Lokaal is het u, gehost is het h.
             if (gegevenTijd.includes('u')) {
                 gegevenTijd = gegevenTijd.replace('u', 'h');
@@ -289,16 +311,16 @@ module.exports = {
             }
 			
 			aantalSpanjoleringen = spanjoleringen.length;
-			
+
 			let aantalSpanjoleringen = spanjoleringen.length;
 			
-			if (time < 0)
+			if (tijd < 0)
 			{
-                time = 600000 * aantalSpanjoleringen * aantalSpanjoleringen; //600000ms = 10 minuten
+                tijd = 600000 * aantalSpanjoleringen * aantalSpanjoleringen; //600000ms = 10 minuten
             }
             
-            time *= Math.random()
-            time += 600000 + (Math.random() * 6000000) //standaard 10 minuten plus een uur willekeur voor Paard
+            tijd *= Math.random()
+            tijd += 600000 + (Math.random() * 6000000) //standaard 10 minuten plus een uur willekeur
 			
             try {
                 spanjoleringData[persoon.id].push(
@@ -316,6 +338,10 @@ module.exports = {
                 return message.channel.send('jezus, welke mislukte anjer heeft mij geschreven. Er ging iets mis.');
             }
 		}
+
+        if (tijd < 0) {
+            tijd = willekeurigeRolTijd();
+        }
 
         let duurEnglish = `**${ms(tijd, { long: true })}**`;
         let duur = vertaalTijdIndicatie(duurEnglish);
