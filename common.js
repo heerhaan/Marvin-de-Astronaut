@@ -273,10 +273,10 @@ module.exports = {
             tijd = ms(gegevenTijd);
 
             if (!tijd) {
-                tijd = roleChar == 's' ? -1 : willekeurigeRolTijd();
+                tijd = roleChar === 's' ? -1 : willekeurigeRolTijd();
                 reden = args.slice(1).join(' ');
             } else if (tijd > tijdLimiet) {
-                if (roleChar == 's') {
+                if (roleChar === 's') {
                     message.channel.send("Dat je het weet, automatisch rol wegnemen gaat hier niet gebeuren want de duur is te lang. Succes ermee!");
                 } else {
                     return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
@@ -296,7 +296,7 @@ module.exports = {
 
         let aantalSpanjoleringen = 0;
 
-		if (roleChar == 's')
+		if (roleChar === 's')
 		{
 			let maand = 2592000000; //30 dagen = 2592000000 ms
 
