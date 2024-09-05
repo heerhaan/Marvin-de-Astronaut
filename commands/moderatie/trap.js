@@ -3,7 +3,6 @@ module.exports = {
     description: 'Trap een lid uit de ober',
     args: true,
     usage: '<gebruiker>',
-    //permissions: 'KICK_MEMBERS',
     admin : true,
     execute(message, args) {
         const catchErr = err => { console.error(err) }
