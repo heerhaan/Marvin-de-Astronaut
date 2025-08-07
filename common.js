@@ -251,16 +251,17 @@ module.exports = {
             tijd = ms(gegevenTijd);
 
             if (!tijd) {
-                tijd = roleChar == 's'? -1 : willekeurigeRolTijd();
+                tijd = roleChar == 's' ? -1 : willekeurigeRolTijd();
+
                 reden = args.slice(1).join(' ');
             } else if (tijd > tijdLimiet) {
-                if (roleChar == 's') {
-                    message.channel.send("Dat je het weet, automatisch rol wegnemen gaat hier niet gebeuren want de duur is te lang. Succes ermee!");
-                } else {
-                    return message.channel.send("Geloof me, ik had het ook machtig gevonden maar hij wilt gewoon niet langer, soms is het gewoon zo.");
-                }
+                message.channel.send("Dat je het weet, automatisch rol wegnemen gaat hier niet gebeuren want de duur is te lang. Succes ermee!");
             } else {
-                reden = args.slice(2).join(' ');
+                if (args.length > 2) {
+                    reden = args.slice(2).join(' ');
+                } else {
+                    reden = args.slice(1).join(' ');
+                }
             }
         }
 		
@@ -336,7 +337,7 @@ module.exports = {
         let voetTekst = message.member.displayName;
 
         if (aantalSpanjoleringen > 0) {
-            voetTekst = voetTekst + ` ${aantalSpanjoleringen}`;
+            voetTekst = voetTekst + `; Aantal spanjool afgelopen maand: ${aantalSpanjoleringen}`;
         }
 
         let verlossingsMoment = dayjs(Date.now() + tijd);

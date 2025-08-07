@@ -14,6 +14,7 @@ module.exports = {
         if (!spanjoleringen) return;
 
         let ontsnappingenGesnapt = 0;
+        let gebruikersOverTermijn = false;
 
         for (var sleutel of Object.keys(spanjoleringen)) {
             let manIsSpanjool = spanjoleringen[sleutel].filter(s => s.ontjoolDatum > Date.now()).length > 0;
@@ -57,7 +58,7 @@ module.exports = {
                             member.roles.remove(spanjoolID);
                         }, tijdOver);
                     } else {
-                        message.channel.send("hee natte anjer die je bent, ontspanjool duurt nog zo lang dat ik het niet ga doen, joe joe!");
+                        gebruikersOverTermijn = true;
                     }
                     
                     var leesbareTijd = dayjs(spanjaard.ontjoolDatum).format("DD-MM-YYYY HH:mm");
@@ -70,6 +71,10 @@ module.exports = {
                     return message.channel.send("auwie, dat deed pijn");
                 }
             }
+        }
+
+        if (gebruikersOverTermijn) {
+            message.channel.send("Tevens, sommige gebruikers zijn nog zo lang spanjool dat je die zelf bij mag gaan houden, joe joe!");
         }
 
         return message.channel.send(`Hoppa, ${ontsnappingenGesnapt} gluiperd(s) weer gegeven wat ze verdienen, gna gna.`);
