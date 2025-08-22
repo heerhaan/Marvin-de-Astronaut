@@ -5,15 +5,6 @@ const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID, clientId } = require('./config.json');
 const spanjoleringData = require('./spanjoleringData.json');
 const tijdLimiet = 2147483646;
-const opmerkingen = [
-    "nee tyf op, ik heb hier geen zin in",
-    "Ik heb hier geen zin in, jij hebt hier eigenlijk geen zin in. Weet je, we doen het gewoon niet.",
-    "Nouh nee",
-    "Zoek het effe lekker uit",
-    "Gaan we niet doen",
-    "Ik dacht het dus even niet, jij wandelend gezwel",
-    "ikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemuren",
-];
 
 function willekeurigeRolTijd() {
     let ranMin = Math.floor(Math.random() * (210 - 30) + 30);
@@ -23,6 +14,10 @@ function willekeurigeRolTijd() {
 function geefVoorzetsel() {
     if ((Math.floor(Math.random() * 1000)) == 0) {
         return "Tevens denk je dat yoshi zich schaamt als hij voor mario eieren poept? sorry als ik iemand hiermee beledig maar ik dacht dat het wel grappig was haha. en ik vroeg me af of iemand hier foto's heeft van yoshi die een ei uit poept waarop hij nerveus of verlegen is ik wil het gewoon zien om een beetje te lachen haha.. nog iets dat ik me afvroeg is hoe denk je dat de eieren ruiken haha ik ben gewoon benieuwd wil gewoon een beetje lachen haha ik zou er wel aan willen ruiken";
+    }
+
+    if ((Math.floor(Math.random() * 250)) == 0) {
+        return "Waarom zou Stoel dit doen";
     }
     
     var voorzetsels = [
@@ -50,9 +45,14 @@ function geefVoorzetsel() {
         "Ik! Marvin! Maar bovenal",
         "Curieus",
         "Dubieus",
+        "Sapperedosio",
         "Frappant",
         "Vandaag is het een metaforische maandag",
         "Ik trek het niet meer",
+        "Wel wel wel",
+        "Man is moe",
+        "Deze actie werd mede mogelijk gemaakt door Koeka Cola",
+        "Gast"
     ];
 
     let ranNum = Math.floor(Math.random() * voorzetsels.length);
@@ -423,9 +423,5 @@ module.exports = {
             console.error(err);
             return message.channel.send("Oef autsj, wegschrijven van de nieuwe gegevens ging dus niet goed.");
         }
-    },
-    bijdehanteOpmerking: function() {
-        let nummertje = Math.floor(Math.random() * opmerkingen.length);
-        return voorzetsels[nummertje];
     }
 };

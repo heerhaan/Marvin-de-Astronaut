@@ -16,7 +16,7 @@ module.exports = {
             interaction.react('🌌');
         }
 
-        if (fullContent === "kutmarvin") {
+        if (fullContent === "kutmarvin" || fullContent === "kuthaan") {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
         }
 
@@ -47,7 +47,8 @@ module.exports = {
 
         // Command niet aanwezig na de prefix? Stop.
         if (!client.commands.has(commandName)) {
-            return interaction.channel.send(`En wat wil je precies dat ik ga doen? Want wat je net voorstelde ben ik niet bekend mee, flapdrol.`);
+            let brutaleOpmerking = geefBrutaalCommentaar();
+            return interaction.channel.send(brutaleOpmerking);
         }
 
         // Haalt de command en duwt hem in een variabel
@@ -82,6 +83,22 @@ module.exports = {
         }
 	},
 };
+
+function geefBrutaalCommentaar() {
+    var opmerkingen = [
+        "nee tyf op, ik heb hier geen zin in",
+        "Ik heb hier geen zin in, jij hebt hier eigenlijk geen zin in. Weet je, we doen het gewoon niet.",
+        "Nouh nee",
+        "En wat wil je precies dat ik ga doen? Want wat je net voorstelde ben ik niet bekend mee, flapdrol.",
+        "Zoek het effe lekker uit",
+        "Gaan we niet doen",
+        "Ik dacht het dus even niet, jij wandelend gezwel",
+        "ikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemuren",
+    ];
+
+    let nummertje = Math.floor(Math.random() * opmerkingen.length);
+    return opmerkingen[nummertje];
+}
 
 function rookMelding(niveau, author) {
     var random = Math.floor((Math.random() * 2) + 1);
