@@ -118,6 +118,10 @@ async function sakspolitie (message, fullMessage, gebruiker)
         return;
 
     let woorden = findMatchedWords(fullMessage, saksData.saksWoorden);
+
+    if (woorden.length === 0)
+        return;
+
     let berichtWoorden = formatWordList(woorden);
     let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
     interaction.channel.send(bericht);
