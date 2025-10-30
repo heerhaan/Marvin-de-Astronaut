@@ -1,52 +1,64 @@
 const { prefix, ownerID, adminID } = require("../config.json");
 var valuePairs = {};
+const common = require("../common.js");
 
 module.exports = {
-	name: 'messageCreate',
-	async execute(interaction) {
+    name: 'messageCreate',
+    async execute (interaction)
+    {
         // Immediatly return if the message came from another bot
         if (interaction.author.bot) return;
-        
+
         const fullContent = interaction.content.toLowerCase();
         const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
         const client = interaction.client;
 
-        if (fullContent.includes("ruimte")) {
+        if (fullContent.includes("ruimte"))
+        {
             interaction.react('🌌');
         }
 
-        if (fullContent === "kutmarvin" || fullContent === "kuthaan") {
+        if (fullContent === "kutmarvin" || fullContent === "kuthaan")
+        {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
         }
 
-        if (valuePairs['roulette'] && fullContent.includes(valuePairs['roulette'])) {
+        if (valuePairs['roulette'] && fullContent.includes(valuePairs['roulette']))
+        {
             interaction.channel.send(`Woa-hoah! ${interaction.member.displayName} zei het roulettewoord! Tek de stadthouders om deze persoon te geven wat die verdiend.`);
         }
+
+        await sakspolitie(message, fullContent, interaction.author);
 
         // Stopt als het geen prefix kon vinden
         if (!interaction.content.startsWith(prefix)) return;
 
         // Rookmelding? Netjes.
-        if (!isNaN(commandName) && !args.length) {
+        if (!isNaN(commandName) && !args.length)
+        {
             var rookBericht = rookMelding(commandName, interaction.author);
             return interaction.channel.send(rookBericht);
         }
 
-        if (commandName === 'roulette' && interaction.member.roles.cache.has(adminID)) {
+        if (commandName === 'roulette' && interaction.member.roles.cache.has(adminID))
+        {
             var rouletteWord = args[0];
 
-            if (!rouletteWord) {
+            if (!rouletteWord)
+            {
                 valuePairs['roulette'] = null;
                 return interaction.channel.send("Huidig roulette-woord verwijderd, geen nieuwe toegevoegd!");
-            } else {
+            } else
+            {
                 valuePairs['roulette'] = rouletteWord;
                 return interaction.channel.send(`Groot succes! Huidig roulette-woord is nu ${valuePairs['roulette']}`);
             }
         }
 
         // Command niet aanwezig na de prefix? Stop.
-        if (!client.commands.has(commandName)) {
+        if (!client.commands.has(commandName))
+        {
             let brutaleOpmerking = geefBrutaalCommentaar();
             return interaction.channel.send(brutaleOpmerking);
         }
@@ -55,36 +67,130 @@ module.exports = {
         const command = client.commands.get(commandName);
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !interaction.member.roles.cache.has(adminID) && interaction.member.id != ownerID) {
+        if (command.admin && !interaction.member.roles.cache.has(adminID) && interaction.member.id != ownerID)
+        {
             return interaction.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
         // Commando's exclusief voor Haan (lol haha)
-        if (command.exclusive && interaction.author.id !== ownerID) {
-            return interaction.channel.send("Hoe durf je mij hierop aan te spreken, alleen mijn schepper en verwekker mag dat!!")
+        if (command.exclusive && interaction.author.id !== ownerID)
+        {
+            return interaction.channel.send("Hoe durf je mij hierop aan te spreken, alleen mijn schepper en verwekker mag dat!!");
         }
 
         // Controleert of parameters gegeven moeten worden, indien van wel en ze zijn er niet dan geeft Marvin een melding
-        if (command.args && !args.length) {
+        if (command.args && !args.length)
+        {
             let reply = `Hee klaplul, je moet wel goed specificeren wat je wilt, hé?!`;
 
-            if (command.usage) {
+            if (command.usage)
+            {
                 reply += `\nZo hoor je het commando gebruiken: \`${prefix}${command.name} ${command.usage}\``;
             }
             return interaction.channel.send(reply);
         }
 
         // Eindelijk voeren we de content van de command uit
-        try {
+        try
+        {
             command.execute(interaction, args);
-        } catch (err) {
+        } catch (err)
+        {
             console.log(err);
             interaction.channel.send('oepsiedoepsie, er ging iets stukkiewukkie!');
         }
-	},
+    },
 };
 
-function geefBrutaalCommentaar() {
+async function sakspolitie (message, fullMessage, gebruiker)
+{
+    const saksData = require('./saksData.json');
+    const kanalen = require("./autospanjoolkanalen.json") || [];
+    if (!kanalen.includes(message.channel))
+        return;
+
+    const member = await interaction.guild.members.fetch(gebruiker.id);
+    const joinedAt = member.joinedAt;
+    const diffMs = Date.now() - joinedAt.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
+
+    if (diffHours < saksData.urenTotWaarschuwingen)
+        return;
+
+    let woorden = findMatchedWords(fullMessage, saksData.saksWoorden);
+    let berichtWoorden = formatWordList(woorden);
+    let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
+    interaction.channel.send(bericht);
+
+    if (diffHours < saksData.urenTotVolleStraf && diffHours >= saksData.urenTotKleineSpanjool)
+    {
+        common.klokRol(message, [gebruiker.username, saksData.kleineSpanjoolTijd, "Automatische spanjolering door Marvin, verminderde straf."], "s");
+    }
+    else
+    {
+        common.klokRol(message, [gebruiker.username, "Automatische spanjolering door Marvin."], "s");
+    }
+}
+
+function findMatchedWords (sentence, woordenlijst)
+{
+    const results = [];
+
+    // normalise to lowercase for case-insensitive matching
+    const lowerSentence = sentence.toLowerCase();
+
+    for (const item of woordenlijst)
+    {
+        const word = item.woord.toLowerCase();
+
+        // Check for full-word match using word boundaries
+        const fullWordRegex = new RegExp(`\\b${word}\\b`, 'i');
+        const fullWord = fullWordRegex.test(sentence);
+
+        // Check for partial-word match (contains word anywhere)
+        const partial = lowerSentence.includes(word);
+
+        if (partial && (!item.enkelHeelWoord || fullWord))
+        {
+            results.push({
+                word: word,
+                fullWord: fullWord
+            });
+        }
+    }
+
+    // Deduplicate results by both word and fullWord
+    const unique = [];
+    for (const r of results)
+    {
+        if (!unique.some(u => u.word === r.word && u.fullWord === r.fullWord))
+        {
+            unique.push(r);
+        }
+    }
+
+    return unique;
+}
+
+function formatWordList (matches)
+{
+    // Extract only the 'word' field
+    const words = matches.map(m => m.word);
+
+    // Remove duplicates (same spelling, regardless of fullWord)
+    const uniqueWords = [...new Set(words)];
+
+    if (uniqueWords.length === 0) return '';
+    if (uniqueWords.length === 1) return uniqueWords[0];
+    if (uniqueWords.length === 2) return `${uniqueWords[0]} en ${uniqueWords[1]}`;
+
+    // Join with commas, and add 'en' before the last
+    const lastWord = uniqueWords.pop();
+    return `${uniqueWords.join(', ')} en ${lastWord}`;
+}
+
+function geefBrutaalCommentaar ()
+{
     var opmerkingen = [
         "nee tyf op, ik heb hier geen zin in",
         "Ik heb hier geen zin in, jij hebt hier eigenlijk geen zin in. Weet je, we doen het gewoon niet.",
@@ -100,14 +206,18 @@ function geefBrutaalCommentaar() {
     return opmerkingen[nummertje];
 }
 
-function rookMelding(niveau, author) {
+function rookMelding (niveau, author)
+{
     var random = Math.floor((Math.random() * 2) + 1);
-    switch (niveau) {
+    switch (niveau)
+    {
         case "0":
-            if (random === 1) {
+            if (random === 1)
+            {
                 return `${author} is nog op planeet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
-            } else {
-                return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`)
+            } else
+            {
+                return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`);
             }
         case "1":
             return `Nou, ${author} is van de grond gekomen maar de ruimte lijkt nog erg ver te zijn!`;

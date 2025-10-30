@@ -1,0 +1,52 @@
+{
+    "urenTotWaarschuwingen": 5,
+    "urenTotKleineSpanjool": 10,
+    "kleineSpanjoolTijd": "1m",
+    "urenTotVolleStraf": 24,
+    "saksWoorden":
+    [
+        {
+            "woord" : "server",
+            "enkelHeelWoord": false,
+            "vervanging": "Ober"
+        },
+        {
+            "woord": "check",
+            "enkelHeelWoord": false,
+            "vervanging": "Controle"
+        },
+        {
+            "woord": "discord",
+            "enkelHeelWoord": false,
+            "vervanging": "Tweedracht"
+        },
+        {
+            "woord": "sorry",
+            "enkelHeelWoord": false,
+            "vervanging": "Excuses"
+        },
+        {
+            "woord": "shit",
+            "enkelHeelWoord": false,
+            "vervanging": "Kak"
+        },
+        {
+            "woord": "hell",
+            "enkelHeelWoord": true,
+            "vervanging": "Hel"
+        }
+    ],
+    "berichten":
+    [
+        "In deze ober zeggen wij '{WOORD}'",
+        "Je bedoelde '{WOORD}' zeker?",
+        "Je hoort '{WOORD}' te zeggen, mafklapper.",
+        "Ja, dat had dus '{WOORD}' moeten zijn, piemel.",
+        "Plopperdeplop, had je daar niet '{WOORD}' bedoeld?",
+        "Dat is illegaal! Gebruik voortaan '{WOORD}'.",
+        "Op dit woord staat de doodsstraf. Zeg vanaf nu liever '{WOORD}'!",
+        "Oelewapper, dat had '{WOORD}' moeten zijn!",
+        "Jij hoort beter te weten. Dat moest '{WOORD}' zijn.",
+        "Kus jij je moeder met die mond? Zeg gewoon '{WOORD}'!"
+    ]
+}
