@@ -33,6 +33,216 @@
             "woord": "hell",
             "enkelHeelWoord": true,
             "vervanging": "Hel"
+        },
+        {
+            "woord": "cool",
+            "enkelHeelWoord": true,
+            "vervanging": "Koel"
+        },
+        {
+            "woord": "game",
+            "enkelHeelWoord": true,
+            "vervanging": "Spel"
+        },
+        {
+            "woord": "gamer",
+            "enkelHeelWoord": false,
+            "vervanging": "Speler"
+        },
+        {
+            "woord": "update",
+            "enkelHeelWoord": true,
+            "vervanging": "Opdatum"
+        },
+        {
+            "woord": "chat",
+            "enkelHeelWoord": true,
+            "vervanging": "Praat"
+        },
+        {
+            "woord": "computer",
+            "enkelHeelWoord": false,
+            "vervanging": "Rekenaar"
+        },
+        {
+            "woord": "smartphone",
+            "enkelHeelWoord": false,
+            "vervanging": "Slimtelefoon"
+        },
+        {
+            "woord": "laptop",
+            "enkelHeelWoord": false,
+            "vervanging": "Schoottop"
+        },
+        {
+            "woord": "browser",
+            "enkelHeelWoord": false,
+            "vervanging": "Bladeraar"
+        },
+        {
+            "woord": "internet",
+            "enkelHeelWoord": false,
+            "vervanging": "Netwerk"
+        },
+        {
+            "woord": "website",
+            "enkelHeelWoord": true,
+            "vervanging": "Webstek"
+        },
+        {
+            "woord": "mail",
+            "enkelHeelWoord": true,
+            "vervanging": "Post"
+        },
+        {
+            "woord": "email",
+            "enkelHeelWoord": true,
+            "vervanging": "E-post"
+        },
+        {
+            "woord": "manager",
+            "enkelHeelWoord": false,
+            "vervanging": "Leidinggevende"
+        },
+        {
+            "woord": "meeting",
+            "enkelHeelWoord": false,
+            "vervanging": "Vergadering"
+        },
+        {
+            "woord": "deadline",
+            "enkelHeelWoord": false,
+            "vervanging": "Eindtijd"
+        },
+        {
+            "woord": "team",
+            "enkelHeelWoord": true,
+            "vervanging": "Ploeg"
+        },
+        {
+            "woord": "boss",
+            "enkelHeelWoord": true,
+            "vervanging": "Baas"
+        },
+        {
+            "woord": "stress",
+            "enkelHeelWoord": true,
+            "vervanging": "Spanning"
+        },
+        {
+            "woord": "relax",
+            "enkelHeelWoord": true,
+            "vervanging": "Ontspan"
+        },
+        {
+            "woord": "focus",
+            "enkelHeelWoord": true,
+            "vervanging": "Scherpstelling"
+        },
+        {
+            "woord": "fake",
+            "enkelHeelWoord": true,
+            "vervanging": "Vals"
+        },
+        {
+            "woord": "random",
+            "enkelHeelWoord": true,
+            "vervanging": "Willekeurig"
+        },
+        {
+            "woord": "crash",
+            "enkelHeelWoord": true,
+            "vervanging": "Botsing"
+        },
+        {
+            "woord": "bug",
+            "enkelHeelWoord": true,
+            "vervanging": "Kever"
+        },
+        {
+            "woord": "hack",
+            "enkelHeelWoord": true,
+            "vervanging": "Inbraak"
+        },
+        {
+            "woord": "mod",
+            "enkelHeelWoord": true,
+            "vervanging": "Aanpassing"
+        },
+        {
+            "woord": "script",
+            "enkelHeelWoord": true,
+            "vervanging": "Schrift"
+        },
+        {
+            "woord": "system",
+            "enkelHeelWoord": true,
+            "vervanging": "Stelsel"
+        },
+        {
+            "woord": "support",
+            "enkelHeelWoord": true,
+            "vervanging": "Ondersteuning"
+        },
+        {
+            "woord": "music",
+            "enkelHeelWoord": true,
+            "vervanging": "Muziek"
+        },
+        {
+            "woord": "selfie",
+            "enkelHeelWoord": false,
+            "vervanging": "Zelfportret"
+        },
+        {
+            "woord": "vibe",
+            "enkelHeelWoord": true,
+            "vervanging": "Vibreer"
+        },
+        {
+            "woord": "fan",
+            "enkelHeelWoord": true,
+            "vervanging": "Ventilator"
+        },
+        {
+            "woord": "cooldown",
+            "enkelHeelWoord": false,
+            "vervanging": "Afblaastijd"
+        },
+        {
+            "woord": "reload",
+            "enkelHeelWoord": false,
+            "vervanging": "Herlaad"
+        },
+        {
+            "woord": "bossfight",
+            "enkelHeelWoord": false,
+            "vervanging": "Baasgevecht"
+        },
+        {
+            "woord": "stream",
+            "enkelHeelWoord": true,
+            "vervanging": "Stroom"
+        },
+        {
+            "woord": "event",
+            "enkelHeelWoord": true,
+            "vervanging": "Gebeurtenis"
+        },
+        {
+            "woord": "serverless",
+            "enkelHeelWoord": true,
+            "vervanging": "Oberloos"
+        },
+        {
+            "woord": "tutorial",
+            "enkelHeelWoord": true,
+            "vervanging": "Leerleiding"
+        },
+        {
+            "woord": "AI",
+            "enkelHeelWoord": true,
+            "vervanging": "KI"
         }
     ],
     "berichten": [
