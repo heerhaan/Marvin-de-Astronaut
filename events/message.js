@@ -106,7 +106,28 @@ module.exports = {
 async function sakspolitie (interaction, message, fullMessage, gebruiker)
 {
     const saksData = require('./saksData.json');
-    const kanalen = require("./autospanjoolkanalen.json") || [];
+    let kanalen = [];
+
+    try
+    {
+        if (fs.existsSync('./autospanjoolkanalen.json'))
+        {
+            kanalen = JSON.parse(fs.readFileSync('./autospanjoolkanalen.json', 'utf8'));
+        }
+    } catch (err)
+    {
+        console.log('Kon autospanjoolkanalen.json niet lezen, dus ik maak een nieuwe');
+        fs.writeFile("./autospanjoolkanalen.json", JSON.stringify([]), function (err)
+        {
+            if (err)
+            {
+                console.log(err);
+            }
+
+            console.log(`Auto-spanjool gegevens opgeslagen.`);
+        });
+    }
+
     if (!kanalen.includes(message.channel))
         return;
 
