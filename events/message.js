@@ -1,6 +1,7 @@
 const { prefix, ownerID, adminID } = require("../config.json");
 var valuePairs = {};
 const common = require("../common.js");
+const fs = require('node:fs');
 
 module.exports = {
     name: 'messageCreate',
@@ -29,7 +30,7 @@ module.exports = {
             interaction.channel.send(`Woa-hoah! ${interaction.member.displayName} zei het roulettewoord! Tek de stadthouders om deze persoon te geven wat die verdiend.`);
         }
 
-        await sakspolitie(message, fullContent, interaction.author);
+        await sakspolitie(interaction, message, fullContent, interaction.author);
 
         // Stopt als het geen prefix kon vinden
         if (!interaction.content.startsWith(prefix)) return;
@@ -102,7 +103,7 @@ module.exports = {
     },
 };
 
-async function sakspolitie (message, fullMessage, gebruiker)
+async function sakspolitie (interaction, message, fullMessage, gebruiker)
 {
     const saksData = require('./saksData.json');
     const kanalen = require("./autospanjoolkanalen.json") || [];

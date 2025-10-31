@@ -1,4 +1,5 @@
 const common = require("../../common.js");
+const fs = require('node:fs');
 
 module.exports = {
     name: "as",
@@ -7,7 +8,18 @@ module.exports = {
     admin: true,
     execute (message, args)
     {
-        const kanalen = require("./autospanjoolkanalen.json") || [];
+        let kanalen = [];
+
+        try
+        {
+            if (fs.existsSync('./autospanjoolkanalen.json'))
+            {
+                kanalen = JSON.parse(fs.readFileSync('./autospanjoolkanalen.json', 'utf8'));
+            }
+        } catch (err)
+        {
+            console.error('Kon autospanjoolkanalen.json niet lezen, dus ik maak een nieuwe:', err);
+        }
 
         let add = args[0].toLowerCase().trim() === "j";
 
