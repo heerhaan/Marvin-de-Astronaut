@@ -12,10 +12,7 @@ module.exports = {
 
         try
         {
-            if (fs.existsSync('./autospanjoolkanalen.json'))
-            {
-                kanalen = JSON.parse(fs.readFileSync('./autospanjoolkanalen.json', 'utf8'));
-            }
+            kanalen = JSON.parse(fs.readFileSync('./autospanjoolkanalen.json', 'utf8'));
         } catch (err)
         {
             console.error('Kon autospanjoolkanalen.json niet lezen, dus ik maak een nieuwe:', err);

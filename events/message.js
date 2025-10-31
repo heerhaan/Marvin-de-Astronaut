@@ -110,10 +110,7 @@ async function sakspolitie (interaction, message, fullMessage, gebruiker)
 
     try
     {
-        if (fs.existsSync('./autospanjoolkanalen.json'))
-        {
-            kanalen = JSON.parse(fs.readFileSync('./autospanjoolkanalen.json', 'utf8'));
-        }
+        kanalen = JSON.parse(fs.readFileSync('./autospanjoolkanalen.json', 'utf8'));
     } catch (err)
     {
         console.log('Kon autospanjoolkanalen.json niet lezen, dus ik maak een nieuwe');
