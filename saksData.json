@@ -30,6 +30,11 @@
             "vervanging": "Bzt"
         },
         {
+            "woord": "nice",
+            "enkelHeelWoord": true,
+            "vervanging": "Mooi"
+        },
+        {
             "woord": "weekend",
             "enkelHeelWoord": false,
             "vervanging": "Weekeinde"

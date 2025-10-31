@@ -158,7 +158,8 @@ function findMatchedWords (sentence, woordenlijst)
         {
             results.push({
                 word: word,
-                fullWord: fullWord
+                fullWord: fullWord,
+                replacement: item.vervanging.toLowerCase()
             });
         }
     }
@@ -179,7 +180,7 @@ function findMatchedWords (sentence, woordenlijst)
 function formatWordList (matches)
 {
     // Extract only the 'word' field
-    const words = matches.map(m => m.word);
+    const words = matches.map(m => m.replacement);
 
     // Remove duplicates (same spelling, regardless of fullWord)
     const uniqueWords = [...new Set(words)];
