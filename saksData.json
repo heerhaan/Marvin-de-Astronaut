@@ -90,6 +90,11 @@
             "vervanging": "Waterkast"
         },
         {
+            "woord": "wc",
+            "enkelHeelWoord": true,
+            "vervanging": "Waterkast"
+        },
+        {
             "woord": "boy",
             "enkelHeelWoord": false,
             "vervanging": "Jongen"
