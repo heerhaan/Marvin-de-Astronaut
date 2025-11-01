@@ -207,8 +207,13 @@ function formatWordList (matches)
     const uniqueWords = [...new Set(words)];
 
     if (uniqueWords.length === 0) return '';
-    if (uniqueWords.length === 1) return uniqueWords[0];
-    if (uniqueWords.length === 2) return `${uniqueWords[0]} en ${uniqueWords[1]}`;
+    if (uniqueWords.length === 1) return `"${uniqueWords[0]}"`;
+    if (uniqueWords.length === 2) return `"${uniqueWords[0]}" en "${uniqueWords[1]}"`;
+
+    for (let i = 0, l = uniqueWords.length; i < l; i++)
+    {
+        uniqueWords[i] = `"${uniqueWords[i]}"`;
+    }
 
     // Join with commas, and add 'en' before the last
     const lastWord = uniqueWords.pop();
