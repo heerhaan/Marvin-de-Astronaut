@@ -20,6 +20,86 @@
             "vervanging": "Lmke"
         },
         {
+            "woord": "boycot",
+            "enkelHeelWoord": false,
+            "vervanging": "Uitsluiting"
+        },
+        {
+            "woord": "software",
+            "enkelHeelWoord": false,
+            "vervanging": "Zachtwaren"
+        },
+        {
+            "woord": "hardware",
+            "enkelHeelWoord": false,
+            "vervanging": "Hardewaren"
+        },
+        {
+            "woord": "backup",
+            "enkelHeelWoord": false,
+            "vervanging": "Reservekopie"
+        },
+        {
+            "woord": "training",
+            "enkelHeelWoord": false,
+            "vervanging": "Oefening"
+        },
+        {
+            "woord": "club",
+            "enkelHeelWoord": false,
+            "vervanging": "Vereniging"
+        },
+        {
+            "woord": "parfum",
+            "enkelHeelWoord": false,
+            "vervanging": "Geurtje"
+        },
+        {
+            "woord": "cadeau",
+            "enkelHeelWoord": false,
+            "vervanging": "Geschenk"
+        },
+        {
+            "woord": "etage",
+            "enkelHeelWoord": false,
+            "vervanging": "Verdieping"
+        },
+        {
+            "woord": "hotel",
+            "enkelHeelWoord": false,
+            "vervanging": "Herberg"
+        },
+        {
+            "woord": "jeans",
+            "enkelHeelWoord": false,
+            "vervanging": "Spijkerbroek"
+        },
+        {
+            "woord": "deadline",
+            "enkelHeelWoord": false,
+            "vervanging": "Dodelijn"
+        },
+        {
+            "woord": "douche",
+            "enkelHeelWoord": false,
+            "vervanging": "Stortbad"
+        },
+        {
+            "woord": "toilet",
+            "enkelHeelWoord": false,
+            "vervanging": "Waterkast"
+        },
+        {
+            "woord": "boy",
+            "enkelHeelWoord": false,
+            "vervanging": "Jongen"
+        },
+        {
+            "woord": "girl",
+            "enkelHeelWoord": false,
+            "vervanging": "Meisje"
+        },
+        {
             "woord": "kitten", 
             "enkelHeelWoord": false, 
             "vervanging": "Kattenwelp" 
