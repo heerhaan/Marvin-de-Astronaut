@@ -100,15 +100,15 @@
             "vervanging": "Meisje"
         },
         {
-            "woord": "kitten", 
-            "enkelHeelWoord": false, 
-            "vervanging": "Kattenwelp" 
-        }, 
+            "woord": "kitten",
+            "enkelHeelWoord": false,
+            "vervanging": "Kattenwelp"
+        },
         {
             "woord": "actie",
             "enkelHeelWoord": false,
             "vervanging": "Werking"
-        }, 
+        },
         {
             "woord": "tbh",
             "enkelHeelWoord": true,
@@ -755,7 +755,7 @@
         "We zaten nog zo goed op koers, tot jij {WOORD} vergat, en alles onderuit haalde.",
         "Ergens tussen je zin en je trots verloor je het, en daar lag het juiste: {WOORD}.",
         "Je begon sterk, maar halverwege kwam dat monster van een leenwoord. Het moest {WOORD} zijn.",
-        "Eerst dacht ik: dit gaat de goede kant op, maar toen vergat je {WOORD} en ik verloor de wil om te leven.",
+        "Eerst dacht ik: dit gaat de goede kant op, maar toen vergat je {WOORD} en verloor ik de wil om te leven.",
         "Je zei het met overtuiging, maar toen dacht je weer beter te weten dan {WOORD} en wist ik: het is voorbij.",
         "Het was een mooi moment, tot jij het vernielde. Zeg nou gewoon {WOORD}.",
         "Ik hoorde je praten, en dacht even: dit klinkt goed. En toen vergat je {WOORD}.",
