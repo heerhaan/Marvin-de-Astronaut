@@ -81,7 +81,7 @@
         },
         {
             "woord": "coole",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Koele"
         },
         {
@@ -96,7 +96,7 @@
         },
         {
             "woord": "update",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Opdatum"
         },
         {
@@ -116,7 +116,7 @@
         },
         {
             "woord": "route",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "weg"
         },
         {
@@ -151,17 +151,17 @@
         },
         {
             "woord": "website",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Webstek"
         },
         {
             "woord": "mail",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Post"
         },
         {
             "woord": "email",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "E-post"
         },
         {
@@ -181,7 +181,7 @@
         },
         {
             "woord": "team",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Ploeg"
         },
         {
@@ -191,12 +191,12 @@
         },
         {
             "woord": "stress",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Spanning"
         },
         {
             "woord": "relax",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Ontspan"
         },
         {
@@ -211,7 +211,7 @@
         },
         {
             "woord": "focus",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Scherpstelling"
         },
         {
@@ -221,12 +221,12 @@
         },
         {
             "woord": "random",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Willekeurig"
         },
         {
             "woord": "crash",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Botsing"
         },
         {
@@ -246,22 +246,22 @@
         },
         {
             "woord": "script",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Schrift"
         },
         {
             "woord": "system",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Stelsel"
         },
         {
             "woord": "support",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Ondersteuning"
         },
         {
             "woord": "music",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Muziek"
         },
         {
@@ -315,8 +315,13 @@
             "vervanging": "Androïde"
         },
         {
+            "woord": "safe",
+            "enkelHeelWoord": false,
+            "vervanging": "Veilig"
+        },
+        {
             "woord": "space",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Ruimte"
         },
         {
@@ -386,7 +391,7 @@
         },
         {
             "woord": "stream",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Stroom"
         },
         {
@@ -446,12 +451,12 @@
         },
         {
             "woord": "serverless",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Oberloos"
         },
         {
             "woord": "tutorial",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Leerleiding"
         },
         {
