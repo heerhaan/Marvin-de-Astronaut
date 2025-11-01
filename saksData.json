@@ -20,6 +20,11 @@
             "vervanging": "Lmke"
         },
         {
+            "woord": "kitten", 
+            "enkelHeelWoord": false, 
+            "vervanging": "Kattenwelp" 
+        }, 
+        {
             "woord": "tbh",
             "enkelHeelWoord": true,
             "vervanging": "Oetz"
