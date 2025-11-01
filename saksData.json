@@ -411,8 +411,18 @@
         },
         {
             "woord": "chill",
-            "enkelHeelWoord": false,
+            "enkelHeelWoord": true,
             "vervanging": "Koel"
+        },
+        {
+            "woord": "chille",
+            "enkelHeelWoord": true,
+            "vervanging": "Koele"
+        },
+        {
+            "woord": "chillen",
+            "enkelHeelWoord": true,
+            "vervanging": "Koelen"
         },
         {
             "woord": "event",
