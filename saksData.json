@@ -195,6 +195,16 @@
             "vervanging": "Ontspan"
         },
         {
+            "woord": "bureau",
+            "enkelHeelWoord": false,
+            "vervanging": "werkplank"
+        },
+        {
+            "woord": "portemonnee",
+            "enkelHeelWoord": false,
+            "vervanging": "Beurs"
+        },
+        {
             "woord": "focus",
             "enkelHeelWoord": true,
             "vervanging": "Scherpstelling"
@@ -275,6 +285,86 @@
             "vervanging": "Herlaad"
         },
         {
+            "woord": "microsoft",
+            "enkelHeelWoord": false,
+            "vervanging": "Kleinzacht"
+        },
+        {
+            "woord": "apple",
+            "enkelHeelWoord": false,
+            "vervanging": "Appel"
+        },
+        {
+            "woord": "android",
+            "enkelHeelWoord": false,
+            "vervanging": "Androïde"
+        },
+        {
+            "woord": "space",
+            "enkelHeelWoord": true,
+            "vervanging": "Ruimte"
+        },
+        {
+            "woord": "service",
+            "enkelHeelWoord": false,
+            "vervanging": "Dienst"
+        },
+        {
+            "woord": "download",
+            "enkelHeelWoord": false,
+            "vervanging": "Neerlaad"
+        },
+        {
+            "woord": "upload",
+            "enkelHeelWoord": false,
+            "vervanging": "Oplaad"
+        },
+        {
+            "woord": "consent",
+            "enkelHeelWoord": false,
+            "vervanging": "Toestemming"
+        },
+        {
+            "woord": "gender",
+            "enkelHeelWoord": false,
+            "vervanging": "Geslacht"
+        },
+        {
+            "woord": "fuck",
+            "enkelHeelWoord": false,
+            "vervanging": "Neuk"
+        },
+        {
+            "woord": "exit",
+            "enkelHeelWoord": false,
+            "vervanging": "Uitgang"
+        },
+        {
+            "woord": "poll",
+            "enkelHeelWoord": true,
+            "vervanging": "Peiling"
+        },
+        {
+            "woord": "journaal",
+            "enkelHeelWoord": false,
+            "vervanging": "Nieuwsrubriek"
+        },
+        {
+            "woord": "gay",
+            "enkelHeelWoord": false,
+            "vervanging": "Homo"
+        },
+        {
+            "woord": "youtube",
+            "enkelHeelWoord": false,
+            "vervanging": "Jijbuis"
+        },
+        {
+            "woord": "pizza",
+            "enkelHeelWoord": false,
+            "vervanging": "Deegschijf"
+        },
+        {
             "woord": "bossfight",
             "enkelHeelWoord": false,
             "vervanging": "Baasgevecht"
@@ -283,6 +373,46 @@
             "woord": "stream",
             "enkelHeelWoord": true,
             "vervanging": "Stroom"
+        },
+        {
+            "woord": "sws",
+            "enkelHeelWoord": true,
+            "vervanging": "Hdo"
+        },
+        {
+            "woord": "sure",
+            "enkelHeelWoord": false,
+            "vervanging": "Zeker"
+        },
+        {
+            "woord": "sowieso",
+            "enkelHeelWoord": false,
+            "vervanging": "Hoe dan ook"
+        },
+        {
+            "woord": "subway",
+            "enkelHeelWoord": false,
+            "vervanging": "Ondergronds"
+        },
+        {
+            "woord": "high",
+            "enkelHeelWoord": false,
+            "vervanging": "Hoog"
+        },
+        {
+            "woord": "bucket",
+            "enkelHeelWoord": false,
+            "vervanging": "Emmer"
+        },
+        {
+            "woord": "live",
+            "enkelHeelWoord": false,
+            "vervanging": "Leef"
+        },
+        {
+            "woord": "chill",
+            "enkelHeelWoord": false,
+            "vervanging": "Koel"
         },
         {
             "woord": "event",
@@ -298,6 +428,11 @@
             "woord": "tutorial",
             "enkelHeelWoord": true,
             "vervanging": "Leerleiding"
+        },
+        {
+            "woord": "restaurant",
+            "enkelHeelWoord": false,
+            "vervanging": "Eethuis"
         },
         {
             "woord": "AI",
