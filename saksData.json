@@ -25,6 +25,11 @@
             "vervanging": "Kattenwelp" 
         }, 
         {
+            "woord": "actie",
+            "enkelHeelWoord": false,
+            "vervanging": "Werking"
+        }, 
+        {
             "woord": "tbh",
             "enkelHeelWoord": true,
             "vervanging": "Oetz"
