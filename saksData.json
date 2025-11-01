@@ -270,9 +270,19 @@
             "vervanging": "Vibreer"
         },
         {
+            "woord": "viben",
+            "enkelHeelWoord": true,
+            "vervanging": "Vibreren"
+        },
+        {
             "woord": "fan",
             "enkelHeelWoord": true,
             "vervanging": "Ventilator"
+        },
+        {
+            "woord": "fans",
+            "enkelHeelWoord": true,
+            "vervanging": "Ventilators"
         },
         {
             "woord": "cooldown",
@@ -411,8 +421,18 @@
         },
         {
             "woord": "chill",
-            "enkelHeelWoord": false,
+            "enkelHeelWoord": true,
             "vervanging": "Koel"
+        },
+        {
+            "woord": "chille",
+            "enkelHeelWoord": true,
+            "vervanging": "Koele"
+        },
+        {
+            "woord": "chillen",
+            "enkelHeelWoord": true,
+            "vervanging": "Koelen"
         },
         {
             "woord": "event",
