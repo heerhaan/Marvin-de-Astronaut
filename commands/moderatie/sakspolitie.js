@@ -20,23 +20,23 @@ module.exports = {
 
         let add = args[0].toLowerCase().trim() === "j";
 
-        if (add && !kanalen.includes(message.channel))
+        if (add && !kanalen.includes(message.channel.id))
         {
-            kanalen.push(message.channel);
+            kanalen.push(message.channel.id);
         }
-        else if (!add && kanalen.includes(message.channel))
+        else if (!add && kanalen.includes(message.channel.id))
         {
-            kanalen.splice(kanalen.indexOf(message.channel), 1);
+            kanalen.splice(kanalen.indexOf(message.channel.id), 1);
         }
 
-        fs.writeFile("./autospanjoolkanalen.json", JSON.stringify(data), function (err)
+        fs.writeFile("./autospanjoolkanalen.json", JSON.stringify(kanalen), function (err)
         {
             if (err)
             {
                 console.log(err);
             }
 
-            console.log(`Auto-spanjool gegevens opgeslagen. ${message.channel} is ${add ? "toegevoegd" : "verwijderd"}.`);
+            console.log(`Auto-spanjool gegevens opgeslagen. ${message.channel.id} is ${add ? "toegevoegd" : "verwijderd"}.`);
         });
     }
 };

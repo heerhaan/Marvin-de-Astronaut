@@ -30,10 +30,12 @@ module.exports = {
             interaction.channel.send(`Woa-hoah! ${interaction.member.displayName} zei het roulettewoord! Tek de stadthouders om deze persoon te geven wat die verdiend.`);
         }
 
-        await sakspolitie(interaction, message, fullContent, interaction.author);
-
-        // Stopt als het geen prefix kon vinden
-        if (!interaction.content.startsWith(prefix)) return;
+        // Doet saksherkenning, en stopt dan als het geen prefix kon vinden.
+        if (!interaction.content.startsWith(prefix))
+        {
+            await sakspolitie(interaction, fullContent, interaction.author);
+            return;
+        }
 
         // Rookmelding? Netjes.
         if (!isNaN(commandName) && !args.length)
@@ -103,9 +105,9 @@ module.exports = {
     },
 };
 
-async function sakspolitie (interaction, message, fullMessage, gebruiker)
+async function sakspolitie (interaction, fullMessage, gebruiker)
 {
-    const saksData = require('./saksData.json');
+    const saksData = require('../saksData.json');
     let kanalen = [];
 
     try
@@ -125,7 +127,7 @@ async function sakspolitie (interaction, message, fullMessage, gebruiker)
         });
     }
 
-    if (!kanalen.includes(message.channel))
+    if (!kanalen.includes(interaction.channel.id))
         return;
 
     const member = await interaction.guild.members.fetch(gebruiker.id);
@@ -147,11 +149,11 @@ async function sakspolitie (interaction, message, fullMessage, gebruiker)
 
     if (diffHours < saksData.urenTotVolleStraf && diffHours >= saksData.urenTotKleineSpanjool)
     {
-        common.klokRol(message, [gebruiker.username, saksData.kleineSpanjoolTijd, "Automatische spanjolering door Marvin, verminderde straf."], "s");
+        common.klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, "Automatische spanjolering door Marvin, verminderde straf."], "s", true);
     }
     else
     {
-        common.klokRol(message, [gebruiker.username, "Automatische spanjolering door Marvin."], "s");
+        common.klokRol(interaction, [gebruiker.username, "Automatische spanjolering door Marvin."], "s", true);
     }
 }
 
