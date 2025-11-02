@@ -151,16 +151,17 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         return;
 
     let berichtWoorden = formatWordList(woorden);
+    let saksWoordenlijst = `(${woorden.map(m => m.woord).join(",")})`; 
     let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
     interaction.channel.send(bericht);
 
     if (diffHours < saksData.urenTotVolleStraf && diffHours >= saksData.urenTotKleineSpanjool)
     {
-        common.klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, "Automatische spanjolering door Marvin, verminderde straf."], "s", true);
+        common.klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, `Automatische spanjolering door Marvin, verminderde straf. ${SaksWoordenlijst}`], "s", true);
     }
     else
     {
-        common.klokRol(interaction, [gebruiker.username, "Automatische spanjolering door Marvin."], "s", true);
+        common.klokRol(interaction, [gebruiker.username, `Automatische spanjolering door Marvin. ${SaksWoordenlijst}`], "s", true);
     }
 }
 
@@ -170,6 +171,8 @@ function findMatchedWords (sentence, woordenlijst)
 
     // normalise to lowercase for case-insensitive matching
     const lowerSentence = sentence.toLowerCase();
+    const urlRegex = /\b((?:https?:\/\/|ftp:\/\/|www\.)[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s<>()]*)?)/gi;
+    sentence = sentence.replace(urlRegex, '').trim();
 
     for (const item of woordenlijst)
     {
