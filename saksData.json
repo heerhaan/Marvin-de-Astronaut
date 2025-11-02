@@ -10,6 +10,11 @@
             "vervanging": "Ober"
         },
         {
+            "woord": "shade",
+            "enkelHeelWoord": false,
+            "vervanging": "Schaduw"
+        },
+        {
             "woord": "wtf",
             "enkelHeelWoord": true,
             "vervanging": "Wdn"
@@ -18,6 +23,11 @@
             "woord": "lmao",
             "enkelHeelWoord": true,
             "vervanging": "Lmke"
+        },
+        {
+            "woord": "drug",
+            "enkelHeelWoord": false,
+            "vervanging": "Verdovend middel"
         },
         {
             "woord": "boycot",
@@ -111,7 +121,7 @@
         },
         {
             "woord": "actie",
-            "enkelHeelWoord": false,
+            "enkelHeelWoord": true,
             "vervanging": "Werking"
         },
         {
@@ -152,7 +162,7 @@
         {
             "woord": "sorry",
             "enkelHeelWoord": false,
-            "vervanging": "Excuses"
+            "vervanging": "Verontschuldiging"
         },
         {
             "woord": "shit",
