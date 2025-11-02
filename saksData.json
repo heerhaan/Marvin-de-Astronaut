@@ -111,7 +111,7 @@
         },
         {
             "woord": "actie",
-            "enkelHeelWoord": false,
+            "enkelHeelWoord": true,
             "vervanging": "Werking"
         },
         {
