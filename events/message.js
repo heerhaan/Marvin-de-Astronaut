@@ -164,7 +164,7 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         return;
 
     let berichtWoorden = formatWordList(woorden);
-    let saksWoordenlijst = `(${woorden.map(m => m.woord).join(",")})`;
+    let saksWoordenlijst = `(${woorden.map(m => m.fullWord).join(",")})`;
     let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
     interaction.channel.send(bericht);
 
