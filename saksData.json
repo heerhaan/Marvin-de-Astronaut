@@ -25,6 +25,11 @@
             "vervanging": "Lmke"
         },
         {
+            "woord": "drug",
+            "enkelHeelWoord": false,
+            "vervanging": "Roesmiddel"
+        },
+        {
             "woord": "boycot",
             "enkelHeelWoord": false,
             "vervanging": "Uitsluiting"
