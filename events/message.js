@@ -171,6 +171,8 @@ function findMatchedWords (sentence, woordenlijst)
 
     // normalise to lowercase for case-insensitive matching
     const lowerSentence = sentence.toLowerCase();
+    const urlRegex = /\b((?:https?:\/\/|ftp:\/\/|www\.)[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s<>()]*)?)/gi;
+    sentence = sentence.replace(urlRegex, '').trim();
 
     for (const item of woordenlijst)
     {
