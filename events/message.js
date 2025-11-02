@@ -44,6 +44,13 @@ module.exports = {
             return interaction.channel.send(rookBericht);
         }
 
+        if (commandName === 'sterf' && interaction.author.id === ownerID)
+        {
+            await interaction.react('😥');
+            await interaction.channel.send("Vaarwel, wrede wereld...");
+            process.exit();
+        }
+
         if (commandName === 'roulette' && interaction.member.roles.cache.has(adminID))
         {
             var rouletteWord = args[0];
