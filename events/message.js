@@ -143,6 +143,7 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         {
             controleer = true;
             straf = kanalen[i].straf;
+            break;
         }
     }
 
