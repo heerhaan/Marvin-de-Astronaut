@@ -10,6 +10,11 @@
             "vervanging": "Ober"
         },
         {
+            "woord": "shade",
+            "enkelHeelWoord": false,
+            "vervanging": "Schaduw"
+        },
+        {
             "woord": "wtf",
             "enkelHeelWoord": true,
             "vervanging": "Wdn"
