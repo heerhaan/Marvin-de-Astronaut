@@ -391,7 +391,7 @@
         },
         {
             "woord": "script",
-            "enkelHeelWoord": false,
+            "enkelHeelWoord": true,
             "vervanging": "Schrift"
         },
         {
