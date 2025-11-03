@@ -3,6 +3,9 @@ var valuePairs = {};
 const common = require("../common.js");
 const fs = require('node:fs');
 
+const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
+const woordenboekPad = "saksData.json";
+
 module.exports = {
     name: 'messageCreate',
     async execute (interaction)
@@ -33,7 +36,11 @@ module.exports = {
         // Doet saksherkenning, en stopt dan als het geen prefix kon vinden.
         if (!interaction.content.startsWith(prefix))
         {
+            let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
             await sakspolitie(interaction, fullContent, interaction.author);
+
+            if (!heeftGedownload) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben
+                downloadWoordenboek(true);
             return;
         }
 
@@ -111,6 +118,33 @@ module.exports = {
         }
     },
 };
+
+async function downloadWoordenboek (forceer = false)
+{
+    const bestaat = fs.existsSync(woordenboekPad);
+
+    if (!bestaat || forceer)
+    {
+        console.log(`📥 Downloaden van woordenboek vanaf ${woordenboekURL}...`);
+        try
+        {
+            const res = await fetch(woordenboekURL);
+            if (!res.ok) throw new Error(`Download mislukt: ${res.status} ${res.statusText}`);
+
+            const data = await res.text();
+            fs.writeFileSync(woordenboekPad, data);
+            console.log(`✅ Bestand opgeslagen als ${woordenboekPad}`);
+        } catch (err)
+        {
+            console.error("❌ Fout bij downloaden of opslaan:", err);
+            throw err;
+        }
+
+        return true;
+    }
+
+    return false;
+}
 
 async function sakspolitie (interaction, fullMessage, gebruiker)
 {
