@@ -21,12 +21,12 @@
         },
         {
             "woord": "bitch",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Teef"
         },
         {
             "woord": "move",
-            "enkelHeelWoord": true,
+            "enkelHeelWoord": false,
             "vervanging": "Beweging"
         },
         {
