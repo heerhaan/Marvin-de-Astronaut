@@ -134,7 +134,20 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         });
     }
 
-    if (!kanalen.includes(interaction.channel.id))
+    let controleer = false;
+    let straf = false;
+
+    for (let i = 0; i < kanalen.length; i++)
+    {
+        if (kanalen[i].id == interaction.channel.id)
+        {
+            controleer = true;
+            straf = kanalen[i].straf;
+            break;
+        }
+    }
+
+    if (!controleer)
         return;
 
     const member = await interaction.guild.members.fetch(gebruiker.id);
@@ -151,17 +164,20 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         return;
 
     let berichtWoorden = formatWordList(woorden);
-    let saksWoordenlijst = `(${woorden.map(m => m.woord).join(",")})`; 
+    let saksWoordenlijst = `(${woorden.map(m => m.fullWord).join(",")})`;
     let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
     interaction.channel.send(bericht);
 
+    if (!straf)
+        return;
+
     if (diffHours < saksData.urenTotVolleStraf && diffHours >= saksData.urenTotKleineSpanjool)
     {
-        common.klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, `Automatische spanjolering door Marvin, verminderde straf. ${SaksWoordenlijst}`], "s", true);
+        common.klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, `Automatische spanjolering door Marvin, verminderde straf. ${saksWoordenlijst}`], "s", true);
     }
     else
     {
-        common.klokRol(interaction, [gebruiker.username, `Automatische spanjolering door Marvin. ${SaksWoordenlijst}`], "s", true);
+        common.klokRol(interaction, [gebruiker.username, `Automatische spanjolering door Marvin. ${saksWoordenlijst}`], "s", true);
     }
 }
 
