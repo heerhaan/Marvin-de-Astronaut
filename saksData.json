@@ -20,6 +20,16 @@
             "vervanging": "Wdn"
         },
         {
+            "woord": "bitch",
+            "enkelHeelWoord": true,
+            "vervanging": "Teef"
+        },
+        {
+            "woord": "move",
+            "enkelHeelWoord": true,
+            "vervanging": "Beweging"
+        },
+        {
             "woord": "loser",
             "enkelHeelWoord": false,
             "vervanging": "Verliezer"
