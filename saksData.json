@@ -510,6 +510,26 @@
             "vervanging": "Homo"
         },
         {
+            "woord": "air",
+            "enkelHeelWoord": true,
+            "vervanging": "lucht"
+        },
+        {
+            "woord": "airco",
+            "enkelHeelWoord": false,
+            "vervanging": "Luchtco"
+        },
+        {
+            "woord": "airconditioning",
+            "enkelHeelWoord": false,
+            "vervanging": "Luchtconditionering"
+        },
+        {
+            "woord": "airport",
+            "enkelHeelWoord": false,
+            "vervanging": "Vliegveld"
+        },
+        {
             "woord": "youtube",
             "enkelHeelWoord": false,
             "vervanging": "Jijbuis"
