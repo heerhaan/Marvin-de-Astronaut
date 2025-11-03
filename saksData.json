@@ -20,6 +20,16 @@
             "vervanging": "Wdn"
         },
         {
+            "woord": "very",
+            "enkelHeelWoord": true,
+            "vervanging": "Erg"
+        },
+        {
+            "woord": "not",
+            "enkelHeelWoord": true,
+            "vervanging": "Niet"
+        }, 
+        {
             "woord": "bitch",
             "enkelHeelWoord": false,
             "vervanging": "Teef"
