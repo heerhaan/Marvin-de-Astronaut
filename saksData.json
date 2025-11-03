@@ -185,6 +185,21 @@
             "vervanging": "Hel"
         },
         {
+            "woord": "hello",
+            "enkelHeelWoord": false,
+            "vervanging": "Hallo"
+        },
+        {
+            "woord": "bye",
+            "enkelHeelWoord": false,
+            "vervanging": "Doei"
+        },
+        {
+            "woord": "fresh",
+            "enkelHeelWoord": false,
+            "vervanging": "Vers"
+        },
+        {
             "woord": "cool",
             "enkelHeelWoord": true,
             "vervanging": "Koel"
