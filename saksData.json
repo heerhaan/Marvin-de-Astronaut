@@ -175,6 +175,11 @@
             "vervanging": "Kak"
         },
         {
+            "woord": "shop",
+            "enkelHeelWoord": false,
+            "vervanging": "Winkel"
+        },
+        {
             "woord": "hell",
             "enkelHeelWoord": true,
             "vervanging": "Hel"
