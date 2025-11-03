@@ -45,6 +45,11 @@
             "vervanging": "Verliezer"
         },
         {
+            "woord": "city",
+            "enkelHeelWoord": false,
+            "vervanging": "Stad"
+        },
+        {
             "woord": "lmao",
             "enkelHeelWoord": true,
             "vervanging": "Lmke"
