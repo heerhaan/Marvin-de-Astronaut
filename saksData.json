@@ -520,6 +520,16 @@
             "vervanging": "Luchtco"
         },
         {
+            "woord": "airfryer",
+            "enkelHeelWoord": false,
+            "vervanging": "Luchtfrituur"
+        },
+        {
+            "woord": "party",
+            "enkelHeelWoord": false,
+            "vervanging": "Feestje"
+        },
+        {
             "woord": "airconditioning",
             "enkelHeelWoord": false,
             "vervanging": "Luchtconditionering"
