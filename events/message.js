@@ -206,6 +206,11 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
     let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
     interaction.channel.send(bericht);
 
+    await interaction.guild.emojis.fetch();
+    const emoji = interaction.client.emojis.cache.find(e => e.name === "angelsaks");
+    if (emoji)
+        interaction.react(emoji);
+
     if (!straf)
         return;
 
