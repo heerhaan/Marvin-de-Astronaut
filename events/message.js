@@ -5,6 +5,7 @@ const fs = require('node:fs');
 
 const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
 const woordenboekPad = "saksData.json";
+var lastSaksDownload = Date.now();
 
 module.exports = {
     name: 'messageCreate',
@@ -39,8 +40,11 @@ module.exports = {
             let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
             await sakspolitie(interaction, fullContent, interaction.author);
 
-            if (!heeftGedownload) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben
+            if (!heeftGedownload && Date.now() - lastSaksDownload >= 60000) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben (max 1x per minuut)
+            {
+                lastSaksDownload = Date.now();
                 downloadWoordenboek(true);
+            }
             return;
         }
 
