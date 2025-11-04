@@ -1,7 +1,12 @@
 const { prefix, ownerID, adminID } = require("../config.json");
 var valuePairs = {};
 const common = require("../common.js");
+const getJson = require("../util/getJson.js");
 const fs = require('node:fs');
+
+const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
+const woordenboekPad = "saksData.json";
+var lastSaksDownload = Date.now();
 
 module.exports = {
     name: 'messageCreate',
@@ -33,7 +38,14 @@ module.exports = {
         // Doet saksherkenning, en stopt dan als het geen prefix kon vinden.
         if (!interaction.content.startsWith(prefix))
         {
-            await sakspolitie(interaction, fullContent, interaction.author);
+            // let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
+            // await sakspolitie(interaction, fullContent, interaction.author);
+
+            // if (!heeftGedownload && Date.now() - lastSaksDownload >= 60000) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben (max 1x per minuut)
+            // {
+            //     lastSaksDownload = Date.now();
+            //     downloadWoordenboek(true);
+            // }
             return;
         }
 
@@ -112,9 +124,33 @@ module.exports = {
     },
 };
 
+async function downloadWoordenboek (forceer = false)
+{
+    const bestaat = fs.existsSync(woordenboekPad);
+
+    if (!bestaat || forceer)
+    {
+        console.log(`📥 Downloaden van woordenboek vanaf ${woordenboekURL}...`);
+        try
+        {
+            const data = await getJson(woordenboekURL);
+            fs.writeFileSync(woordenboekPad, JSON.stringify(data));
+            console.log(`✅ Bestand opgeslagen als ${woordenboekPad}`);
+        } catch (err)
+        {
+            console.error("❌ Fout bij downloaden of opslaan:", err);
+            throw err;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 async function sakspolitie (interaction, fullMessage, gebruiker)
 {
-    const saksData = require('../saksData.json');
+    let saksData = JSON.parse(fs.readFileSync('./saksData.json', 'utf8'));
     let kanalen = [];
 
     try
@@ -164,9 +200,14 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         return;
 
     let berichtWoorden = formatWordList(woorden);
-    let saksWoordenlijst = `(${woorden.map(m => m.woord).join(",")})`;
+    let saksWoordenlijst = `(${woorden.map(m => m.fullWord).join(",")})`;
     let bericht = saksData.berichten[Math.floor(Math.random() * saksData.berichten.length)].replace("{WOORD}", berichtWoorden);
     interaction.channel.send(bericht);
+
+    await interaction.guild.emojis.fetch();
+    const emoji = interaction.client.emojis.cache.find(e => e.name === "angelsaks");
+    if (emoji)
+        interaction.react(emoji);
 
     if (!straf)
         return;
@@ -188,7 +229,8 @@ function findMatchedWords (sentence, woordenlijst)
     // normalise to lowercase for case-insensitive matching
     const lowerSentence = sentence.toLowerCase();
     const urlRegex = /\b((?:https?:\/\/|ftp:\/\/|www\.)[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s<>()]*)?)/gi;
-    sentence = sentence.replace(urlRegex, '').trim();
+    const emojiRegex = /(<a:[a-zA-Z]+:[0-9]+>)/gi;
+    sentence = sentence.replace(urlRegex, '').replace(emojiRegex, '').trim();
 
     for (const item of woordenlijst)
     {
