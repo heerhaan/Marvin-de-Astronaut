@@ -38,14 +38,14 @@ module.exports = {
         // Doet saksherkenning, en stopt dan als het geen prefix kon vinden.
         if (!interaction.content.startsWith(prefix))
         {
-            // let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
-            // await sakspolitie(interaction, fullContent, interaction.author);
+            let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
+            await sakspolitie(interaction, fullContent, interaction.author);
 
-            // if (!heeftGedownload && Date.now() - lastSaksDownload >= 60000) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben (max 1x per minuut)
-            // {
-            //     lastSaksDownload = Date.now();
-            //     downloadWoordenboek(true);
-            // }
+            if (!heeftGedownload && Date.now() - lastSaksDownload >= 60000) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben (max 1x per minuut)
+            {
+                lastSaksDownload = Date.now();
+                downloadWoordenboek(true);
+            }
             return;
         }
 

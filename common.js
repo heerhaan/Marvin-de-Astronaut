@@ -419,7 +419,8 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: voetTekst, iconURL: message.author.displayAvatarURL() });
 
-        message.react('👌');
+        if (!ignoreMentions) //stille modus
+            message.react('👌');
 
         message.channel.send(`${geefVoorzetsel()}, ${persoon.displayName} heeft nu ${geefVolledigeRolNaam(roleChar)} voor ${duur}`);
 
