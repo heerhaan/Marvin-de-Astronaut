@@ -1,6 +1,7 @@
 const { prefix, ownerID, adminID } = require("../config.json");
 var valuePairs = {};
 const common = require("../common.js");
+const getJson = require("../util/getJson.js");
 const fs = require('node:fs');
 
 const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
@@ -132,11 +133,8 @@ async function downloadWoordenboek (forceer = false)
         console.log(`📥 Downloaden van woordenboek vanaf ${woordenboekURL}...`);
         try
         {
-            const res = await fetch(woordenboekURL);
-            if (!res.ok) throw new Error(`Download mislukt: ${res.status} ${res.statusText}`);
-
-            const data = await res.text();
-            fs.writeFileSync(woordenboekPad, data);
+            const data = await getJson(woordenboekURL);
+            fs.writeFileSync(woordenboekPad, JSON.stringify(data));
             console.log(`✅ Bestand opgeslagen als ${woordenboekPad}`);
         } catch (err)
         {
@@ -231,7 +229,7 @@ function findMatchedWords (sentence, woordenlijst)
     // normalise to lowercase for case-insensitive matching
     const lowerSentence = sentence.toLowerCase();
     const urlRegex = /\b((?:https?:\/\/|ftp:\/\/|www\.)[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s<>()]*)?)/gi;
-    const emojiRegex = /(<a:[a-zA-Z]+:[0-9]+>)/gi
+    const emojiRegex = /(<a:[a-zA-Z]+:[0-9]+>)/gi;
     sentence = sentence.replace(urlRegex, '').replace(emojiRegex, '').trim();
 
     for (const item of woordenlijst)
