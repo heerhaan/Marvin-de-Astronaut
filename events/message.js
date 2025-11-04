@@ -152,7 +152,7 @@ async function downloadWoordenboek (forceer = false)
 
 async function sakspolitie (interaction, fullMessage, gebruiker)
 {
-    const saksData = require('../saksData.json');
+    let saksData = JSON.parse(fs.readFileSync('./saksData.json', 'utf8'));
     let kanalen = [];
 
     try
