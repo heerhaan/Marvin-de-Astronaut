@@ -230,7 +230,7 @@ function findMatchedWords (sentence, woordenlijst)
     const lowerSentence = sentence.toLowerCase();
     const urlRegex = /\b((?:https?:\/\/|ftp:\/\/|www\.)[a-z0-9.-]+[\.a-z]{2,}(?:\/[^\s<>()]*)?)/gi;
     const emojiRegex = /(<a:[a-zA-Z]+:[0-9]+>)/gi;
-    sentence = sentence.replace(urlRegex, '').replace(emojiRegex, '').trim();
+    sentence = lowerSentence.replace(urlRegex, '').replace(emojiRegex, '').trim();
 
     for (const item of woordenlijst)
     {
@@ -241,7 +241,7 @@ function findMatchedWords (sentence, woordenlijst)
         const fullWord = fullWordRegex.test(sentence);
 
         // Check for partial-word match (contains word anywhere)
-        const partial = lowerSentence.includes(word);
+        const partial = sentence.includes(word);
 
         if (partial && (!item.enkelHeelWoord || fullWord))
         {
