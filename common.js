@@ -3,9 +3,8 @@ const dayjs = require('dayjs');
 const fs = require('node:fs');
 const ms = require('ms');
 const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID, clientId } = require('./config.json');
+const spanjoleringData = require('./spanjoleringData.json');
 const tijdLimiet = 2147483646;
-var spanjoleringData;
-herlaadGegevens();
 
 function willekeurigeRolTijd ()
 {
@@ -210,30 +209,30 @@ function slaGegevensOp (data)
 
 function herlaadGegevens ()
 {
-    fs.readFile('./spanjoleringData.json', function read (err, data) 
+    let data = null;
+
+    fs.readFileSync('./spanjoleringData.json', function read (err, data) 
     {
         if (err) 
         {
-            console.error("Fout bij lezen; :alleskwijt:");
             data = "{}";
         }
 
         try
         {
-            spanjoleringData = JSON.parse(data);
-
-            if (Array.isArray(spanjoleringData))
-                spanjoleringData = {};
+            data = JSON.parse(data);
         }
         catch (e)
         {
             if (data == null)
             {
                 console.error("Geheugen stuk, :alleskwijt:");
-                spanjoleringData = {};
+                data = {};
             }
         }
     });
+
+    return data;
 }
 
 module.exports = {
@@ -339,7 +338,7 @@ module.exports = {
             if (spanjoleringData[persoon.id])
             {
                 spanjoleringen = spanjoleringData[persoon.id].filter((spanjolering) =>
-                    spanjolering.datum > Date.now() - maand && spanjolering.rol == "s"
+                    spanjolering.datum > Date.now() - maand
                 ) || [];
             } else
             {
@@ -352,28 +351,24 @@ module.exports = {
             {
                 tijd = 600000 * (aantalSpanjoleringen + 1); //600000ms = 10 minuten
             }
-        }
 
-        try
-        {
-            if (!spanjoleringData[persoon.id])
-                spanjoleringData[persoon.id] = [];
+            try
+            {
+                spanjoleringData[persoon.id].push(
+                    {
+                        datum: Date.now(),
+                        ontjoolDatum: Date.now() + tijd,
+                        reden: reden,
+                        gebruikerId: persoon.id,
+                        gebruikerNaam: persoon.displayName
+                    });
 
-            spanjoleringData[persoon.id].push(
-                {
-                    rol: roleChar,
-                    datum: Date.now(),
-                    ontjoolDatum: Date.now() + tijd,
-                    reden: reden,
-                    gebruikerId: persoon.id,
-                    gebruikerNaam: persoon.displayName
-                });
-
-            slaGegevensOp(spanjoleringData);
-        } catch (err)
-        {
-            console.error(err);
-            return message.channel.send('jezus, welke mislukte anjer heeft mij geschreven. Er ging iets mis.');
+                slaGegevensOp(spanjoleringData);
+            } catch (err)
+            {
+                console.error(err);
+                return message.channel.send('jezus, welke mislukte anjer heeft mij geschreven. Er ging iets mis.');
+            }
         }
 
         let duurEnglish = `**${ms(tijd, { long: true })}**`;
@@ -465,7 +460,7 @@ module.exports = {
             }, tijd);
         }
     },
-    ontKlokRol: function (message, roleChar, memberOverride = null, stil = false)
+    ontKlokRol: function (message, roleChar)
     {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
@@ -489,63 +484,30 @@ module.exports = {
 
                 lid.roles.add(gebruikersRol);
                 lid.roles.remove(tijdelijkeRol);
-                normaliseOntjoolDatum();
-
-                async function normaliseOntjoolDatum ()
-                {
-                    fs.readFile('./spanjoleringData.json', function read (err, data) 
-                    {
-                        try
-                        {
-                            spanjoleringData = JSON.parse(data);
-
-                            if (Array.isArray(spanjoleringData))
-                                spanjoleringData = {};
-
-                            const now = Date.now();
-
-                            for (const item of spanjoleringData[lid.id])
-                            {
-                                if (item.rol === roleChar)
-                                {
-                                    if (item.ontjoolDatum > now)
-                                        item.ontjoolDatum = now;
-
-                                    item.ontjoold = true;
-                                }
-                            }
-
-                            slaGegevensOp(spanjoleringData);
-                        }
-                        catch (e)
-                        {
-                            console.log("Controleren voor oude tijdelijke roltoewijzingen mislukt. Ik kan ook echt niks goed doen...");
-                            console.error(e);
-                        }
-                    });
-                }
             }
         }
 
         try
         {
-            let members = message.mentions.members;
-
-            if (members.size == 0)
-            {
-                if (memberOverride != null)
-                    members.set(memberOverride.id, memberOverride);
-                else
-                    members.set(message.author.id, message.member);
-            }
-
+            const members = message.mentions.members;
             members.each(verwijderRolVoorLid);
-            if (!stil)
-                message.react('👌');
+            message.react('👌');
         } catch (err)
         {
             console.error(err);
             return message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
+        }
+    },
+    schrijfData: function (message, nieuweData)
+    {
+        try
+        {
+            slaGegevensOp(nieuweData);
+            herlaadGegevens();
+        } catch (err)
+        {
+            console.error(err);
+            return message.channel.send("Oef autsj, wegschrijven van de nieuwe gegevens ging dus niet goed.");
         }
     }
 };
