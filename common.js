@@ -500,7 +500,7 @@ module.exports = {
                                 {
                                     if (item.ontjoolDatum > now)
                                         item.ontjoolDatum = now;
-                                    
+
                                     item.ontjoold = true;
                                 }
                             }
@@ -509,7 +509,8 @@ module.exports = {
                         }
                         catch (e)
                         {
-
+                            console.log("Controleren voor oude tijdelijke roltoewijzingen mislukt. Ik kan ook echt niks goed doen...");
+                            console.error(e);
                         }
                     });
                 }
