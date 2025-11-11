@@ -227,7 +227,7 @@ function herlaadGegevens ()
         }
         catch (e)
         {
-            if (data == null)
+            if (data == null || data == "")
             {
                 console.error("Geheugen stuk, :alleskwijt:");
                 spanjoleringData = {};
