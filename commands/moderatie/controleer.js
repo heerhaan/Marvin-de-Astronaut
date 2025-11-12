@@ -63,7 +63,7 @@ module.exports = {
                     let sukkel = huidigeSpanjolen[i];
                     let leesbareTijd = dayjs(sukkel.ontjoolDatum).format("DD/MM/YYYY HH:mm");
 
-                    message.channel.send(`${sukkel.gebruikerNaam} heeft nog spanjool tot ${leesbareTijd}`);
+                    message.channel.send(`${sukkel.gebruikerNaam} heeft nog ;${sukkel.rol} tot ${leesbareTijd}`);
                 }
             }
         });
