@@ -39,7 +39,12 @@ module.exports = {
         if (!interaction.content.startsWith(prefix))
         {
             let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
-            await sakspolitie(interaction, fullContent, interaction.author);
+            let gestraft = await sakspolitie(interaction, fullContent, interaction.author);
+
+            if (!gestraft)
+            {
+                tijdelijkeRolControle(interaction);
+            }
 
             if (!heeftGedownload && Date.now() - lastSaksDownload >= 60000) // als we niet zojuist gedownload hebben, doe dat nu dan alsnog zodat we altijd de nieuwste data hebben (max 1x per minuut)
             {
@@ -184,7 +189,7 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
     }
 
     if (!controleer)
-        return;
+        return false;
 
     const member = await interaction.guild.members.fetch(gebruiker.id);
     const joinedAt = member.joinedAt;
@@ -192,12 +197,12 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
     const diffHours = diffMs / (1000 * 60 * 60);
 
     if (diffHours < saksData.urenTotWaarschuwingen)
-        return;
+        return false;
 
     let woorden = findMatchedWords(fullMessage, saksData.saksWoorden);
 
     if (woorden.length === 0)
-        return;
+        return false;
 
     let berichtWoorden = formatWordList(woorden);
     let saksWoordenlijst = `(${woorden.map(m => m.fullWord).join(",")})`;
@@ -210,7 +215,7 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
         interaction.react(emoji);
 
     if (!straf)
-        return;
+        return true;
 
     if (diffHours < saksData.urenTotVolleStraf && diffHours >= saksData.urenTotKleineSpanjool)
     {
@@ -220,6 +225,59 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
     {
         common.klokRol(interaction, [gebruiker.username, `Automatische spanjolering door Marvin. ${saksWoordenlijst}`], "s", true);
     }
+
+    return true;
+}
+
+function tijdelijkeRolControle (message)
+{
+    fs.readFile('./spanjoleringData.json', async function read (err, data) 
+    {
+        if (err) 
+        {
+            return; // dan niet he
+        }
+
+        try
+        {
+            let sData = JSON.parse(data);
+
+            if (Array.isArray(sData))
+                sData = {};
+
+            for (const [key, value] of Object.entries(sData))
+            {
+                const latestOnly = Object.values(
+                    value.reduce((acc, item) =>
+                    {
+                        const key = item.rol;
+
+                        if (!acc[key] || item.ontjoolDatum > acc[key].ontjoolDatum)
+                        {
+                            acc[key] = item;
+                        }
+
+                        return acc;
+                    }, {})
+                );
+
+                for (let i = 0; i < latestOnly.length; i++)
+                {
+                    if (latestOnly[i].ontjoolDatum < Date.now() && !latestOnly[i].ontjoold)
+                    {
+                        console.log(`${latestOnly[i].gebruikerNaam} had te lang ;${latestOnly[i].rol}, wordt nu opgelost!`);
+                        const member = message.guild.members.cache.get(key) || await message.guild.members.fetch(key);
+                        common.ontKlokRol(message, latestOnly[i].rol, member, true);
+                    }
+                }
+            }
+        }
+        catch (e)
+        {
+            console.log("Lezen van spanjoolData ging weer eens mis:");
+            console.error(e);
+        }
+    });
 }
 
 function findMatchedWords (sentence, woordenlijst)
