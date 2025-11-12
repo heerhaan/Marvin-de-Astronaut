@@ -1,52 +1,71 @@
 const dayjs = require('dayjs');
+const fs = require('node:fs');
 
 module.exports = {
-	name: 'controleer',
+    name: 'controleer',
     description: 'Ter controle of er enkele spanjolen aan hun straf ontkomen zijn',
     admin: true,
-	execute(message) {
-        let spanjoleringen = require('../../spanjoleringData.json');
+    execute (message)
+    {
+        fs.readFile('./spanjoleringData.json', async function read (err, data) 
+        {
+            if (err) 
+            {
+                return; // geen bestand aangetroffen oid
+            }
 
-        if (!spanjoleringen) return;
+            let spanjoleringen = JSON.parse(data);
 
-        let huidigeSpanjolen = [];
+            if (!spanjoleringen) return;
 
-        for (var sleutel of Object.keys(spanjoleringen)) {
-            let manIsSpanjool = spanjoleringen[sleutel].filter(s => s.ontjoolDatum > Date.now()).length > 0;
+            let huidigeSpanjolen = [];
 
-            if (manIsSpanjool) {
-                try {
-                    let spanjaard;
+            for (var sleutel of Object.keys(spanjoleringen))
+            {
+                let manIsSpanjool = spanjoleringen[sleutel].filter(s => s.ontjoolDatum > Date.now()).length > 0;
 
-                    const member = message.guild.members.cache.find(member => member.id === sleutel);
+                if (manIsSpanjool)
+                {
+                    try
+                    {
+                        let spanjaard;
 
-                    if (!member) break;
+                        const member = message.guild.members.cache.find(member => member.id === sleutel);
 
-                    spanjoleringen[sleutel]
-                        .filter(s => s.ontjoolDatum > Date.now())
-                        .forEach(element => {
-                            if (!spanjaard || element.datum > spanjaard.datum) {
-                                spanjaard = element;
-                            }
-                        });
+                        if (!member) break;
 
-                    huidigeSpanjolen.push(spanjaard);
-                } catch (err) {
-                    console.error(err);
-                    return message.channel.send("auwie, dat deed pijn");
+                        spanjoleringen[sleutel]
+                            .filter(s => s.ontjoolDatum > Date.now())
+                            .forEach(element =>
+                            {
+                                if (!spanjaard || element.datum > spanjaard.datum)
+                                {
+                                    spanjaard = element;
+                                }
+                            });
+
+                        huidigeSpanjolen.push(spanjaard);
+                    } catch (err)
+                    {
+                        console.error(err);
+                        return message.channel.send("auwie, dat deed pijn");
+                    }
                 }
             }
-        }
 
-        if (huidigeSpanjolen.length === 0) {
-            return message.channel.send("Er zijn momenteel geen actieve spanjolen!");
-        } else {
-            for (let i = 0; i < huidigeSpanjolen.length; i++) {
-                let sukkel = huidigeSpanjolen[i];
-                let leesbareTijd = dayjs(sukkel.ontjoolDatum).format("DD/MM/YYYY HH:mm");
+            if (huidigeSpanjolen.length === 0)
+            {
+                return message.channel.send("Er zijn momenteel geen actieve spanjolen!");
+            } else
+            {
+                for (let i = 0; i < huidigeSpanjolen.length; i++)
+                {
+                    let sukkel = huidigeSpanjolen[i];
+                    let leesbareTijd = dayjs(sukkel.ontjoolDatum).format("DD/MM/YYYY HH:mm");
 
-                message.channel.send(`${sukkel.gebruikerNaam} heeft nog spanjool tot ${leesbareTijd}`);
+                    message.channel.send(`${sukkel.gebruikerNaam} heeft nog ;${sukkel.rol} tot ${leesbareTijd}`);
+                }
             }
-        }
-	},
+        });
+    },
 };
