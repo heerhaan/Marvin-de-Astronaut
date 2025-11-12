@@ -5,13 +5,23 @@ module.exports = {
     name: 'controleer',
     description: 'Ter controle of er enkele spanjolen aan hun straf ontkomen zijn',
     admin: true,
-    execute (message)
+    execute (message, args)
     {
         fs.readFile('./spanjoleringData.json', async function read (err, data) 
         {
             if (err) 
             {
                 return; // geen bestand aangetroffen oid
+            }
+
+            if (args[0] == "rauw")
+            {
+                await message.channel.send({
+                    content: 'Vertrouw je me niet? Kijk dan lekker zelf!!',
+                    files: ['./spanjoleringData.json']
+                });
+
+                return;
             }
 
             let spanjoleringen = JSON.parse(data);
