@@ -227,7 +227,7 @@ function herlaadGegevens ()
         }
         catch (e)
         {
-            if (data == null)
+            if (data == null || data == "")
             {
                 console.error("Geheugen stuk, :alleskwijt:");
                 spanjoleringData = {};
@@ -339,7 +339,7 @@ module.exports = {
             if (spanjoleringData[persoon.id])
             {
                 spanjoleringen = spanjoleringData[persoon.id].filter((spanjolering) =>
-                    spanjolering.datum > Date.now() - maand && spanjolering.rol == "s"
+                    spanjolering.datum > Date.now() - maand && (spanjolering.rol == "s" || !spanjolering.rol)
                 ) || [];
             } else
             {
@@ -506,6 +506,8 @@ module.exports = {
 
                             for (const item of spanjoleringData[lid.id])
                             {
+                                item.rol = item.rol || "s"; //migratie oude data
+
                                 if (item.rol === roleChar)
                                 {
                                     if (item.ontjoolDatum > now)

@@ -250,7 +250,7 @@ function tijdelijkeRolControle (message)
                 const latestOnly = Object.values(
                     value.reduce((acc, item) =>
                     {
-                        const key = item.rol;
+                        const key = item.rol || "s";
 
                         if (!acc[key] || item.ontjoolDatum > acc[key].ontjoolDatum)
                         {
@@ -265,9 +265,9 @@ function tijdelijkeRolControle (message)
                 {
                     if (latestOnly[i].ontjoolDatum < Date.now() && !latestOnly[i].ontjoold)
                     {
-                        console.log(`${latestOnly[i].gebruikerNaam} had te lang ;${latestOnly[i].rol}, wordt nu opgelost!`);
+                        console.log(`${latestOnly[i].gebruikerNaam} had te lang ;${latestOnly[i].rol || "s"}, wordt nu opgelost!`);
                         const member = message.guild.members.cache.get(key) || await message.guild.members.fetch(key);
-                        common.ontKlokRol(message, latestOnly[i].rol, member, true);
+                        common.ontKlokRol(message, latestOnly[i].rol || "s", member, true);
                     }
                 }
             }
