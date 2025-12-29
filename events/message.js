@@ -25,6 +25,11 @@ module.exports = {
             interaction.react('🌌');
         }
 
+        if (fullContent.includes("kanker"))
+        {
+            await interaction.channel.send(`Auw, dit doet pijn! Wees bewust van de pijn die je anderen met dit gesprek doet! Daarom Tikkie terug: http://tikkie.me/tegenditgesprek. Betaal je 'm even?`);
+        }
+
         if (fullContent === "kutmarvin" || fullContent === "kuthaan")
         {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
