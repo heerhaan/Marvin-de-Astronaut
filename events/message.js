@@ -25,7 +25,7 @@ module.exports = {
             interaction.react('🌌');
         }
 
-        if (fullContent === "kutmarvin" || fullContent === "kuthaan")
+        if (fullContent === "kutmarvin" || fullContent === "kuthaan" || fullContent == "kutpaard" || fullContent == "kutkoek")
         {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
         }
