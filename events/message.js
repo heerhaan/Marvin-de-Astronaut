@@ -25,6 +25,11 @@ module.exports = {
             interaction.react('🌌');
         }
 
+        if (interaction.member.id === "246658166996205578") //ster
+        {
+            interaction.react('⭐');
+        }
+
         if (fullContent === "kutmarvin" || fullContent === "kuthaan" || fullContent == "kutpaard" || fullContent == "kutkoek")
         {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
