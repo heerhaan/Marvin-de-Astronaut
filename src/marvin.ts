@@ -5,6 +5,13 @@ import {COMMAND_FOLDER_PATH, EVENT_FOLDER_PATH} from "./util/constants.type.js";
 import {BaseCommand} from "./types/common";
 dotenv.config();
 
+// Extend Client type to include commands collection
+declare module "discord.js" {
+  export interface Client {
+    commands: Collection<string, BaseCommand>;
+  }
+}
+
 const client: Client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -15,10 +22,9 @@ const client: Client = new Client({
   partials: [Partials.Channel]
 });
 
-// @ts-ignore
 client.commands = new Collection();
 
-async function commandLoader() {
+async function loadCommands() {
   const commandFolders = fs.readdirSync(COMMAND_FOLDER_PATH);
 
 // Loopt door de categoriefolders heen om alle commands toe te voegen
@@ -30,13 +36,13 @@ async function commandLoader() {
       const commandModule = await import(filePath);
       const command: BaseCommand = commandModule.default ?? commandModule;
 
-      // @ts-ignore
-      await client.commands.set(command.name, command);
+      client.commands.set(command.name, command);
     }
-    // @ts-ignore
-    console.log(JSON.stringify(client.commands, null, 4))
   }
+  console.log("Commands loaded")
+}
 
+async function loadEvents() {
   const eventFiles = fs.readdirSync(EVENT_FOLDER_PATH).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
   for (const file of eventFiles) {
@@ -51,6 +57,7 @@ async function commandLoader() {
   }
 }
 
-await commandLoader();
+await loadCommands();
+await loadEvents();
 
 await client.login(process.env.TOKEN);

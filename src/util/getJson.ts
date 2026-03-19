@@ -1,5 +1,3 @@
-// getJsonHttps.js
-import https from "https";
 
 export default async function getJsonHttps(url: string): Promise<unknown> {
     const parsedUrl = new URL(url);

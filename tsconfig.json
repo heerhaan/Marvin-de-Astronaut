@@ -9,7 +9,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "moduleDetection": "force",
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "module": "preserve",
     "lib": ["es2022"]
   },

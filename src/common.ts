@@ -470,7 +470,7 @@ export default {
 
                 async function normaliseOntjoolDatum ()
                 {
-                    fs.readFile('./spanjoleringData.json', function read (err, data) 
+                    fs.readFile('./spanjoleringData.json', function read (_err, data)
                     {
                         try
                         {
