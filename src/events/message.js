@@ -1,4 +1,4 @@
-import common from "../common.js";
+import {klokRol, ontKlokRol} from "../common.js";
 
 import getJson from "../util/getJson.js";
 
@@ -223,11 +223,11 @@ async function sakspolitie (interaction, fullMessage, gebruiker)
 
     if (diffHours < saksData.urenTotVolleStraf && diffHours >= saksData.urenTotKleineSpanjool)
     {
-        common.klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, `Automatische spanjolering door Marvin, verminderde straf. ${saksWoordenlijst}`], "s", true);
+        klokRol(interaction, [gebruiker.username, saksData.kleineSpanjoolTijd, `Automatische spanjolering door Marvin, verminderde straf. ${saksWoordenlijst}`], "s", true);
     }
     else
     {
-        common.klokRol(interaction, [gebruiker.username, `Automatische spanjolering door Marvin. ${saksWoordenlijst}`], "s", true);
+        klokRol(interaction, [gebruiker.username, `Automatische spanjolering door Marvin. ${saksWoordenlijst}`], "s", true);
     }
 
     return true;
@@ -271,7 +271,7 @@ function tijdelijkeRolControle (message)
                     {
                         console.log(`${latestOnly[i].gebruikerNaam} had te lang ;${latestOnly[i].rol || "s"}, wordt nu opgelost!`);
                         const member = message.guild.members.cache.get(key) || await message.guild.members.fetch(key);
-                        common.ontKlokRol(message, latestOnly[i].rol || "s", member, true);
+                       ontKlokRol(message, latestOnly[i].rol || "s", member, true);
                     }
                 }
             }

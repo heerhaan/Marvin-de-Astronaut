@@ -1,4 +1,4 @@
-import common from "../../common.js";
+import{klokRol} from "../../common.js";
 
 export default {
     name: "s",
@@ -6,6 +6,6 @@ export default {
     usage: '[@tek] [getal][s/m/u/d] [reden]',
     admin : true,
     execute(message, args) {
-        common.klokRol(message, args, "s");
+        klokRol(message, args, "s");
     }
 }

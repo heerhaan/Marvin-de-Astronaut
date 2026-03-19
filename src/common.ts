@@ -213,8 +213,8 @@ function herlaadGegevens ()
     });
 }
 
-export default {
-    klokRol: function (message, args, roleChar, ignoreMentions)
+
+export function klokRol(message, args, roleChar, ignoreMentions: boolean = false)
     {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
         const strafKanaal = message.client.channels.cache.get(strafkanaalID);
@@ -441,8 +441,8 @@ export default {
                 persoon.roles.remove(tijdelijkeRol);
             }, tijd);
         }
-    },
-    ontKlokRol: function (message, roleChar, memberOverride = null, stil = false)
+    }
+    export function ontKlokRol(message, roleChar, memberOverride = null, stil = false)
     {
         const logKanaal = message.client.channels.cache.get(process.env.LOGKANAAL_ID);
         const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
@@ -527,4 +527,4 @@ export default {
             return message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
         }
     }
-};
+

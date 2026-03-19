@@ -1,9 +1,9 @@
-import common from "../../common.js";
+import {ontKlokRol} from "../../common.js";
 
 export default {
 	name: 'or',
 	admin : true,
 	execute(message) {
-        common.ontKlokRol(message, "r");
+       ontKlokRol(message, "r");
 	},
 };
