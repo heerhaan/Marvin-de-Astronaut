@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import fs from "node:fs";
 
 import ms from "ms";
-import {TIME_TRANSLATIONS} from "./util/constants.type";
+import {TIME_TRANSLATIONS} from "./util/constants.type.js";
 
 const tijdLimiet = 2147483646;
 var spanjoleringData;

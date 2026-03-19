@@ -5,11 +5,13 @@
     "target": "es2022",
     "allowJs": true,
     "checkJs": false,
+    "strict": false,
     "outDir": "./dist",
     "rootDir": "./src",
     "moduleDetection": "force",
+    "noUnusedLocals": false,
     "module": "preserve",
-    "lib": ["es2022"],
+    "lib": ["es2022"]
   },
   "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": ["node_modules", "dist"]

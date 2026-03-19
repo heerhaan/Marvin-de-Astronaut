@@ -1,4 +1,4 @@
-import common from "../../common.ts";
+import common from "../../common.js";
 
 export default {
     name: "r",

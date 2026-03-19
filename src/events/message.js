@@ -1,4 +1,4 @@
-import common from "../common.ts";
+import common from "../common.js";
 
 import getJson from "../util/getJson.js";
 
@@ -8,7 +8,7 @@ var valuePairs = {};
 const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
 const woordenboekPad = "saksData.json";
 var lastSaksDownload = Date.now();
-const prefix = process.env.PREFIX.length
+const prefix = process.env.PREFIX
 
 
 export default {
