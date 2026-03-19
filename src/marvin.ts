@@ -27,19 +27,36 @@ client.commands = new Collection();
 async function loadCommands() {
   const commandFolders = fs.readdirSync(COMMAND_FOLDER_PATH);
 
-// Loopt door de categoriefolders heen om alle commands toe te voegen
   for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`${COMMAND_FOLDER_PATH}${folder}`).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
     for (const file of commandFiles) {
       const filePath = `./commands/${folder}/${file}`;
       const commandModule = await import(filePath);
-      const command: BaseCommand = commandModule.default ?? commandModule;
 
-      client.commands.set(command.name, command);
+      // Handle default export
+      if (commandModule.default) {
+        const command: BaseCommand = commandModule.default;
+        if (command.name) {
+          client.commands.set(command.name, command);
+          console.log(`Done loading: ${command.name} default export`);
+        }
+      }
+
+      // Handle named exports
+      for (const [exportName, exportValue] of Object.entries(commandModule)) {
+        if (exportName === 'default') continue;
+
+        const command = exportValue as BaseCommand;
+        if (command?.name && typeof command.execute === 'function') {
+          client.commands.set(command.name, command);
+          console.log(`Done loading: ${command.name} named export (${exportName})`);
+        }
+      }
     }
   }
-  console.log("Commands loaded")
+
+  console.log(`All commands loaded: ${client.commands.size} total`);
 }
 
 async function loadEvents() {
