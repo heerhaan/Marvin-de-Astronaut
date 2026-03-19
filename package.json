@@ -2,8 +2,10 @@
   "name": "marvin-de-astronaut",
   "version": "1.0.0",
   "description": "This is a first attempt on creating a Discord bot. It's even my first personal project.\r So far i have no clear goal in mind of what the bot can do, or what makes the bot unique. \r The idea for the bot however is that it is set around my interests, so what it could do for example is:",
-  "main": "marvin.js",
+  "main": "src/marvin.ts",
   "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/marvin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
@@ -26,5 +28,10 @@
   },
   "engines": {
     "node": "<=16"
+  },
+  "devDependencies": {
+    "@types/ms": "^2.1.0",
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3"
   }
 }

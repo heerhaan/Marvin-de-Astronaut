@@ -25,7 +25,7 @@ for (const file of commandFiles) {
 		console.log(`[WOLLAH] commando bij ${filePath} heeft ofwel geen "data" of "execute", hoe sneu.`);
 	}
 }
-const rest = new REST().setToken(process.env.TOKEN);
+const rest = new REST().setToken(process.env.TOKEN ?? "");
 
 (async () => {
 	try {
@@ -36,10 +36,11 @@ const rest = new REST().setToken(process.env.TOKEN);
         //Routes.applicationCommands(clientId),
 		
         const data = await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+			Routes.applicationGuildCommands(process.env.CLIENT_ID ?? "", process.env.GUILD_ID ?? ""),
 			{ body: commands },
 		);
 
+		// @ts-ignore
 		console.log(`Ayoo, gewoon ${data.length} commandos herladen.`);
 	}
     catch (error) {
