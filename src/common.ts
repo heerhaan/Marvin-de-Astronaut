@@ -5,10 +5,19 @@ import dayjs from "dayjs";
 import fs from "node:fs";
 
 import ms from "ms";
+import {TIME_TRANSLATIONS} from "./util/constants.type";
 
 const tijdLimiet = 2147483646;
 var spanjoleringData;
 herlaadGegevens();
+
+const spanjoolID = process.env.SPANJOOL_ID;
+const alvaID = process.env.ALVA_ID;
+const kopdichtID = process.env.KOPDICHT_ID;
+const ridderID = process.env.RIDDER_ID;
+const logkanaalID = process.env.LOGKANAAL_ID;
+const strafkanaalID = process.env.STRAFKANAAL_ID;
+const adminID = process.env.ADMIN_ID;
 
 function willekeurigeRolTijd ()
 {
@@ -68,7 +77,6 @@ function geefVoorzetsel ()
     return voorzetsels[ranNum];
 }
 
-//let randomNumber = Math.floor(Math.random() * 2);
 
 function verkrijgTijdelijkeRolId (roleChar)
 {
@@ -136,50 +144,15 @@ function geefRolKleur (roleChar)
     }
 }
 
+/**
+ * regex catch om alle tokens te vangen die we willen vertalen. Negeer de rest.
+ * @param text
+ */
 function vertaalTijdIndicatie (text)
 {
-    if (text.includes("seconds"))
-    {
-        return text.replace("seconds", "seconden");
-    } else if (text.includes("second") && !text.includes("seconde"))
-    {
-        return text.replace("second", "seconde");
-    } else if (text.includes("minutes"))
-    {
-        return text.replace("minutes", "minuten");
-    } else if (text.includes("minute"))
-    {
-        return text.replace("minute", "minuut");
-    } else if (text.includes("hours"))
-    {
-        return text.replace("hours", "uur");
-    } else if (text.includes("hour"))
-    {
-        return text.replace("hour", "uur");
-    } else if (text.includes("days"))
-    {
-        return text.replace("days", "dagen");
-    } else if (text.includes("day"))
-    {
-        return text.replace("day", "dag");
-    } else if (text.includes("weeks"))
-    {
-        return text.replace("weeks", "weken");
-    } else if (text.includes("months"))
-    {
-        return text.replace("months", "maanden");
-    } else if (text.includes("month"))
-    {
-        return text.replace("month", "maand");
-    } else if (text.includes("years"))
-    {
-        return text.replace("years", "jaren");
-    } else if (text.includes("year"))
-    {
-        return text.replace("year", "jaar");
-    }
-
-    return text;
+    return text.replace(/\b(seconds?|minutes?|hours?|days?|weeks?|months?|years?)\b/g,
+        match => TIME_TRANSLATIONS[match] || match
+    );
 }
 
 function slaGegevensOp (data)
@@ -218,19 +191,20 @@ function herlaadGegevens ()
         if (err) 
         {
             console.error("Fout bij lezen; :alleskwijt:");
+            // @ts-ignore
             data = "{}";
         }
 
         try
         {
-            spanjoleringData = JSON.parse(data);
+            spanjoleringData = JSON.parse(data.toString('utf-8'));
 
             if (Array.isArray(spanjoleringData))
                 spanjoleringData = {};
         }
         catch (e)
         {
-            if (data == null || data == "")
+            if (data == null || data.toString('utf-8') == "")
             {
                 console.error("Geheugen stuk, :alleskwijt:");
                 spanjoleringData = {};
@@ -500,7 +474,7 @@ export default {
                     {
                         try
                         {
-                            spanjoleringData = JSON.parse(data);
+                            spanjoleringData = JSON.parse(data.toString('utf-8'));
 
                             if (Array.isArray(spanjoleringData))
                                 spanjoleringData = {};

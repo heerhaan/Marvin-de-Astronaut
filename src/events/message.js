@@ -1,4 +1,4 @@
-import common from "../common.js";
+import common from "../common.ts";
 
 import getJson from "../util/getJson.js";
 
@@ -8,6 +8,8 @@ var valuePairs = {};
 const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
 const woordenboekPad = "saksData.json";
 var lastSaksDownload = Date.now();
+const prefix = process.env.PREFIX.length
+
 
 export default {
     name: 'messageCreate',
@@ -18,7 +20,7 @@ export default {
 
         const fullContent = interaction.content.toLowerCase();
         const args = interaction.content.slice(
-            prefix.length).trim().split(/ +/g);
+            process.env.PREFIX.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
         const client = interaction.client;
 
@@ -38,7 +40,7 @@ export default {
         }
 
         // Doet saksherkenning, en stopt dan als het geen prefix kon vinden.
-        if (!interaction.content.startsWith(prefix))
+        if (!interaction.content.startsWith(process.env.PREFIX))
         {
             let heeftGedownload = await downloadWoordenboek(); //download woordenboek als we nog niks hebben
             let gestraft = await sakspolitie(interaction, fullContent, interaction.author);
