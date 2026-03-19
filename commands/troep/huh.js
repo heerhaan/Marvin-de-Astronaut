@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'huh',
 	description: 'Huh?',
 	execute(message) {

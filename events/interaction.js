@@ -1,7 +1,5 @@
-const { Events } = require('discord.js');
-const { prefix, ownerID, adminID } = require("../config.json");
-
-module.exports = {
+import {Events} from "discord.js";
+export default {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		// Underneath prevents execution for any non-slash command thing

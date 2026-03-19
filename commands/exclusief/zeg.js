@@ -1,7 +1,6 @@
-const { prefix } = require('../../config.json');
 const stoelpootID = 140459535293743105;
 
-module.exports = {
+export default {
 	name: 'zeg',
     args: true,
     admin: true,
@@ -18,7 +17,7 @@ module.exports = {
         }
 
         var string = message.content;
-        string = string.replace(`${prefix}zeg`, '');
+        string = string.replace(`${process.env.PREFIX}zeg`, "");
         message.channel.send(string);
 	},
 };

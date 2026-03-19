@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'avatar',
 	description: 'Bestelt automatisch alle seizoenen van Avatar: The Last Airbender.',
 	execute(message, args) {

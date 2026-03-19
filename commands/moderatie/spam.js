@@ -1,6 +1,6 @@
-const ms = require('ms');
+import ms from "ms";
 
-module.exports = {
+export default {
 	name: 'spam',
     description: 'Voor als je zin hebt om moeilijk irritant te doen',
     usage: '[woordje] [getal][s/m]',
@@ -29,7 +29,7 @@ module.exports = {
             else {
                 var interval = setInterval (function () {
                     message.channel.send(spammedMsg);
-                }, 1 * 2500);
+                }, 2500);
 
                 setTimeout(() => { clearInterval(interval) }, time);
             }

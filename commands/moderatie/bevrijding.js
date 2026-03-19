@@ -1,7 +1,6 @@
-const common = require("../../common.js");
-const { adminID, stadthouderID, burgerijID, spanjoolID, logkanaalID } = require('../../config.json');
-
-module.exports = {
+//FIXME: is this needed?
+/*
+export default {
 	name: 'bevrijding',
     description: '(WERKT NIET) Om na te gaan of er knapen zijn die onterecht straf hebben',
     admin: true,
@@ -25,7 +24,7 @@ module.exports = {
 
             message.channel.send(`Jij... ${gebruiker.userId}`);
         }
-        
+
         let spanjoleringen = require('../../spanjoleringData.json');
 
         if (!spanjoleringen) return;
@@ -52,15 +51,15 @@ module.exports = {
             message.channel.send(`Jij... ${gebruiker.displayName}`);
 
             let trekkerRol;
-    
-            if (gebruiker.roles.cache.has(adminID)) {
-                trekkerRol = message.guild.roles.cache.get(stadthouderID);
+
+            if (gebruiker.roles.cache.has(process.env.ADMIN_ID)) {
+                trekkerRol = message.guild.roles.cache.get(process.env.STADTHOUDER_ID);
             } else {
-                trekkerRol = message.guild.roles.cache.get(burgerijID);
+                trekkerRol = message.guild.roles.cache.get(process.env.BURGERIJ_ID);
             }
 
             gebruiker.roles.add(trekkerRol);
-            gebruiker.roles.remove(spanjoolID);
+            gebruiker.roles.remove(process.env.SPANJOOL_ID);
 
             verlossingenGepleegd++;
         }
@@ -72,3 +71,4 @@ module.exports = {
         }
 	},
 };
+*/

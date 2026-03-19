@@ -1,8 +1,14 @@
-const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
-const fs = require('node:fs');
-const path = require('node:path');
+import {REST, Routes} from "discord.js";
 
+import fs from "node:fs";
+
+import path from "node:path";
+
+import dotenv from "dotenv";
+
+import { pathToFileURL } from 'node:url';
+
+dotenv.config();
 const commands = [];
 
 const commandsPath = path.join(__dirname, 'commands/vervelend');
@@ -10,15 +16,16 @@ const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('
 
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
+	const commandModule = await import(pathToFileURL(filePath).href);
+	const command = commandModule.default ?? commandModule;
+
 	if ('data' in command && 'execute' in command) {
 		commands.push(command.data.toJSON());
 	} else {
 		console.log(`[WOLLAH] commando bij ${filePath} heeft ofwel geen "data" of "execute", hoe sneu.`);
 	}
 }
-
-const rest = new REST().setToken(token);
+const rest = new REST().setToken(process.env.TOKEN);
 
 (async () => {
 	try {
@@ -29,7 +36,7 @@ const rest = new REST().setToken(token);
         //Routes.applicationCommands(clientId),
 		
         const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
 			{ body: commands },
 		);
 

@@ -1,8 +1,8 @@
-const dayjs = require('dayjs');
-const { adminID, stadthouderID, burgerijID, spanjoolID, logkanaalID } = require('../../config.json');
+import dayjs from "dayjs";
+
 const tijdLimiet = 2147483646;
 
-module.exports = {
+export default {
 	name: 'collaboratie',
     description: 'Ter controle of er enkele spanjolen aan hun straf ontkomen zijn',
     admin: true,
@@ -39,17 +39,17 @@ module.exports = {
 
                     let trekker = message.guild.members.cache.find(m => m.id === spanjaard.gebruikerId);
     
-                    if (!trekker || !tijdOver || trekker.roles.cache.has(spanjoolID)) continue;
+                    if (!trekker || !tijdOver || trekker.roles.cache.has(process.env.SPANJOOL_ID)) continue;
     
                     let trekkerRol;
     
-                    if (trekker.roles.cache.has(adminID)) {
-                        trekkerRol = message.guild.roles.cache.get(stadthouderID);
+                    if (trekker.roles.cache.has(process.env.ADMIN_ID)) {
+                        trekkerRol = message.guild.roles.cache.get(process.env.STADTHOUDER_ID);
                     } else {
-                        trekkerRol = message.guild.roles.cache.get(burgerijID);
+                        trekkerRol = message.guild.roles.cache.get(process.env.BURGERIJ_ID);
                     }
     
-                    member.roles.add(spanjoolID);
+                    member.roles.add(process.env.SPANJOOL_ID);
                     member.roles.remove(trekkerRol);
     
                     if (tijdOver < tijdLimiet) {

@@ -1,7 +1,6 @@
-const common = require("../../common.js");
-const fs = require('node:fs');
+import fs from "node:fs";
 
-module.exports = {
+export default {
     name: "as",
     description: "Automagische Spanjolering voor de luie stadt. Gebruik j of n om aan of uit te zetten voor dit kanaal.",
     usage: '[j/n/w]',

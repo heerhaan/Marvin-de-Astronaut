@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "trap",
     description: 'Trap een lid uit de ober',
     args: true,

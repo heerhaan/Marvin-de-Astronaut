@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'koelman',
 	execute(message) {
 		let rng = Math.floor(Math.random() * 101);

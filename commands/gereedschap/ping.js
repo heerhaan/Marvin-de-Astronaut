@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'ping',
 	description: 'does nie!',
 	execute(message) {

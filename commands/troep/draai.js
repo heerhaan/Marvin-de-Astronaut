@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'draai',
 	description: 'Tijd om een papiertje te rollen',
 	execute(message) {

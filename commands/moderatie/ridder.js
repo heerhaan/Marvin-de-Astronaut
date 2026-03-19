@@ -1,6 +1,6 @@
-const common = require("../../common.js");
+import common from "../../common.js";
 
-module.exports = {
+export default {
     name: "r",
     description: "Ridderen voor de opperbaasjes.",
     usage: '[@tek] [getal][s/m/u/d] [reden]',

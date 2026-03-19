@@ -1,8 +1,11 @@
-const { EmbedBuilder } = require('discord.js');
-const dayjs = require('dayjs');
-const fs = require('node:fs');
-const ms = require('ms');
-const { adminID, stadthouderID, burgerijID, spanjoolID, strafkanaalID, logkanaalID, alvaID, kopdichtID, ridderID, clientId } = require('./config.json');
+import {EmbedBuilder} from "discord.js";
+
+import dayjs from "dayjs";
+
+import fs from "node:fs";
+
+import ms from "ms";
+
 const tijdLimiet = 2147483646;
 var spanjoleringData;
 herlaadGegevens();
@@ -236,7 +239,7 @@ function herlaadGegevens ()
     });
 }
 
-module.exports = {
+export default {
     klokRol: function (message, args, roleChar, ignoreMentions)
     {
         const logKanaal = message.client.channels.cache.get(logkanaalID);
@@ -247,7 +250,7 @@ module.exports = {
 
         let gebruikersRol;
 
-        const ikMarvin = message.guild.members.cache.find(c => c.id === clientId);
+        const ikMarvin = message.guild.members.cache.find(c => c.id === process.env.CLIENT_ID);
         let persoon = null;
         if (!ignoreMentions)
         {
@@ -273,12 +276,12 @@ module.exports = {
             return message.channel.send(geefReactieKnaapHeeftAlRol(roleChar, persoon.displayName));
         }
 
-        if (persoon.roles.cache.has(adminID))
+        if (persoon.roles.cache.has(process.env.ADMIN_ID))
         {
-            gebruikersRol = message.guild.roles.cache.get(stadthouderID);
+            gebruikersRol = message.guild.roles.cache.get(process.env.STADTHOUDER_ID);
         } else
         {
-            gebruikersRol = message.guild.roles.cache.get(burgerijID);
+            gebruikersRol = message.guild.roles.cache.get(process.env.BURGERIJ_ID);
         }
 
         let tijd;
@@ -467,7 +470,7 @@ module.exports = {
     },
     ontKlokRol: function (message, roleChar, memberOverride = null, stil = false)
     {
-        const logKanaal = message.client.channels.cache.get(logkanaalID);
+        const logKanaal = message.client.channels.cache.get(process.env.LOGKANAAL_ID);
         const tijdelijkeRol = verkrijgTijdelijkeRolId(roleChar);
 
         function verwijderRolVoorLid (lid)
@@ -481,10 +484,10 @@ module.exports = {
 
                 if (lid.roles.cache.has(adminID))
                 {
-                    gebruikersRol = message.guild.roles.cache.get(stadthouderID);
+                    gebruikersRol = message.guild.roles.cache.get(process.env.STADTHOUDER_ID);
                 } else
                 {
-                    gebruikersRol = message.guild.roles.cache.get(burgerijID);
+                    gebruikersRol = message.guild.roles.cache.get(process.env.BURGERIJ_ID);
                 }
 
                 lid.roles.add(gebruikersRol);

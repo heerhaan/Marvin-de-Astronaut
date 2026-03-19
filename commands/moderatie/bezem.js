@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'bezem',
 	description: 'Verwijdert een gegeven aantal berichten.',
     args: true,

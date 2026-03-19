@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'drink',
 	description: 'Voor het flexen met je alcoholisme',
 	execute(message) {

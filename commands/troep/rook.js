@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'rook',
 	description: 'Om te laten weten dat je gaat smonken',
 	execute(message) {

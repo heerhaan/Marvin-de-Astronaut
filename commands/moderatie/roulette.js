@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'roulette',
 	description: 'Om een seintje te geven als iemand HET VERBODEN WOORD zegt',
     args: true,

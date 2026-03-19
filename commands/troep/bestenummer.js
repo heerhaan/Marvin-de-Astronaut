@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'bestenummer',
 	description: 'Voor als je wilt weten hoe het voelt als je een OORgasme krijgt',
 	execute(message) {

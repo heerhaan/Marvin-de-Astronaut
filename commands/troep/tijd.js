@@ -1,7 +1,7 @@
-const ms = require('ms');
-const dayjs = require('dayjs');
+import ms from "ms";
+import dayjs from "dayjs";
 
-module.exports = {
+export default {
 	name: 'tijd',
 	description: 'Hoe laat was het ook alweer?',
 	execute(message) {

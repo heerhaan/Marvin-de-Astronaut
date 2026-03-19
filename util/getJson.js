@@ -1,7 +1,7 @@
 // getJsonHttps.js
-const https = require("https");
+import https from "https";
 
-function getJsonHttps (url)
+export default function getJsonHttps (url)
 {
     return new Promise((resolve, reject) =>
     {
@@ -75,4 +75,3 @@ function getJsonHttps (url)
     });
 }
 
-module.exports = getJsonHttps;

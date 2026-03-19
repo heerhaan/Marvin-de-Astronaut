@@ -1,14 +1,15 @@
-const { prefix, ownerID, adminID } = require("../config.json");
-var valuePairs = {};
-const common = require("../common.js");
-const getJson = require("../util/getJson.js");
-const fs = require('node:fs');
+import common from "../common.js";
 
+import getJson from "../util/getJson.js";
+
+import fs from "node:fs";
+
+var valuePairs = {};
 const woordenboekURL = "https://projects.timfalken.com/sakswoordenboek/saksData.json";
 const woordenboekPad = "saksData.json";
 var lastSaksDownload = Date.now();
 
-module.exports = {
+export default {
     name: 'messageCreate',
     async execute (interaction)
     {
@@ -16,7 +17,8 @@ module.exports = {
         if (interaction.author.bot) return;
 
         const fullContent = interaction.content.toLowerCase();
-        const args = interaction.content.slice(prefix.length).trim().split(/ +/g);
+        const args = interaction.content.slice(
+            prefix.length).trim().split(/ +/g);
         const commandName = args.shift().toLowerCase();
         const client = interaction.client;
 
@@ -61,14 +63,14 @@ module.exports = {
             return interaction.channel.send(rookBericht);
         }
 
-        if (commandName === 'sterf' && interaction.author.id === ownerID)
+        if (commandName === 'sterf' && interaction.author.id === process.env.OWNER_ID)
         {
             await interaction.react('😥');
             await interaction.channel.send("Vaarwel, wrede wereld...");
             process.exit();
         }
 
-        if (commandName === 'roulette' && interaction.member.roles.cache.has(adminID))
+        if (commandName === 'roulette' && interaction.member.roles.cache.has(process.env.ADMIN_ID))
         {
             var rouletteWord = args[0];
 
@@ -94,13 +96,13 @@ module.exports = {
         const command = client.commands.get(commandName);
 
         // ipv naamvergelijking kan dit mogelijk ook naar keuren op role-id
-        if (command.admin && !interaction.member.roles.cache.has(adminID) && interaction.member.id != ownerID)
+        if (command.admin && !interaction.member.roles.cache.has(process.env.ADMIN_ID) && interaction.member.id != process.env.OWNER_ID)
         {
             return interaction.reply('Ho es ff, dat mag jij helemaal niet doen, mislukte poesblaffer');
         }
 
         // Commando's exclusief voor Haan (lol haha)
-        if (command.exclusive && interaction.author.id !== ownerID)
+        if (command.exclusive && interaction.author.id !== process.env.OWNER_ID)
         {
             return interaction.channel.send("Hoe durf je mij hierop aan te spreken, alleen mijn schepper en verwekker mag dat!!");
         }

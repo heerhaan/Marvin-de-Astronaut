@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'kattijd',
     description: 'Als er een hoop katten (figuurlijk) gepaald moeten worden',
     admin: true,

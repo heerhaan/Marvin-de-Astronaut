@@ -1,7 +1,6 @@
-const { Events } = require('discord.js');
-//const cron = require('cron');
+import {Events} from "discord.js";
 
-module.exports = {
+export default {
 	name: Events.ClientReady,
 	once: true,
 	execute(client) {

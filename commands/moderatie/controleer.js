@@ -1,7 +1,8 @@
-const dayjs = require('dayjs');
-const fs = require('node:fs');
+import dayjs from "dayjs";
 
-module.exports = {
+import fs from "node:fs";
+
+export default {
     name: 'controleer',
     description: 'Ter controle of er enkele spanjolen aan hun straf ontkomen zijn',
     admin: true,

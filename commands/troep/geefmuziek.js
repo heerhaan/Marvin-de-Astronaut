@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'geefmuziek',
 	description: 'Keert een rits leuke nummers terug, fijn!',
 	execute(message) {

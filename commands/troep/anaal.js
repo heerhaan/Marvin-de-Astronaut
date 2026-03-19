@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'anaal',
 	description: 'frontaal',
 	execute(message) {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'dhz',
 	description: 'kan Haan mee aangeven dat mensen ook zelf iets kunnen doen',
 	execute(message) {

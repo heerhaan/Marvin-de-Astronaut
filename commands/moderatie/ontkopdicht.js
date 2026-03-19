@@ -1,6 +1,6 @@
-const common = require("../../common.js");
+import common from "../../common.js";
 
-module.exports = {
+export default {
 	name: 'ok',
 	admin : true,
 	execute(message) {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'stuurzelfje',
 	description: 'Mooi plaatje van mij.',
 	execute(message) {

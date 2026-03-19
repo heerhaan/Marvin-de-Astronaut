@@ -1,7 +1,6 @@
-const { EmbedBuilder } = require('discord.js');
-const { prefix } = require('../../config.json');
+import {EmbedBuilder} from "discord.js";
 
-module.exports = {
+export default {
 	name: 'help',
 	description: 'Hiermee kan ik alles weergeven wat ik kan (erg veel)!',
 	usage: '[commando naam]',
@@ -35,7 +34,7 @@ module.exports = {
             .addFields(
                 { name: 'Naam', value: command.name },
                 { name: 'Beschrijving', value: command.description },
-                { name: 'Toepassing', value: `${prefix}${command.name} ${command.usage}` },
+                { name: 'Toepassing', value: `${process.env.PREFIX}${command.name} ${command.usage}` },
             );
 
         message.channel.send({ embeds: [helpEmbed] });

@@ -1,6 +1,7 @@
-const { EmbedBuilder } = require('discord.js');
+import {EmbedBuilder} from "discord.js";
 
-module.exports = {
+
+export default {
     name: "bg",
     description: "Officieel moderatiebericht",
     usage: '[bericht]',
