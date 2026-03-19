@@ -2,6 +2,7 @@ import {Client, Collection, GatewayIntentBits, Partials} from "discord.js";
 import fs from "node:fs";
 import dotenv from "dotenv";
 import {COMMAND_FOLDER_PATH, EVENT_FOLDER_PATH} from "./util/constants.type.js";
+import {BaseCommand} from "./types/common";
 dotenv.config();
 
 const client: Client = new Client({
@@ -22,12 +23,12 @@ async function commandLoader() {
 
 // Loopt door de categoriefolders heen om alle commands toe te voegen
   for (const folder of commandFolders) {
-    const commandFiles = fs.readdirSync(`${COMMAND_FOLDER_PATH}${folder}`).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(`${COMMAND_FOLDER_PATH}${folder}`).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
     for (const file of commandFiles) {
       const filePath = `./commands/${folder}/${file}`;
       const commandModule = await import(filePath);
-      const command = commandModule.default ?? commandModule;
+      const command: BaseCommand = commandModule.default ?? commandModule;
 
       // @ts-ignore
       await client.commands.set(command.name, command);
@@ -36,7 +37,7 @@ async function commandLoader() {
     console.log(JSON.stringify(client.commands, null, 4))
   }
 
-  const eventFiles = fs.readdirSync(EVENT_FOLDER_PATH).filter(file => file.endsWith('.js'));
+  const eventFiles = fs.readdirSync(EVENT_FOLDER_PATH).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
   for (const file of eventFiles) {
     const eventModule = await import(`./events/${file}`);

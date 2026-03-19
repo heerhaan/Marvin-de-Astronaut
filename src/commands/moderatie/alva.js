@@ -1,5 +1,4 @@
 import common from "../../common.ts";
-import {BaseCommand} from "../../types/common.ts";
 
 export default {
     name: "a",
