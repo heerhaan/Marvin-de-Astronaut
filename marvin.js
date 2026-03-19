@@ -1,7 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-//const cron = require('cron');
-const { Client, Collection, Events, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({
