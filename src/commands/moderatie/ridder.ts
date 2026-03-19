@@ -10,3 +10,14 @@ export const ridderCommand : BaseCommand = {
         klokRol(message, args, "r");
     }
 }
+
+
+export const ratterCommand : BaseCommand = {
+    name: "ratter",
+    description: "Ridderen voor de opperbaasjes.",
+    usage: '[@tek] [getal][s/m/u/d] [reden]',
+    admin : true,
+    execute(message, args) {
+        klokRol(message, args, "r");
+    }
+}
