@@ -549,5 +549,17 @@ module.exports = {
             console.error(err);
             return message.channel.send("Ja dat ging dus niet helemaal lekker, rollen afnemen is een tikje mislukt.");
         }
+    },
+    schrijfStrafboek: function (message, data)
+    {
+        try
+        {
+            slaGegevensOp(data);
+        }
+        catch (err)
+        {
+            console.error(err);
+            return message.channel.send('Het bijwerken van mijn strafboek is mislukt... Vraag me niet hoe, vraag Haan.');
+        }
     }
 };
