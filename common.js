@@ -555,6 +555,7 @@ module.exports = {
         try
         {
             slaGegevensOp(data);
+            herlaadGegevens();
         }
         catch (err)
         {
