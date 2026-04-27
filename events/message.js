@@ -12,7 +12,7 @@ module.exports = {
     name: 'messageCreate',
     async execute (interaction)
     {
-        // Immediatly return if the message came from another bot
+        // Wij doen aan robotdiscriminatie hier
         if (interaction.author.bot) return;
 
         const fullContent = interaction.content.toLowerCase();
@@ -28,6 +28,10 @@ module.exports = {
         if (fullContent === "kutmarvin" || fullContent === "kuthaan" || fullContent == "kutpaard" || fullContent == "kutkoek")
         {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
+        }
+        if (fullContent === "kutstoel")
+        {
+            return interaction.react('1276471372310380544');
         }
 
         if (valuePairs['roulette'] && fullContent.includes(valuePairs['roulette']))
@@ -357,6 +361,9 @@ function geefBrutaalCommentaar ()
         "Gaan we niet doen",
         "Ik dacht het dus even niet, jij wandelend gezwel",
         "ikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemurenikzitinjemuren",
+        "ja maar nee",
+        "Zullen we het vandaag niet doen? Ik heb niet zo'n zin eigenlijk",
+        "Of je doet het zelf, luilak."
     ];
 
     let nummertje = Math.floor(Math.random() * opmerkingen.length);
