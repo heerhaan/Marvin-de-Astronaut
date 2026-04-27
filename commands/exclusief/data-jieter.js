@@ -5,7 +5,7 @@ module.exports = {
     description: 'Pleurt de huidige spanjoleringsdata weg',
     exclusive: true,
 	execute(message) {
-        let legeJson = '{}';
+        let legeJson = {};
         common.schrijfStrafboek(message, legeJson);
         
         let melding = 'Mijn strafboekje is weer leeggemaakt, vergeet niet de huidige spanjolen te bevrijden! (of niet)';
