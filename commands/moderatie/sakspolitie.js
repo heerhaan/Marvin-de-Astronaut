@@ -1,4 +1,3 @@
-const common = require("../../common.js");
 const fs = require('node:fs');
 
 module.exports = {
