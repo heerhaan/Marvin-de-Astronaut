@@ -1,3 +1,5 @@
+// NOTE: DEZE CODE WORDT NIET GEBRUIKT MOMENTEEL omdat: advertenties waren "irritant"
+
 const { Events } = require('discord.js');
 //const cron = require('cron');
 

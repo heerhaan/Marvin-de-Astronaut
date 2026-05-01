@@ -1,3 +1,5 @@
+// NOTE: DEZE CODE WORDT NIET GEBRUIKT MOMENTEEL omdat: nieuwe discord.js is krinj
+
 const { Events } = require('discord.js');
 const { prefix, ownerID, adminID } = require("../config.json");
 

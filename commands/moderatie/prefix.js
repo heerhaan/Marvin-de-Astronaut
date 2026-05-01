@@ -1,3 +1,5 @@
+// NOTE: DEZE CODE WORDT NIET GEBRUIKT MOMENTEEL omdat: werk nie :((
+
 const defaultPrefix = require("../../config.json");
 const fs = require('node:fs');
 

@@ -1,3 +1,5 @@
+// NOTE: DEZE CODE WORDT NIET GEBRUIKT MOMENTEEL omdat: werk nie :((
+
 const common = require("../../common.js");
 const { adminID, stadthouderID, burgerijID, spanjoolID, logkanaalID } = require('../../config.json');
 

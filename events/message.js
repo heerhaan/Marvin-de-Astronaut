@@ -29,7 +29,7 @@ module.exports = {
         {
             return interaction.channel.send(`kut${interaction.member.displayName.toLowerCase()}`);
         }
-        if (fullContent === "kutstoel")
+        if (fullContent === "kutstoel" || fullContent === "kutfrank")
         {
             return interaction.react('1276471372310380544');
         }
@@ -376,11 +376,9 @@ function rookMelding (niveau, author)
     switch (niveau)
     {
         case "0":
-            if (random === 1)
-            {
+            if (random === 1) {
                 return `${author} is nog op planeet Aarde en verlangd nu simpelweg naar een reis in het universum.`;
-            } else
-            {
+            } else {
                 return (`Wat doet het toch pijn om compleet nuchter te zijn, zo voelt ${author} zich vast ook.`);
             }
         case "1":

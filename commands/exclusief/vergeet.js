@@ -1,9 +1,14 @@
+const common = require("../../common.js");
+
 module.exports = {
-	name: 'vergeet',
-    description: '(WERKT NIET) Bij deze worden alle strafgegevens vergeten, haanclusief echter',
+    name: 'vergeet',
+    description: 'Pleurt de huidige spanjoleringsdata weg',
     exclusive: true,
-	execute(message) {
-        var opmerking = common.bijdehanteOpmerking();
-        return message.channel.send(opmerking);
-	},
+    execute(message) {
+        let legeJson = {};
+        common.schrijfStrafboek(message, legeJson);
+        
+        let melding = 'Mijn strafboekje is weer leeggemaakt, vergeet niet de huidige spanjolen te bevrijden! (of niet)';
+        message.channel.send(melding);
+    },
 };

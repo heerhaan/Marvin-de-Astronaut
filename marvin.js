@@ -39,7 +39,8 @@ for (const file of eventFiles) {
   }
 }
 
-/*client.once('ready', () => {
+/* Advertentie-code hieronder
+client.once('ready', () => {
   let scheduledAd = new cron.CronJob('00 30 03,09,18 * * 1-5', () => {
     const guild = client.guilds.cache.get('241646621283057665');
     const channel = guild.channels.cache.get('241646621283057665');
@@ -47,7 +48,7 @@ for (const file of eventFiles) {
   });
 
   scheduledAd.start();
-});*/
+});
 
 function advertentie() {
   var random = Math.floor((Math.random() * 5) + 1);
@@ -59,5 +60,6 @@ function advertentie() {
       case 5: return "DOET UW JONGEHEER HET NIET MEER? DONEER HEM DAN HET GROTE TRANS(PORT)FONDS, ZIJ VERVOEREN UW LUL NAAR EEN TOEKOMSTIGE KNUL.";
   }
 }
+*/
 
 client.login(token);

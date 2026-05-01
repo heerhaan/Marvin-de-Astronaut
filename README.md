@@ -1,24 +1,25 @@
-# Marvin-the-Astronaut
+# Marvin de Astronaut
 
-## What is this project?
+## Wat is deze?
 
-Sily, mostly.
+Waanzin.
 
-An attempt at a Discord bot, used at the Cirkeltrek Discord server.
+Dit is de officiële Discord bot van de Cirkeltrek Discord server.
+Het is ongelooflijk slecht gemaakt, is amper stabiel te houden en struikelt voortdurend over zichzelf. Dit is Marvin.
 
-There's not anything special about what it can do, it mostly features things that I believe are funny (like cat-posting). Among other things it can do this:
-..* Giving fun facts about space, theories about space and the like
-..* Sending a random song of the genre you choose
-..* Giving reminders about things to do and when
-..* Letting people know you want to toke and how high you are
-..* And more as soon as i can think of it
+Het kan veel en weinig tegelijkertijd, de eigenschappen die je van Marvin kan verwachten zijn:
+..* Feitjes over de ruimte;
+..* Delen van de beste muzikale nummers;
+..* Mensen in de zak stoppen;
+..* Gebruikers beledigen;
+..* en nog veel meer...
 
-## How to add this bot to your server?
+## Hoe voeg je deze bot toe aan een server?
 
-Why would you do that. If you're a coding rookie then don't. If you are a capable developer then you're probably better off making your own or just forking this repository and make any changes there to make it work.
+Waarom zou je dat doen? Pak gewoon een normale, publieke bot in plaats van dit hoopje ongeregeld. Als je echt zo vastberaden bent, dan mag je de code zelf doorlezen om te kijken wat je aan moet passen. Het is leesbaar genoeg geschreven wat dat betreft.
 
-Tip: config.json in the root.
+Tip: stop een config.json in de root-folder.
 
-## Calling the bot
+## Verwijder dit
 
-Prefix can be set inside the config.json with *gasp "prefix".
+Nee
